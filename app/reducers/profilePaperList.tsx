@@ -22,7 +22,7 @@ export const PROFILE_PAPER_LIST_INITIAL_STATE: ProfilePaperListState = {
 };
 
 const profilePaperListSlice = createSlice({
-  name: 'profilePageSlice',
+  name: 'profilePaperListSlice',
   initialState: PROFILE_PAPER_LIST_INITIAL_STATE,
   reducers: {
     getAllPapers(state, action: PayloadAction<GetPapersPayload>) {

@@ -31,7 +31,7 @@ const SelectRepresentativePublications: FC<SelectRepresentativePublicationsProps
                   activeImportSourceTab: IMPORT_SOURCE_TAB.BIBTEX,
                   profileSlug,
                   isOnboarding: true,
-                  markRepresentative: true,
+                  isRepresentativeImporting: true,
                 })
               )
             }
@@ -50,7 +50,7 @@ const SelectRepresentativePublications: FC<SelectRepresentativePublicationsProps
                   activeImportSourceTab: IMPORT_SOURCE_TAB.CITATION,
                   profileSlug,
                   isOnboarding: true,
-                  markRepresentative: true,
+                  isRepresentativeImporting: true,
                 })
               )
             }

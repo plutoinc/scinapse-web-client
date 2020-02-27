@@ -42,12 +42,17 @@ const profileRepresentativePaperListSlice = createSlice({
 
       state.paperIds = nextPaperIds;
     },
+    addRepresentativePapers(state, action: PayloadAction<{ paperIds: string[]; totalCount: number }>) {
+      state.paperIds = Array.from(new Set([...action.payload.paperIds, ...state.paperIds]));
+      state.totalCount = action.payload.totalCount;
+    },
   },
 });
 
 export const {
   getRepresentativePapers,
   addRepresentativePaper,
+  addRepresentativePapers,
   removeRepresentativePaper,
 } = profileRepresentativePaperListSlice.actions;
 

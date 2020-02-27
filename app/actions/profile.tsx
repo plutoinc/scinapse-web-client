@@ -19,16 +19,37 @@ import { IMPORT_SOURCE_TAB, CURRENT_IMPORT_PROGRESS_STEP } from '../containers/p
 import { changeProgressStep, fetchPaperImportResult, closeImportPaperDialog } from '../reducers/importPaperDialog';
 import { clickNextStep, clickSkipStep } from '../reducers/profileOnboarding';
 import {
-  addRepresentativePaper,
-  removeRepresentativePaper,
   getRepresentativePapers,
+  addRepresentativePapers,
+  removeRepresentativePaper,
+  addRepresentativePaper,
 } from '../reducers/profileRepresentativePaperList';
 import { CURRENT_ONBOARDING_PROGRESS_STEP } from '../containers/profileOnboarding/types';
 
 interface FetchProfilePaperListParams {
   profileSlug: string;
-  page: number;
   size?: number;
+  page?: number;
+}
+
+export function fetchRepresentativePapers(params: FetchProfilePaperListParams): AppThunkAction {
+  return async (dispatch, _getState, { axios }) => {
+    const { profileSlug, page, size = 10 } = params;
+    const res = await axios.get(`/profiles/${profileSlug}/papers/representative`, {
+      params: { page: page, size: size },
+    });
+    const result: PaginationResponseV2<Paper[]> = res.data;
+    const normalizedPapers = normalize(result.data.content, [paperSchema]);
+    dispatch(ActionCreators.addEntity(normalizedPapers.entities));
+    dispatch(
+      getRepresentativePapers({
+        paperIds: normalizedPapers.result,
+        totalPages: result.data.page!.totalPages,
+        page: result.data.page!.page,
+        totalElements: result.data.page!.totalElements,
+      })
+    );
+  };
 }
 
 export function fetchProfileData(profileSlug: string): AppThunkAction {
@@ -90,26 +111,6 @@ export function fetchProfilePendingPapers(profileSlug: string): AppThunkAction {
   };
 }
 
-export function fetchProfileRepresentativePapers(params: FetchProfilePaperListParams): AppThunkAction {
-  return async (dispatch, _getState, { axios }) => {
-    const { profileSlug, page } = params;
-    const result = await axios.get(`/profiles/${profileSlug}/papers/representative`, { params: { page } });
-    const { data } = result.data as PaginationResponseV2<Paper[]>;
-    const papers = data.content;
-    const entity = normalize(papers, [paperSchema]);
-
-    dispatch(ActionCreators.addEntity(entity));
-    dispatch(
-      getRepresentativePapers({
-        paperIds: entity.result,
-        totalPages: data.page!.totalPages,
-        page: data.page!.page,
-        totalElements: data.page!.totalElements,
-      })
-    );
-  };
-}
-
 export function controlStepAfterImportPaper(): AppThunkAction {
   return async (dispatch, getState) => {
     const { importPaperDialogState } = getState();
@@ -141,17 +142,20 @@ export function controlStepAfterImportPaper(): AppThunkAction {
   };
 }
 
-export function fetchProfileImportedPapers(
-  importSource: IMPORT_SOURCE_TAB,
-  profileSlug: string,
-  importedContext: string | string[]
-): AppThunkAction {
-  return async (dispatch, getState, { axios }) => {
-    const { importPaperDialogState } = getState();
-    const { markRepresentative } = importPaperDialogState;
-
+interface FetchProfileImportedPapersParams {
+  importSource: IMPORT_SOURCE_TAB;
+  profileSlug: string;
+  importedContext: string | string[];
+  isRepresentativeImporting?: boolean;
+}
+export function fetchProfileImportedPapers({
+  importSource,
+  profileSlug,
+  importedContext,
+  isRepresentativeImporting,
+}: FetchProfileImportedPapersParams): AppThunkAction {
+  return async (dispatch, _getState, { axios }) => {
     let rawRes;
-
     try {
       if (importSource === IMPORT_SOURCE_TAB.GS) {
         rawRes = await axios.post(`/profiles/${profileSlug}/import-papers/gs`, {
@@ -160,12 +164,12 @@ export function fetchProfileImportedPapers(
       } else if (importSource === IMPORT_SOURCE_TAB.BIBTEX) {
         rawRes = await axios.post(`/profiles/${profileSlug}/import-papers/bibtex`, {
           bibtex_string: importedContext,
-          mark_representative: !!markRepresentative,
+          mark_representative: isRepresentativeImporting,
         });
       } else if (importSource === IMPORT_SOURCE_TAB.CITATION) {
         rawRes = await axios.post(`/profiles/${profileSlug}/import-papers/citation`, {
           citation_string: importedContext,
-          mark_representative: !!markRepresentative,
+          mark_representative: isRepresentativeImporting,
         });
       } else if (importSource === IMPORT_SOURCE_TAB.AUTHOR_URLS) {
         rawRes = await axios.post(`/profiles/${profileSlug}/import-papers/author`, {
@@ -197,21 +201,19 @@ export function fetchProfileImportedPapers(
       })
     );
 
-    const representativePapersRes = {
-      data: { content: res.representativePapers, page: res.representativePaperPage },
-    } as PaginationResponseV2<Paper[]>;
-    const representativePapers = representativePapersRes.data.content;
-    const representativePapersEntity = normalize(representativePapers, [paperSchema]);
-
-    dispatch(ActionCreators.addEntity(representativePapersEntity));
-    dispatch(
-      getRepresentativePapers({
-        paperIds: representativePapersEntity.result,
-        totalPages: representativePapersRes.data.page!.totalPages,
-        page: representativePapersRes.data.page!.page,
-        totalElements: representativePapersRes.data.page!.totalElements,
-      })
-    );
+    if (isRepresentativeImporting) {
+      const representativePapersRes = {
+        data: { content: res.representativePapers, page: res.representativePaperPage },
+      } as PaginationResponseV2<Paper[]>;
+      const representativePapers = representativePapersRes.data.content;
+      const representativePapersEntity = normalize(representativePapers, [paperSchema]);
+      dispatch(
+        addRepresentativePapers({
+          paperIds: representativePapersEntity.result,
+          totalCount: representativePapersRes.data.page!.totalElements,
+        })
+      );
+    }
 
     const pendingPapersRes = { data: { content: res.pendingPapers } } as PaginationResponseV2<PendingPaper[]>;
     const pendingPapers = pendingPapersRes.data.content;

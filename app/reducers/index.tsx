@@ -29,14 +29,14 @@ import FindInLibraryDialogReducer, { FIND_IN_LIBRARY_DIALOG_INITIAL_STATE } from
 import KeywordSettingsReducer, { KEYWORD_SETTINGS_INITIAL_STATE } from './keywordSettings';
 import CreateKeywordAlertDialogReducer, { CREATE_KEYWORD_ALERT_DIALOG_INITIAL_STATE } from './createKeywordAlertDialog';
 import ScinapseSnackbarReducer, { SCINAPSE_SNACK_BAR_INITIAL_STATE } from './scinapseSnackbar';
-import profilePaperListReducer, { PROFILE_PAPER_LIST_INITIAL_STATE } from './profilePaperList';
-import profilePendingPaperListReducer, { PROFILE_PENDING_PAPER_LIST_INITIAL_STATE } from './profilePendingPaperList';
+import ProfilePaperListReducer, { PROFILE_PAPER_LIST_INITIAL_STATE } from './profilePaperList';
+import ProfileRepresentativePaperListReducer, {
+  PROFILE_REPRESENTATIVE_PAPER_LIST_INITIAL_STATE,
+} from './profileRepresentativePaperList';
+import ProfilePendingPaperListReducer, { PROFILE_PENDING_PAPER_LIST_INITIAL_STATE } from './profilePendingPaperList';
 import ProfileEntitiesReducer, { PROFILE_ENTITIES_INITIAL_STATE } from './profileEntity';
 import ImportPaperDialogReducer, { IMPORT_PAPER_DIALOG_INITIAL_STATE } from './importPaperDialog';
 import ProfileOnboardingReducer, { PROFILE_ONBOARDING_INITIAL_STATE } from './profileOnboarding';
-import profileRepresentativePaperListReducer, {
-  PROFILE_REPRESENTATIVE_PAPER_LIST_INITIAL_STATE,
-} from './profileRepresentativePaperList';
 
 export type AppState = typeof initialState;
 
@@ -64,8 +64,8 @@ export const initialState = {
   createKeywordAlertDialogState: CREATE_KEYWORD_ALERT_DIALOG_INITIAL_STATE,
   scinapseSnackbarState: SCINAPSE_SNACK_BAR_INITIAL_STATE,
   profilePaperListState: PROFILE_PAPER_LIST_INITIAL_STATE,
-  profilePendingPaperListState: PROFILE_PENDING_PAPER_LIST_INITIAL_STATE,
   profileRepresentativePaperListState: PROFILE_REPRESENTATIVE_PAPER_LIST_INITIAL_STATE,
+  profilePendingPaperListState: PROFILE_PENDING_PAPER_LIST_INITIAL_STATE,
   importPaperDialogState: IMPORT_PAPER_DIALOG_INITIAL_STATE,
   profileOnboardingState: PROFILE_ONBOARDING_INITIAL_STATE,
   profileEntities: PROFILE_ENTITIES_INITIAL_STATE,
@@ -95,9 +95,9 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   keywordSettingsState: KeywordSettingsReducer,
   createKeywordAlertDialogState: CreateKeywordAlertDialogReducer,
   scinapseSnackbarState: ScinapseSnackbarReducer,
-  profilePaperListState: profilePaperListReducer,
-  profilePendingPaperListState: profilePendingPaperListReducer,
-  profileRepresentativePaperListState: profileRepresentativePaperListReducer,
+  profileRepresentativePaperListState: ProfileRepresentativePaperListReducer,
+  profilePaperListState: ProfilePaperListReducer,
+  profilePendingPaperListState: ProfilePendingPaperListReducer,
   importPaperDialogState: ImportPaperDialogReducer,
   profileOnboardingState: ProfileOnboardingReducer,
   profileEntities: ProfileEntitiesReducer,

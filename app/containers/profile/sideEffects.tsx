@@ -3,7 +3,7 @@ import {
   fetchProfileData,
   fetchProfilePapers,
   fetchProfilePendingPapers,
-  fetchProfileRepresentativePapers,
+  fetchRepresentativePapers,
 } from '../../actions/profile';
 
 export async function fetchAuthorShowPageData(params: LoadDataParams<{ profileSlug: string }>) {
@@ -11,9 +11,9 @@ export async function fetchAuthorShowPageData(params: LoadDataParams<{ profileSl
   const profileSlug = match.params.profileSlug;
 
   await Promise.all([
-    await dispatch(fetchProfileData(profileSlug)),
-    await dispatch(fetchProfilePendingPapers(profileSlug)),
-    await dispatch(fetchProfilePapers({ profileSlug, page: queryParams?.page || 0 })),
-    await dispatch(fetchProfileRepresentativePapers({ profileSlug, page: queryParams?.page || 0 })),
+    dispatch(fetchProfileData(profileSlug)),
+    dispatch(fetchProfilePendingPapers(profileSlug)),
+    dispatch(fetchRepresentativePapers({ profileSlug })),
+    dispatch(fetchProfilePapers({ profileSlug, page: queryParams?.page || 0 })),
   ]);
 }

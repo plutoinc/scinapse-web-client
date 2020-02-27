@@ -13,45 +13,55 @@ import trackImportAction from './helpers/trackImportAction';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperImportDialog.scss');
 
-interface HeaderItemProps { active: boolean; text: string; onClick: () => void; }
+interface HeaderItemProps {
+  active: boolean;
+  text: string;
+  onClick: () => void;
+}
 const HeaderItem: React.FC<HeaderItemProps> = ({ active, onClick, text }) => {
   return (
-    <span
-      onClick={onClick}
-      className={classNames({ [`${s.tabItem}`]: true, [`${s.active}`]: active, })}
-    >
+    <span onClick={onClick} className={classNames({ [`${s.tabItem}`]: true, [`${s.active}`]: active })}>
       {text}
     </span>
-  )
-}
+  );
+};
 
 const Header: React.FC<{
   activeTab: IMPORT_SOURCE_TAB;
+  hidingTabs: IMPORT_SOURCE_TAB[];
   onClickTab: (tab: IMPORT_SOURCE_TAB) => void;
-}> = ({ activeTab, onClickTab }) => {
+}> = ({ activeTab, onClickTab, hidingTabs }) => {
   return (
     <div className={s.tabBoxWrapper}>
       <div className={s.normalTabWrapper}>
-        <HeaderItem
-          text="BibTex"
-          active={activeTab === IMPORT_SOURCE_TAB.BIBTEX}
-          onClick={() => onClickTab(IMPORT_SOURCE_TAB.BIBTEX)}
-        />
-        <HeaderItem
-          text="Citation Text"
-          active={activeTab === IMPORT_SOURCE_TAB.CITATION}
-          onClick={() => onClickTab(IMPORT_SOURCE_TAB.CITATION)}
-        />
-        <HeaderItem
-          text="Google Scholar"
-          active={activeTab === IMPORT_SOURCE_TAB.GS}
-          onClick={() => onClickTab(IMPORT_SOURCE_TAB.GS)}
-        />
-        <HeaderItem
-          text="Author URL"
-          active={activeTab === IMPORT_SOURCE_TAB.AUTHOR_URLS}
-          onClick={() => onClickTab(IMPORT_SOURCE_TAB.AUTHOR_URLS)}
-        />
+        {!hidingTabs.includes(IMPORT_SOURCE_TAB.BIBTEX) && (
+          <HeaderItem
+            text="BibTex"
+            active={activeTab === IMPORT_SOURCE_TAB.BIBTEX}
+            onClick={() => onClickTab(IMPORT_SOURCE_TAB.BIBTEX)}
+          />
+        )}
+        {!hidingTabs.includes(IMPORT_SOURCE_TAB.CITATION) && (
+          <HeaderItem
+            text="Citation Text"
+            active={activeTab === IMPORT_SOURCE_TAB.CITATION}
+            onClick={() => onClickTab(IMPORT_SOURCE_TAB.CITATION)}
+          />
+        )}
+        {!hidingTabs.includes(IMPORT_SOURCE_TAB.GS) && (
+          <HeaderItem
+            text="Google Scholar"
+            active={activeTab === IMPORT_SOURCE_TAB.GS}
+            onClick={() => onClickTab(IMPORT_SOURCE_TAB.GS)}
+          />
+        )}
+        {!hidingTabs.includes(IMPORT_SOURCE_TAB.AUTHOR_URLS) && (
+          <HeaderItem
+            text="Author URL"
+            active={activeTab === IMPORT_SOURCE_TAB.AUTHOR_URLS}
+            onClick={() => onClickTab(IMPORT_SOURCE_TAB.AUTHOR_URLS)}
+          />
+        )}
       </div>
     </div>
   );
@@ -62,25 +72,34 @@ const PaperImportDialog: React.FC = () => {
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { isOpen, activeTab, inProgressStep, profileSlug } = useSelector((appState: AppState) => ({
-    isOpen: appState.importPaperDialogState.isOpen,
-    activeTab: appState.importPaperDialogState.activeImportSourceTab,
-    inProgressStep: appState.importPaperDialogState.inProgressStep,
-    profileSlug: appState.importPaperDialogState.profileSlug,
-  }));
+  const { isOpen, activeTab, inProgressStep, profileSlug, isRepresentativeImporting } = useSelector(
+    (appState: AppState) => ({
+      isOpen: appState.importPaperDialogState.isOpen,
+      activeTab: appState.importPaperDialogState.activeImportSourceTab,
+      inProgressStep: appState.importPaperDialogState.inProgressStep,
+      profileSlug: appState.importPaperDialogState.profileSlug,
+      isRepresentativeImporting: appState.importPaperDialogState.isRepresentativeImporting,
+    })
+  );
 
   if (!profileSlug) return null;
-
-
 
   async function handleImportPaperList({ type, importedContext }: HandleImportPaperListParams) {
     try {
       setIsLoading(true);
       trackImportAction({ importSource: type, actionLabel: 'click' });
-      await dispatch(fetchProfileImportedPapers(type, profileSlug!, importedContext));
+      await dispatch(
+        fetchProfileImportedPapers({
+          importSource: type,
+          profileSlug: profileSlug!,
+          importedContext,
+          isRepresentativeImporting,
+        })
+      );
       setIsLoading(false);
       trackImportAction({ importSource: type, actionLabel: 'success' });
     } catch (err) {
+      setIsLoading(false);
       alertToast({
         type: 'error',
         message: 'we had an error during importing papers. please refresh this page & try it again.',
@@ -89,14 +108,14 @@ const PaperImportDialog: React.FC = () => {
     }
   }
 
+  const hidingTabs = isRepresentativeImporting ? [IMPORT_SOURCE_TAB.AUTHOR_URLS, IMPORT_SOURCE_TAB.GS] : [];
+
   return (
     <Dialog
       open={isOpen}
       onClose={() => dispatch(closeImportPaperDialog())}
-      classes={{
-        paper: s.dialogPaper,
-      }}
-      maxWidth={'lg'}
+      classes={{ paper: s.dialogPaper }}
+      maxWidth="lg"
     >
       <div className={s.boxContainer}>
         <div className={s.boxWrapper}>
@@ -107,6 +126,7 @@ const PaperImportDialog: React.FC = () => {
           {inProgressStep === CURRENT_IMPORT_PROGRESS_STEP.PROGRESS && (
             <Header
               activeTab={activeTab}
+              hidingTabs={hidingTabs}
               onClickTab={(tab: IMPORT_SOURCE_TAB) => dispatch(changeImportSourceTab({ activeImportSourceTab: tab }))}
             />
           )}
@@ -115,6 +135,7 @@ const PaperImportDialog: React.FC = () => {
             currentStep={inProgressStep}
             activeTab={activeTab}
             onSubmit={handleImportPaperList}
+            hidingTabs={hidingTabs}
           />
         </div>
       </div>

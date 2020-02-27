@@ -4,24 +4,26 @@ import { isEqual } from 'lodash';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { Button } from '@pluto_network/pluto-design-elements';
-// import RepresentativePublicationsDialog from '../../components/dialog/components/representativePublications';
 import { AppState } from '../../reducers';
 import DesktopPagination from '../../components/common/desktopPagination';
 import { useThunkDispatch } from '../../hooks/useThunkDispatch';
 import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
-// import { DEFAULT_AUTHOR_PAPERS_SIZE } from '../../api/author';
 import ProfileShowHeader from '../../components/authorShowHeader/profileShowHeader';
 import Icon from '../../icons';
-// import ActionTicketManager from '../../helpers/actionTicketManager';
 import formatNumber from '../../helpers/formatNumber';
 import ProfileCvSection from '../authorCvSection';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
 import ProfileShowPageHelmet from './components/helmet';
-// import RepresentativePaperListSection from './components/representativePapers';
-// import { Paper } from '../../model/paper';
+import RepresentativePaperListSection from './components/representativePapers';
 import { selectHydratedProfile, Profile } from '../../model/profile';
-import { fetchProfileData, updateProfile, fetchProfilePapers, fetchProfilePendingPapers } from '../../actions/profile';
+import {
+  fetchProfileData,
+  updateProfile,
+  fetchProfilePapers,
+  fetchProfilePendingPapers,
+  fetchRepresentativePapers,
+} from '../../actions/profile';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import { PendingPaper } from '../../reducers/profilePendingPaperList';
 import PendingPaperList from './components/pendingPaperList';
@@ -59,10 +61,16 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
     isEqual
   );
   const paperIds = useSelector<AppState, string[]>(state => state.profilePaperListState.paperIds, isEqual);
+  const representativePaperIds = useSelector<AppState, string[]>(
+    state => state.profileRepresentativePaperListState.paperIds,
+    isEqual
+  );
+  const totalRepresentativePaperCount = useSelector<AppState, number>(
+    state => state.profileRepresentativePaperListState.totalCount
+  );
   const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
   const [isOpenModifyProfileDialog, setIsOpenModifyProfileDialog] = useState(false);
   const [isOpenPendingDescriptionDialog, setIsOpenPendingDescriptionDialog] = useState(false);
-  // const [isOpenRepresentativePublicationDialog, setIsOpenRepresentativePublicationDialog] = useState(false);
   const [activeTab, setActiveTab] = useState(AvailableTab.PUBLICATIONS);
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
   const shouldFetch = useSelector(
@@ -75,13 +83,8 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
     if (!profileSlug) return;
 
     dispatch(fetchProfileData(profileSlug));
-  }, [profileSlug, dispatch, currentUser]);
-
-  useEffect(() => {
-    if (!lastShouldFetch.current) return;
-    if (!profileSlug) return;
-
     dispatch(fetchProfilePendingPapers(profileSlug));
+    dispatch(fetchRepresentativePapers({ profileSlug }));
   }, [profileSlug, dispatch, currentUser]);
 
   useEffect(() => {
@@ -94,7 +97,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
     dispatch(fetchProfilePapers({ profileSlug, page: currentPage }));
   }, [profileSlug, currentPage, dispatch, currentUser]);
 
-  if (!profile) return null;
+  if (!profile || !profileSlug) return null;
 
   return (
     <div className={s.authorShowPageWrapper}>
@@ -147,11 +150,12 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
             {activeTab === AvailableTab.PUBLICATIONS && (
               <>
                 <div className={s.leftContentWrapper}>
-                  {/* <RepresentativePaperListSection
-                    author={author}
-                    isEditable={isEditable}
-                    onClickManageButton={() => setIsOpenRepresentativePublicationDialog(prev => !prev)}
-                  /> */}
+                  <RepresentativePaperListSection
+                    profileSlug={profileSlug}
+                    paperIds={representativePaperIds}
+                    isEditable={profile.isEditable}
+                    totalCount={totalRepresentativePaperCount}
+                  />
                   {pendingPapers.length > 0 && profile.isEditable && (
                     <>
                       <div className={s.allPublicationHeader}>
@@ -180,7 +184,8 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                         {profile.isEditable && (
                           <Button
                             elementType="button"
-                            size="medium"
+                            color="gray"
+                            variant="outlined"
                             title="Update or add publication information here by using Google Scholar Profile page, BibTex, or citation string. This is not for uploading the publication itself."
                             onClick={() =>
                               dispatch(
@@ -203,7 +208,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                         <span className={s.noPaperContent}>You have not yet imported your paper list.</span>
                         <Button
                           elementType="button"
-                          size="medium"
+                          variant="outlined"
                           title="Update or add publication information here by using Google Scholar Profile page, BibTex, or citation string. This is not for uploading the publication itself."
                           onClick={() =>
                             dispatch(
@@ -318,20 +323,6 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
         open={isOpenPendingDescriptionDialog}
         onClose={() => setIsOpenPendingDescriptionDialog(false)}
       />
-      {/* <RepresentativePublicationsDialog
-        currentUser={currentUser}
-        isOpen={isOpenRepresentativePublicationDialog}
-        author={author}
-        handleClose={() => setIsOpenRepresentativePublicationDialog(prev => !prev)}
-        handleSubmit={(papers: Paper[]) =>
-          dispatch(
-            ActionCreators.succeedToUpdateAuthorRepresentativePapers({
-              authorId: author.id,
-              papers,
-            })
-          )
-        }
-      /> */}
     </div>
   );
 };
