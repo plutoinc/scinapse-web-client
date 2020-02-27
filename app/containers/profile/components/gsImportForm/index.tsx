@@ -4,6 +4,7 @@ import { parse as URLParse } from 'url';
 import { Formik, FormikErrors, Form, Field } from 'formik';
 import { Button } from '@pluto_network/pluto-design-elements';
 import FormikInput from '../../../../components/common/formikInput';
+import { HandleImportPaperListParams, IMPORT_SOURCE_TAB } from '../../types';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./gsImportForm.scss');
 
@@ -15,7 +16,7 @@ export interface GSFormState {
 
 interface GSImportFormProps {
   isLoading: boolean;
-  onSubmitGS: (params: GSFormState) => void;
+  onSubmitGS: (params: HandleImportPaperListParams) => void;
 }
 
 function gsImportValidateForm(values: GSFormState) {
@@ -48,7 +49,7 @@ const GSImportForm: React.FC<GSImportFormProps> = props => {
       <Formik
         initialValues={{ url: '' }}
         validate={gsImportValidateForm}
-        onSubmit={onSubmitGS}
+        onSubmit={(values) => { onSubmitGS({ type: IMPORT_SOURCE_TAB.GS, importedContext: values.url }) }}
         enableReinitialize
         validateOnChange={false}
         validateOnBlur={false}
