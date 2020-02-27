@@ -4,22 +4,18 @@ import { isEqual } from 'lodash';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { Button } from '@pluto_network/pluto-design-elements';
-// import RepresentativePublicationsDialog from '../../components/dialog/components/representativePublications';
 import { AppState } from '../../reducers';
 import DesktopPagination from '../../components/common/desktopPagination';
 import { useThunkDispatch } from '../../hooks/useThunkDispatch';
 import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
-// import { DEFAULT_AUTHOR_PAPERS_SIZE } from '../../api/author';
 import ProfileShowHeader from '../../components/authorShowHeader/profileShowHeader';
 import Icon from '../../icons';
-// import ActionTicketManager from '../../helpers/actionTicketManager';
 import formatNumber from '../../helpers/formatNumber';
 import ProfileCvSection from '../authorCvSection';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
 import ProfileShowPageHelmet from './components/helmet';
 import RepresentativePaperListSection from './components/representativePapers';
-// import { Paper } from '../../model/paper';
 import { selectHydratedProfile, Profile } from '../../model/profile';
 import {
   fetchProfileData,
@@ -75,7 +71,6 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
   const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
   const [isOpenModifyProfileDialog, setIsOpenModifyProfileDialog] = useState(false);
   const [isOpenPendingDescriptionDialog, setIsOpenPendingDescriptionDialog] = useState(false);
-  // const [isOpenRepresentativePublicationDialog, setIsOpenRepresentativePublicationDialog] = useState(false);
   const [activeTab, setActiveTab] = useState(AvailableTab.PUBLICATIONS);
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
   const shouldFetch = useSelector(
@@ -328,20 +323,6 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
         open={isOpenPendingDescriptionDialog}
         onClose={() => setIsOpenPendingDescriptionDialog(false)}
       />
-      {/* <RepresentativePublicationsDialog
-        currentUser={currentUser}
-        isOpen={isOpenRepresentativePublicationDialog}
-        author={author}
-        handleClose={() => setIsOpenRepresentativePublicationDialog(prev => !prev)}
-        handleSubmit={(papers: Paper[]) =>
-          dispatch(
-            ActionCreators.succeedToUpdateAuthorRepresentativePapers({
-              authorId: author.id,
-              papers,
-            })
-          )
-        }
-      /> */}
     </div>
   );
 };
