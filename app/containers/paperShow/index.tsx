@@ -4,6 +4,7 @@ import { isEqual } from 'lodash';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { PaperShowMatchParams } from './types';
+import { getPaper } from '../../api/paper';
 import { AppState } from '../../reducers';
 import { UserDevice } from '../../components/layouts/reducer';
 import MobilePaperShow from '../../components/mobilePaperShow/mobilePaperShow';
@@ -12,19 +13,14 @@ import { getMemoizedPaper } from './select';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import { useFetchRefCitedPapers } from '../../hooks/useFetchRefCited';
-import { getAxiosInstance } from '../../api/axios';
+import { Paper } from '../../model/paper';
 
 type Props = RouteComponentProps<PaperShowMatchParams>;
 
-const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
-  const shouldFetch = useSelector(
-    (state: AppState) => !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient
-  );
-
-  const initialPaper = useSelector((state: AppState) => getMemoizedPaper(state), isEqual);
+const PaperShowContainer: FC<Props> = ({ location, match }) => {
+  const initialPaper = useSelector<AppState, Paper | undefined>((state) => getMemoizedPaper(state), isEqual);
   const isMobile = useSelector((state: AppState) => state.layout.userDevice === UserDevice.MOBILE);
   const matchedPaperId = match.params.paperId;
-
   const queryParams = getQueryParamsObject(location.search);
   const refPage = queryParams['ref-page'];
   const refQuery = queryParams['ref-query'] || '';
@@ -61,24 +57,14 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
     }
   }, [matchedPaperId]);
 
-
-  async function getPaper(id: string) {
-    console.log('called');
-    const res = await getAxiosInstance().get(`/papers/${id}`);
-    return res.data;
-  }
-
-  console.log('matchedPaperId === ', matchedPaperId)
+  const initialData = (initialPaper && initialPaper.id === matchedPaperId) ? initialPaper : undefined;
   const { data: paper } = useSWR([`/papers/${matchedPaperId}`, matchedPaperId], (_url, id) => getPaper(id), {
     revalidateOnFocus: false,
-    initialData: initialPaper.id === matchedPaperId && initialPaper,
+    initialData,
   });
 
-
   if (!paper) return null;
-
   if (isMobile) return <MobilePaperShow paper={paper} />;
-
   return <PaperShow paper={paper} />;
 };
 

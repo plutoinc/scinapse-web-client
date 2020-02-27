@@ -16,7 +16,6 @@ import RelatedPapers from '../relatedPapers';
 import AfterDownloadContents from './component/afterDownloadContents';
 import { PDFViewerProps } from './types';
 import { AppState } from '../../reducers';
-import ProgressSpinner from './component/progressSpinner';
 import BlurBlocker from './component/blurBlocker';
 import { addPaperToRecommendPool } from '../recommendPool/actions';
 import { PDFViewerState } from '../../reducers/pdfViewer';
@@ -63,20 +62,20 @@ const PDFViewer: React.FC<PDFViewerProps> = memo(props => {
 
   const { data: pdfFile } = useSWR([`/papers/${paper.id}/pdf`, paper], (_url, paper) => fetchPDF(paper), {
     revalidateOnFocus: false,
-    dedupingInterval: 600000,
+    dedupingInterval: 1000 * 60 * 60,
   });
 
   async function fetchPDF(paper: Paper) {
     dispatch(ActionCreators.startToFetchPDF());
-
-    const bestPDF = await getBestPdf(paper);
-    if (!bestPDF.path) return dispatch(ActionCreators.finishToFetchPDF());
-
     try {
+      const bestPDF = await getBestPdf(paper);
+      if (!bestPDF.path) return dispatch(ActionCreators.finishToFetchPDF());
+
       const PDFBufferResponse = await getAxiosInstance().get(getDirectPDFPath(bestPDF.path), {
         responseType: 'arraybuffer',
         withCredentials: false,
       });
+      dispatch(ActionCreators.finishToFetchPDF())
       return PDFBufferResponse.data;
     } catch (_err) {
       dispatch(ActionCreators.failToFetchPDF());
@@ -101,8 +100,6 @@ const PDFViewer: React.FC<PDFViewerProps> = memo(props => {
       </div>
     );
   }
-
-  console.log(pdfFile)
 
   return (
     <div ref={wrapperNode} className={styles.contentWrapper}>
