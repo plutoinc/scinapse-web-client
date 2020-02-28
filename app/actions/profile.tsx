@@ -34,9 +34,9 @@ interface FetchProfilePaperListParams {
 
 export function fetchRepresentativePapers(params: FetchProfilePaperListParams): AppThunkAction {
   return async (dispatch, _getState, { axios }) => {
-    const { profileSlug, page, size = 10 } = params;
+    const { profileSlug, size = 10 } = params;
     const res = await axios.get(`/profiles/${profileSlug}/papers/representative`, {
-      params: { page: page, size: size },
+      params: { size: size },
     });
     const result: PaginationResponseV2<Paper[]> = res.data;
     const normalizedPapers = normalize(result.data.content, [paperSchema]);

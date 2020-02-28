@@ -1,10 +1,11 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useState } from 'react';
 import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../../../icons';
 import { useThunkDispatch } from '../../../../hooks/useThunkDispatch';
 import { openImportPaperDialog } from '../../../../reducers/importPaperDialog';
 import { IMPORT_SOURCE_TAB } from '../../types';
 import ProfilePaperItem from '../../../../components/profilePaperItem/profilePaperItem';
+
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('../../connectedAuthor.scss');
 
@@ -14,14 +15,16 @@ interface Props {
   totalCount: number;
   isEditable: boolean;
   fetchProfileShowData: () => void;
+  onClickOpenDialog: () => void;
 }
 
 const RepresentativePaperListSection: FC<Props> = memo(
-  ({ paperIds, isEditable, totalCount, profileSlug, fetchProfileShowData }) => {
+  ({ paperIds, isEditable, totalCount, profileSlug, fetchProfileShowData, onClickOpenDialog }) => {
     useStyles(s);
     const dispatch = useThunkDispatch();
 
     let paperList;
+
     if (!paperIds.length) {
       paperList = (
         <div className={s.noPaperWrapper}>
@@ -29,19 +32,36 @@ const RepresentativePaperListSection: FC<Props> = memo(
         </div>
       );
     } else {
-      paperList = paperIds.map(id => (
-        <ProfilePaperItem
-          key={id}
-          paperId={id}
-          pageType="profileShow"
-          actionArea="representativePaperList"
-          ownProfileSlug={profileSlug}
-          isEditable={isEditable}
-          fetchProfileShowData={fetchProfileShowData}
-          isRepresentative={true}
-        />
-      ));
+      paperList = paperIds
+        .slice(0, 5)
+        .map(id => (
+          <ProfilePaperItem
+            key={id}
+            paperId={id}
+            pageType="profileShow"
+            actionArea="representativePaperList"
+            ownProfileSlug={profileSlug}
+            isEditable={isEditable}
+            fetchProfileShowData={fetchProfileShowData}
+            isRepresentative={true}
+          />
+        ));
     }
+
+    const openShowAllDialogButton = paperIds.length > 5 && (
+      <div className={s.showAllButtonWrapper}>
+        <Button
+          elementType="button"
+          color="gray"
+          variant="contained"
+          title="Open Show All Representative Publications Dialog Button"
+          onClick={onClickOpenDialog}
+          fullWidth
+        >
+          <span>SHOW ALL</span>
+        </Button>
+      </div>
+    );
 
     return (
       <>
@@ -75,6 +95,7 @@ const RepresentativePaperListSection: FC<Props> = memo(
           </div>
           <div className={s.selectedPaperDescription} />
           {paperList}
+          {openShowAllDialogButton}
           <div className={s.selectedPaperWrapper}>
             {isEditable && !totalCount && (
               <Button

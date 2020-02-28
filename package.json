@@ -185,7 +185,7 @@
     "react-dom": "16.8.2",
     "react-ga": "2.4.1",
     "react-helmet": "5.2.1",
-    "react-intersection-observing-infinity-scroll": "1.0.0",
+    "react-intersection-observing-infinity-scroll": "^1.0.1",
     "react-jss": "8.5.1",
     "react-pdf": "^4.2.0-beta",
     "react-redux": "^7.1.0",

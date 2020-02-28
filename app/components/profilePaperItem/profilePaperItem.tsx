@@ -99,7 +99,7 @@ export const ProfilePaperItemWithPaper: FC<ProfilePaperItemWithPaperProps> = mem
           ownProfileSlug={ownProfileSlug}
           isEditable={isEditable}
           fetchProfileShowData={fetchProfileShowData}
-          dropdownContents={[controlPaperButton]}
+          dropdownContents={isEditable ? [controlPaperButton] : []}
         />
       </div>
     );

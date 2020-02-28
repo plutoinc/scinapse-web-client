@@ -261,6 +261,10 @@
   cursor: pointer;
 }
 
+.showAllButtonWrapper {
+  margin-top: 24px;
+}
+
 @media (max-width: $tablet_width) {
   .leftContentWrapper {
     padding: 24px 12px;
