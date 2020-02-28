@@ -40,13 +40,13 @@ const RepresentativePaperListSection: FC<Props> = memo(
               pageType="profileShow"
               actionArea="representativePaperList"
               ownProfileSlug={profileSlug}
-              isEditable={isEditable}
+              isEditable={false}
               fetchProfileShowData={fetchProfileShowData}
               isRepresentative={true}
             />
           ));
       }
-    }, [paperIds, isEditable, profileSlug, fetchProfileShowData]);
+    }, [paperIds, profileSlug, fetchProfileShowData]);
 
     const openShowAllDialogButton = paperIds.length > 5 && (
       <div className={s.showAllButtonWrapper}>
