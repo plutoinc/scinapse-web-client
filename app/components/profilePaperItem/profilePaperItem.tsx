@@ -1,5 +1,5 @@
 import React, { FC, memo } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { denormalize } from 'normalizr';
 import { isEqual } from 'lodash';
 import { PaperSource } from '../../api/paper';
@@ -11,6 +11,8 @@ import Abstract from '../common/paperItem/abstract';
 import BlockVenueAuthor from '../common/paperItem/blockVenueAuthor';
 import UnconfirmedPaperItemButtonGroup from '../common/paperItem/unconfirmedPaperItemButtonGroup';
 import MobileVenueAuthors from '../common/paperItem/mobileVenueAuthors';
+import PaperItemMoreDropdownItem from '../common/paperItem/moreDropdownItem';
+import { markRepresentativePaper, unMarkRepresentativePaper } from '../../actions/profile';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./profilePaperItem.scss');
 
@@ -21,13 +23,48 @@ interface BasePaperItemProps {
   sourceDomain?: PaperSource;
   ownProfileSlug?: string;
   isEditable?: boolean;
+  isRepresentative?: boolean;
 }
 type PaperItemProps = BasePaperItemProps & { paperId: string };
 type ProfilePaperItemWithPaperProps = BasePaperItemProps & { paper: Paper };
 
 export const ProfilePaperItemWithPaper: FC<ProfilePaperItemWithPaperProps> = memo(
-  ({ paper, actionArea, pageType, sourceDomain, ownProfileSlug, isEditable, fetchProfileShowData }) => {
+  ({
+    paper,
+    actionArea,
+    pageType,
+    sourceDomain,
+    ownProfileSlug,
+    isEditable,
+    fetchProfileShowData,
+    isRepresentative,
+  }) => {
+    const dispatch = useDispatch();
     const userDevice = useSelector((state: AppState) => state.layout.userDevice);
+
+    let controlPaperButton = (
+      <PaperItemMoreDropdownItem
+        key={0}
+        content="Mark Representative"
+        onClick={() => {
+          dispatch(markRepresentativePaper(paper.id, ownProfileSlug!));
+        }}
+      />
+    );
+
+    if (isRepresentative) {
+      controlPaperButton = (
+        <PaperItemMoreDropdownItem
+          key={0}
+          content="Unmark Representative"
+          onClick={() => {
+            if (confirm('Are you SURE to unmark this representative publication?')) {
+              dispatch(unMarkRepresentativePaper(paper.id, ownProfileSlug!));
+            }
+          }}
+        />
+      );
+    }
 
     let venueAuthors = (
       <div style={{ marginTop: '12px' }}>
@@ -62,6 +99,7 @@ export const ProfilePaperItemWithPaper: FC<ProfilePaperItemWithPaperProps> = mem
           ownProfileSlug={ownProfileSlug}
           isEditable={isEditable}
           fetchProfileShowData={fetchProfileShowData}
+          dropdownContents={isEditable ? [controlPaperButton] : []}
         />
       </div>
     );

@@ -34,6 +34,7 @@ import { fetchAuthorShowPageData } from './sideEffects';
 import PendingDescriptionDialog from './components/pendingDescriptionDialog';
 import { openImportPaperDialog } from '../../reducers/importPaperDialog';
 import { IMPORT_SOURCE_TAB } from './types';
+import AllRepresentativePaperDialog from './components/allRepresentativePaperDialog';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./connectedAuthor.scss');
@@ -71,6 +72,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
   const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
   const [isOpenModifyProfileDialog, setIsOpenModifyProfileDialog] = useState(false);
   const [isOpenPendingDescriptionDialog, setIsOpenPendingDescriptionDialog] = useState(false);
+  const [isOpenRepresentativePapersDialog, setIsOpenRepresentativePapersDialog] = useState(false);
   const [activeTab, setActiveTab] = useState(AvailableTab.PUBLICATIONS);
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
   const shouldFetch = useSelector(
@@ -155,6 +157,10 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                     paperIds={representativePaperIds}
                     isEditable={profile.isEditable}
                     totalCount={totalRepresentativePaperCount}
+                    fetchProfileShowData={() =>
+                      fetchAuthorShowPageData({ dispatch, match, pathname: location.pathname })
+                    }
+                    onClickOpenDialog={() => setIsOpenRepresentativePapersDialog(true)}
                   />
                   {pendingPapers.length > 0 && profile.isEditable && (
                     <>
@@ -322,6 +328,13 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
       <PendingDescriptionDialog
         open={isOpenPendingDescriptionDialog}
         onClose={() => setIsOpenPendingDescriptionDialog(false)}
+      />
+      <AllRepresentativePaperDialog
+        isOpen={isOpenRepresentativePapersDialog}
+        profileSlug={profileSlug}
+        isEditable={profile.isEditable}
+        fetchProfileShowData={() => fetchAuthorShowPageData({ dispatch, match, pathname: location.pathname })}
+        onCloseDialog={() => setIsOpenRepresentativePapersDialog(false)}
       />
     </div>
   );
