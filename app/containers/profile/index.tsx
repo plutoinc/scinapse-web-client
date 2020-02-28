@@ -178,7 +178,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                         </div>
                       </div>
                       <div className={s.divider} />
-                      <PendingPaperList papers={pendingPapers} isEditable={true} />
+                      <PendingPaperList papers={pendingPapers} isEditable={profile.isEditable && false} />
                     </>
                   )}
 
@@ -187,7 +187,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                       <span className={s.sectionTitle}>Publications</span>
                       <span className={s.countBadge}>{formatNumber(totalPaperCount)}</span>
                       <div className={s.rightBox}>
-                        {profile.isEditable && (
+                        {profile.isEditable && false && (
                           <Button
                             elementType="button"
                             color="gray"
@@ -195,7 +195,10 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                             title="Update or add publication information here by using Google Scholar Profile page, BibTex, or citation string. This is not for uploading the publication itself."
                             onClick={() =>
                               dispatch(
-                                openImportPaperDialog({ activeImportSourceTab: IMPORT_SOURCE_TAB.BIBTEX, profileSlug })
+                                openImportPaperDialog({
+                                  activeImportSourceTab: IMPORT_SOURCE_TAB.BIBTEX,
+                                  profileSlug,
+                                })
                               )
                             }
                           >
@@ -209,7 +212,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                       {currentPage + 1} page of {formatNumber(maxPage)} pages ({formatNumber(totalPaperCount)} results)
                     </div>
                     <div className={s.divider} />
-                    {paperIds.length === 0 && profile.isEditable && (
+                    {paperIds.length === 0 && profile.isEditable && false && (
                       <div className={s.noPapers}>
                         <span className={s.noPaperContent}>You have not yet imported your paper list.</span>
                         <Button
@@ -234,7 +237,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                         pageType="profileShow"
                         actionArea="paperList"
                         ownProfileSlug={profile.slug}
-                        isEditable={profile.isEditable}
+                        isEditable={false}
                         fetchProfileShowData={() =>
                           fetchAuthorShowPageData({ dispatch, match, pathname: location.pathname })
                         }
@@ -266,7 +269,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                         </div>
                       </div>
                       <div className={s.divider} />
-                      <PendingPaperList papers={pendingPapers} isEditable={false} />
+                      <PendingPaperList papers={pendingPapers} isEditable={profile.isEditable} />
                     </>
                   )}
                 </div>
@@ -332,7 +335,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
       <AllRepresentativePaperDialog
         isOpen={isOpenRepresentativePapersDialog}
         profileSlug={profileSlug}
-        isEditable={profile.isEditable}
+        isEditable={false}
         fetchProfileShowData={() => fetchAuthorShowPageData({ dispatch, match, pathname: location.pathname })}
         onCloseDialog={() => setIsOpenRepresentativePapersDialog(false)}
       />

@@ -10,6 +10,7 @@ import { Author } from '../../model/author/author';
 import formatNumber from '../../helpers/formatNumber';
 import { UserDevice } from '../layouts/reducer';
 import RequestProfileFormDialog from '../requestProfileForm';
+import EnvChecker from '../../helpers/envChecker';
 
 const styles = require('./authorShowHeader.scss');
 
@@ -70,21 +71,35 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
             </div>
             <div className={styles.rightContentWrapper}>
               <div className={styles.headerRightBox}>
-                <Button
-                  onClick={() => this.setState(prev => ({ ...prev, isOpenRequestProfileDialog: true }))}
-                  elementType="button"
-                  variant="outlined"
-                  color="gray"
-                  size="large"
-                >
-                  <span>👋 This is me</span>
-                </Button>
-                <div
-                  onClick={() => this.setState(prev => ({ ...prev, isOpenProfileInformationDialog: true }))}
-                  className={styles.profileDescription}
-                >
-                  What is this?
-                </div>
+                {true ? (
+                  <Button
+                    onClick={() => this.handleAuthorClaim(this.props.author.id)}
+                    elementType="button"
+                    variant="outlined"
+                    color="gray"
+                    size="large"
+                  >
+                    <span>SUGGEST CHANGES</span>
+                  </Button>
+                ) : (
+                  <>
+                    <Button
+                      onClick={() => this.setState(prev => ({ ...prev, isOpenRequestProfileDialog: true }))}
+                      elementType="button"
+                      variant="outlined"
+                      color="gray"
+                      size="large"
+                    >
+                      <span>👋 This is me</span>
+                    </Button>
+                    <div
+                      onClick={() => this.setState(prev => ({ ...prev, isOpenProfileInformationDialog: true }))}
+                      className={styles.profileDescription}
+                    >
+                      What is this?
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -151,6 +166,18 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
         )}
       </div>
     );
+  };
+
+  private handleAuthorClaim = (authorId: string) => {
+    const targetId = authorId;
+
+    if (!EnvChecker.isOnServer()) {
+      window.open(
+        // tslint:disable-next-line:max-line-length
+        `https://docs.google.com/forms/d/e/1FAIpQLSd6FqawNtamoqw6NE0Q7BYS1Pn4O0FIbK1VI_47zbRWxDzgXw/viewform?entry.1961255815=${targetId}`,
+        '_blank'
+      );
+    }
   };
 }
 

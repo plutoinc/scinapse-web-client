@@ -70,7 +70,7 @@ const RepresentativePaperListSection: FC<Props> = memo(
             <span className={s.sectionTitle}>Representative Publications</span>
             <span className={s.countBadge}>{totalCount}</span>
             <div className={s.rightBox}>
-              {isEditable && (
+              {isEditable && false && (
                 <Button
                   elementType="button"
                   color="gray"
@@ -97,7 +97,7 @@ const RepresentativePaperListSection: FC<Props> = memo(
           {paperList}
           {openShowAllDialogButton}
           <div className={s.selectedPaperWrapper}>
-            {isEditable && !totalCount && (
+            {isEditable && !totalCount && false && (
               <Button
                 elementType="button"
                 variant="outlined"
