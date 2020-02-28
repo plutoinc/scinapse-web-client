@@ -24,7 +24,6 @@ interface AllRepresentativePaperDialogProps {
 const AllRepresentativePaperDialog: FC<AllRepresentativePaperDialogProps> = ({
   isOpen,
   profileSlug,
-  isEditable,
   fetchProfileShowData,
   onCloseDialog,
 }) => {
@@ -84,7 +83,7 @@ const AllRepresentativePaperDialog: FC<AllRepresentativePaperDialogProps> = ({
           pageType="profileShow"
           actionArea="representativePaperList"
           ownProfileSlug={profileSlug}
-          isEditable={isEditable}
+          isEditable={false}
           fetchProfileShowData={fetchProfileShowData}
           isRepresentative={true}
         />
@@ -92,7 +91,7 @@ const AllRepresentativePaperDialog: FC<AllRepresentativePaperDialogProps> = ({
     }
 
     return <div />;
-  }, [paperIds, profileSlug, isEditable, fetchProfileShowData]);
+  }, [paperIds, profileSlug, fetchProfileShowData]);
 
   return (
     <Dialog open={isOpen} onClose={onCloseDialog} classes={{ paper: s.dialogPaper }} maxWidth="lg">
