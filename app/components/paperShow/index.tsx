@@ -54,11 +54,11 @@ export type PaperShowProps = RouteComponentProps<PaperShowMatchParams> &
 
 interface PaperShowStates
   extends Readonly<{
-      isAboveRef: boolean;
-      isOnRef: boolean;
-      isOnCited: boolean;
-      isOnFullText: boolean;
-    }> {}
+    isAboveRef: boolean;
+    isOnRef: boolean;
+    isOnCited: boolean;
+    isOnFullText: boolean;
+  }> {}
 
 const Title: React.FC<{ title: string }> = React.memo(({ title }) => {
   return <h1 className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(title) }} />;

@@ -1,6 +1,5 @@
 import { Dispatch } from 'redux';
 import { normalize } from 'normalizr';
-import { ThunkAction } from 'redux-thunk';
 import Axios, { CancelToken } from 'axios';
 import { ActionCreators } from './actionTypes';
 import CollectionAPI, { PostCollectionParams } from '../api/collection';
@@ -11,7 +10,6 @@ import PlutoAxios from '../api/pluto';
 import { CommonError } from '../model/error';
 import { getRelatedPapers } from './relatedPapers';
 import { logException } from '../helpers/errorHandler';
-import { AppState } from '../reducers';
 import { AppThunkAction } from '../store/types';
 import { Paper, paperSchema } from '../model/paper';
 import { getIdSafePaper, getSafeCollection } from '../helpers/getIdSafeData';
@@ -179,8 +177,8 @@ interface FetchMobilePaperShowData {
 export const fetchPaperShowDataAtClient = ({
   paperId,
   cancelToken,
-}: FetchMobilePaperShowData): ThunkAction<Promise<void>, AppState, {}, any> => {
-  return async (dispatch: Dispatch<any>) => {
+}: FetchMobilePaperShowData): AppThunkAction<Promise<void>> => {
+  return async dispatch => {
     const promiseArray = [];
 
     promiseArray.push(dispatch(getPaper({ paperId, cancelToken })));

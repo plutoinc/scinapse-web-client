@@ -1,34 +1,30 @@
-import { Dispatch } from 'redux';
 import { LoadDataParams } from '../../routes';
 import { getPaper, getCitedPapers, getReferencePapers, getMyCollections } from '../../actions/paperShow';
 import { PaperShowMatchParams, PaperShowPageQueryParams } from './types';
 import { ActionCreators } from '../../actions/actionTypes';
 import { getRelatedPapers } from '../../actions/relatedPapers';
 import { PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
+import { AppThunkAction } from '../../store/types';
 
-export function fetchCitedPaperData(paperId: string, page = 1, query: string, sort: PAPER_LIST_SORT_TYPES) {
-  return async (dispatch: Dispatch<any>) => {
-    await dispatch(
-      getCitedPapers({
-        paperId,
-        page,
-        query,
-        sort,
-      })
-    );
+export function fetchCitedPaperData(
+  paperId: string,
+  page = 1,
+  query: string,
+  sort: PAPER_LIST_SORT_TYPES
+): AppThunkAction<Promise<void>> {
+  return async dispatch => {
+    await dispatch(getCitedPapers({ paperId, page, query, sort }));
   };
 }
 
-export function fetchRefPaperData(paperId: string, page = 1, query: string, sort: PAPER_LIST_SORT_TYPES) {
-  return async (dispatch: Dispatch<any>) => {
-    await dispatch(
-      getReferencePapers({
-        paperId,
-        page,
-        query,
-        sort,
-      })
-    );
+export function fetchRefPaperData(
+  paperId: string,
+  page = 1,
+  query: string,
+  sort: PAPER_LIST_SORT_TYPES
+): AppThunkAction<Promise<void>> {
+  return async dispatch => {
+    await dispatch(getReferencePapers({ paperId, page, query, sort }));
   };
 }
 
@@ -62,9 +58,7 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
   const { dispatch, match } = params;
   const paperId = match.params.paperId;
 
-  if (!paperId) {
-    return dispatch(ActionCreators.failedToGetPaper({ statusCode: 400 }));
-  }
+  if (!paperId) return dispatch(ActionCreators.failedToGetPaper({ statusCode: 400 }));
 
   const promiseArray = [];
   promiseArray.push(dispatch(getPaper({ paperId })));

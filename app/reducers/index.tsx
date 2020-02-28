@@ -1,4 +1,4 @@
-import * as Redux from 'redux';
+import { combineReducers } from '@reduxjs/toolkit';
 import * as ConfigurationReducer from './configuration';
 import * as currentUserReducer from './currentUser';
 import { CURRENT_USER_INITIAL_STATE } from '../model/currentUser';
@@ -38,8 +38,6 @@ import ProfileEntitiesReducer, { PROFILE_ENTITIES_INITIAL_STATE } from './profil
 import ImportPaperDialogReducer, { IMPORT_PAPER_DIALOG_INITIAL_STATE } from './importPaperDialog';
 import ProfileOnboardingReducer, { PROFILE_ONBOARDING_INITIAL_STATE } from './profileOnboarding';
 
-export type AppState = typeof initialState;
-
 export const initialState = {
   configuration: ConfigurationReducer.CONFIGURATION_INITIAL_STATE,
   dialog: dialogReducer.DIALOG_INITIAL_STATE,
@@ -72,7 +70,7 @@ export const initialState = {
   entities: INITIAL_ENTITY_STATE,
 };
 
-export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
+export const rootReducer = combineReducers({
   configuration: ConfigurationReducer.reducer,
   dialog: dialogReducer.reducer,
   layout: LayoutReducer,
@@ -103,3 +101,5 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   profileEntities: ProfileEntitiesReducer,
   entities: EntityReducer,
 });
+
+export type AppState = typeof initialState;
