@@ -1,4 +1,4 @@
-import React, { FC, memo, useState } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../../../icons';
 import { useThunkDispatch } from '../../../../hooks/useThunkDispatch';
@@ -23,30 +23,30 @@ const RepresentativePaperListSection: FC<Props> = memo(
     useStyles(s);
     const dispatch = useThunkDispatch();
 
-    let paperList;
-
-    if (!paperIds.length) {
-      paperList = (
-        <div className={s.noPaperWrapper}>
-          <div className={s.noPaperDescription}>There is no representative publications.</div>
-        </div>
-      );
-    } else {
-      paperList = paperIds
-        .slice(0, 5)
-        .map(id => (
-          <ProfilePaperItem
-            key={id}
-            paperId={id}
-            pageType="profileShow"
-            actionArea="representativePaperList"
-            ownProfileSlug={profileSlug}
-            isEditable={isEditable}
-            fetchProfileShowData={fetchProfileShowData}
-            isRepresentative={true}
-          />
-        ));
-    }
+    const paperList = useMemo(() => {
+      if (!paperIds.length) {
+        return (
+          <div className={s.noPaperWrapper}>
+            <div className={s.noPaperDescription}>There is no representative publications.</div>
+          </div>
+        );
+      } else {
+        return paperIds
+          .slice(0, 5)
+          .map(id => (
+            <ProfilePaperItem
+              key={id}
+              paperId={id}
+              pageType="profileShow"
+              actionArea="representativePaperList"
+              ownProfileSlug={profileSlug}
+              isEditable={isEditable}
+              fetchProfileShowData={fetchProfileShowData}
+              isRepresentative={true}
+            />
+          ));
+      }
+    }, [paperIds, isEditable, profileSlug, fetchProfileShowData]);
 
     const openShowAllDialogButton = paperIds.length > 5 && (
       <div className={s.showAllButtonWrapper}>

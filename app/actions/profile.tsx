@@ -40,7 +40,7 @@ export function fetchRepresentativePapers(params: FetchProfilePaperListParams): 
     });
     const result: PaginationResponseV2<Paper[]> = res.data;
     const normalizedPapers = normalize(result.data.content, [paperSchema]);
-    dispatch(ActionCreators.addEntity(normalizedPapers.entities));
+    dispatch(ActionCreators.addEntity(normalizedPapers));
     dispatch(
       getRepresentativePapers({
         paperIds: normalizedPapers.result,
