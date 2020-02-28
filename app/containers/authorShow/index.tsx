@@ -34,10 +34,6 @@ export interface AuthorShowMatchParams {
   authorId: string;
 }
 
-export interface HandleAuthorClaim {
-  authorId: string;
-}
-
 export interface AuthorShowProps extends RouteComponentProps<{ authorId: string }> {
   layout: LayoutState;
   author: Author;

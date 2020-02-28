@@ -95,7 +95,18 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
         >
           MLA
         </span>
-
+        <span
+          onClick={() => {
+            handleClickCitationTab(AvailableCitationType.BIBTEX);
+            trackEvent({ category: 'Additional Action', action: 'Click Citation Tab', label: 'BIBTEX' });
+          }}
+          className={classNames({
+            [`${styles.tabItem}`]: true,
+            [`${styles.active}`]: activeTab === AvailableCitationType.BIBTEX,
+          })}
+        >
+          BIBTEX
+        </span>
         <span
           onClick={() => {
             handleClickCitationTab(AvailableCitationType.IEEE);

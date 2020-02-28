@@ -1,0 +1,19 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+
+  .dash {
+    width: 100%;
+    height: 1px;
+    border-top: dashed 2px $gray400;
+    margin-left: 4x;
+    margin-right: 4px;
+  }
+
+  .content {
+    font-size: 14px;
+    text-align: center;
+    color: $gray500;
+    padding: 0 8px;
+  }
+}

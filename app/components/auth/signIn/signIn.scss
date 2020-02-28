@@ -61,6 +61,10 @@
   margin-top: 8px;
 }
 
+.dashSeparatorBox {
+  margin: 12px 0;
+}
+
 @media (max-width: $mobile_width) {
   .authFormWrapper {
     max-width: 100%;

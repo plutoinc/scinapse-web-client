@@ -57,7 +57,7 @@ const PendingPaperItem: React.FC<PendingPaperItemProps> = ({ paper, isEditable, 
           {authorsNode}
         </div>
       </div>
-      {isEditable && (
+      {isEditable && false && (
         <>
           <div className={s.resolveBtnWrapper}>
             <Button

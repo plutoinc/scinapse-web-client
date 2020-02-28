@@ -54,7 +54,7 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
   const headers: { [key: string]: string | undefined } = {};
   for (const key of Object.keys(req.headers)) {
     const newKey = key.toLowerCase();
-    if (newKey) {
+    if (newKey && req.headers[key]) {
       headers[newKey] = req.headers[key] as string;
     }
   }
