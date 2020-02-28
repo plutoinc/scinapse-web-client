@@ -155,8 +155,8 @@ const PDFViewer: React.FC<PDFViewerProps> = memo(
                   }
                 }}
               >
-                <Icon icon="PDF_PAPER" />
-                <span>Show All</span>
+                <Icon icon="DOWNLOAD" />
+                <span>Download</span>
               </Button>
             </>
           )}
