@@ -2,6 +2,8 @@ import Axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import EnvChecker from '../helpers/envChecker';
 import getAPIHost from './getHost';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
+// API Gateway timeout is 30000
+export const TIMEOUT_FOR_SAFE_RENDERING = 29000;
 
 let axiosIns: AxiosInstance | null = null;
 
@@ -22,7 +24,7 @@ export function getAxiosInstance(config?: AxiosRequestConfig) {
       ...config,
       baseURL: getAPIHost(),
       withCredentials: true,
-      timeout: 55000,
+      timeout: TIMEOUT_FOR_SAFE_RENDERING,
       transformResponse: [transformJSONKeysToCamelCase],
     });
   }

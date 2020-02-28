@@ -7,7 +7,7 @@ import AuthAPI from '../../../../../api/auth';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
 import AuthInputBox from '../../../../common/inputBox/authInputBox';
 import { OAUTH_VENDOR, SignInResult } from '../../../../../api/types/auth';
-import ORSeparator from '../../../separator';
+import DashedDividerWithContent from '../../../../common/separator';
 import AuthTabs from '../../../authTabs';
 import validateEmail from '../../../../../helpers/validateEmail';
 import { GLOBAL_DIALOG_TYPE, DialogState } from '../../../../dialog/reducer';
@@ -192,7 +192,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
                 );
               }}
             />
-            <ORSeparator />
+            <DashedDividerWithContent wrapperClassName={s.dashSeparatorBox} content="OR" />
             <AuthButtons
               handleClickFBLogin={handleClickFBLogin}
               handleClickGoogleLogin={props.onSignUpWithSocial}

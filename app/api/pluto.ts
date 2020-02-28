@@ -1,11 +1,8 @@
-import { AxiosRequestConfig, AxiosError, AxiosInstance } from 'axios';
+import { AxiosRequestConfig, AxiosError } from 'axios';
 import getAPIHost from './getHost';
 import EnvChecker from '../helpers/envChecker';
 import { CommonError } from '../model/error';
 import { getAxiosInstance } from './axios';
-
-export type GeneralAPIParams = { axios: AxiosInstance };
-export const TIMEOUT_FOR_SAFE_RENDERING = 55000;
 
 export default class PlutoAxios {
   public static getGlobalError(axiosResponse: AxiosError) {
