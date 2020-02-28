@@ -19,7 +19,6 @@ interface RelatedPapersProps {
   currentUser: CurrentUser;
   isLoadingPapers: boolean;
   relatedPapers: Paper[];
-  shouldShowRelatedPapers?: boolean;
 }
 
 async function openSignInDialog() {
@@ -66,9 +65,9 @@ const RelatedPaperItem: React.FunctionComponent<{ paper: Paper }> = ({ paper }) 
 };
 
 const RelatedPapersInPaperShow: React.FC<RelatedPapersProps> = React.memo(props => {
-  const { relatedPapers, currentUser, isLoadingPapers, shouldShowRelatedPapers } = props;
+  const { relatedPapers, currentUser, isLoadingPapers } = props;
 
-  if (relatedPapers.length === 0 || !shouldShowRelatedPapers) {
+  if (!relatedPapers || relatedPapers.length === 0) {
     return null;
   }
 

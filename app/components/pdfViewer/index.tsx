@@ -1,19 +1,14 @@
 import React, { memo } from 'react';
 import Axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { createSelector } from '@reduxjs/toolkit';
 import { pdfjs, Document, Page } from 'react-pdf';
-import { denormalize } from 'normalizr';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Button } from '@pluto_network/pluto-design-elements';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import Icon from '../../icons';
-import { paperSchema } from '../../model/paper';
 import { ActionCreators } from '../../actions/actionTypes';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../helpers/checkAuthDialog';
 import EnvChecker from '../../helpers/envChecker';
-import RelatedPapers from '../relatedPapers';
-import AfterDownloadContents from './component/afterDownloadContents';
 import { PDFViewerProps } from './types';
 import { AppState } from '../../reducers';
 import ProgressSpinner from './component/progressSpinner';
@@ -42,27 +37,18 @@ function getDirectPDFPath(path: string) {
   return `${DIRECT_PDF_PATH_PREFIX + path}`;
 }
 
-const selectRelatedPapers = createSelector(
-  [(state: AppState) => state.relatedPapersState.paperIds, (state: AppState) => state.entities.papers],
-  (paperIds, paperEntities) => {
-    return denormalize(paperIds, [paperSchema], { papers: paperEntities });
-  }
-);
+const PDFViewer: React.FC<PDFViewerProps> = memo(
+  props => {
+    useStyles(styles);
 
-const PDFViewer: React.FC<PDFViewerProps> = memo(props => {
-  useStyles(styles);
+    const { paper } = props;
+    const dispatch = useDispatch();
+    const PDFViewerState = useSelector<AppState, PDFViewerState>(state => state.PDFViewerState);
+    const isLoggedIn = useSelector<AppState, boolean>(state => state.currentUser.isLoggedIn);
+    const [pdfFile, setPdfFile] = React.useState<{ data: ArrayBuffer } | null>(null);
+    const wrapperNode = React.useRef<HTMLDivElement | null>(null);
 
-  const { paper, afterDownloadPDF } = props;
-  const dispatch = useDispatch();
-  const PDFViewerState = useSelector<AppState, PDFViewerState>(state => state.PDFViewerState);
-  const isLoggedIn = useSelector<AppState, boolean>(state => state.currentUser.isLoggedIn);
-  const isLoadingRelatedPaperList = useSelector<AppState, boolean>(state => state.relatedPapersState.isLoading);
-  const relatedPaperList = useSelector(selectRelatedPapers);
-  const [pdfFile, setPdfFile] = React.useState<{ data: ArrayBuffer } | null>(null);
-  const wrapperNode = React.useRef<HTMLDivElement | null>(null);
-
-  React.useEffect(
-    () => {
+    React.useEffect(() => {
       let shouldUpdate = true;
 
       getBestPdf(paper)
@@ -88,78 +74,58 @@ const PDFViewer: React.FC<PDFViewerProps> = memo(props => {
         shouldUpdate = false;
         dispatch(ActionCreators.cancelToFetchPDF());
       };
-    },
-    [dispatch, paper]
-  );
+    }, [dispatch, paper]);
 
-  if (PDFViewerState.isLoading) return <ProgressSpinner />; // loading state
-  if (!pdfFile) return null; // empty state
+    if (PDFViewerState.isLoading) return <ProgressSpinner />; // loading state
+    if (!pdfFile) return null; // empty state
 
-  if (PDFViewerState.hasClickedDownloadBtn) {
     return (
       <div ref={wrapperNode} className={styles.contentWrapper}>
-        <AfterDownloadContents
-          onClickReloadBtn={() => {
-            dispatch(ActionCreators.clickPDFReloadBtn());
-          }}
-          relatedPaperList={relatedPaperList}
-          isLoggedIn={isLoggedIn}
-          isRelatedPaperLoading={isLoadingRelatedPaperList}
-          title={paper.title}
-        />
-      </div>
-    );
-  }
-
-  return (
-    <div ref={wrapperNode} className={styles.contentWrapper}>
-      <Document
-        file={pdfFile}
-        loading={
-          <div className={styles.loadingContainerWrapper}>
-            <div className={styles.loadingContainer}>
-              <CircularProgress size={100} thickness={2} color="inherit" />
+        <Document
+          file={pdfFile}
+          loading={
+            <div className={styles.loadingContainerWrapper}>
+              <div className={styles.loadingContainer}>
+                <CircularProgress size={100} thickness={2} color="inherit" />
+              </div>
             </div>
+          }
+          onLoadSuccess={(pdf: any) => {
+            dispatch(ActionCreators.succeedToFetchPDF({ pageCount: pdf.numPages }));
+            ActionTicketManager.trackTicket({
+              pageType: 'paperShow',
+              actionType: 'view',
+              actionArea: 'pdfViewer',
+              actionTag: 'viewPDF',
+              actionLabel: String(paper.id),
+            });
+          }}
+          onLoadError={err => {
+            console.error(err);
+            dispatch(ActionCreators.failToFetchPDF());
+          }}
+        >
+          <div
+            style={{
+              height: !isLoggedIn ? '500px' : 'auto',
+            }}
+            className={styles.pageLayer}
+          >
+            <Page width={996} className={styles.page} pageNumber={1} />
           </div>
-        }
-        onLoadSuccess={(pdf: any) => {
-          dispatch(ActionCreators.succeedToFetchPDF({ pageCount: pdf.numPages }));
-          ActionTicketManager.trackTicket({
-            pageType: 'paperShow',
-            actionType: 'view',
-            actionArea: 'pdfViewer',
-            actionTag: 'viewPDF',
-            actionLabel: String(paper.id),
-          });
-        }}
-        onLoadError={err => {
-          console.error(err);
-          dispatch(ActionCreators.failToFetchPDF());
-        }}
-      >
+        </Document>
         <div
           style={{
-            height: !isLoggedIn ? '500px' : 'auto',
+            position: 'relative',
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '40px',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
-          className={styles.pageLayer}
         >
-          <Page width={996} className={styles.page} pageNumber={1} />
-        </div>
-      </Document>
-      <div
-        style={{
-          position: 'relative',
-          display: 'flex',
-          justifyContent: 'center',
-          marginTop: '40px',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        {!isLoggedIn && <BlurBlocker paperId={paper.id} />}
-        {isLoggedIn &&
-          !PDFViewerState.hasFailed &&
-          paper.bestPdf && (
+          {!isLoggedIn && <BlurBlocker paperId={paper.id} />}
+          {isLoggedIn && !PDFViewerState.hasFailed && paper.bestPdf && (
             <>
               <Button
                 elementType="anchor"
@@ -186,19 +152,19 @@ const PDFViewer: React.FC<PDFViewerProps> = memo(props => {
                     dispatch(ActionCreators.clickPDFDownloadBtn());
                     trackClickButton('downloadPdf', paper.id);
                     window.open(paper.bestPdf!.url, '_blank');
-                    afterDownloadPDF();
                   }
                 }}
               >
                 <Icon icon="PDF_PAPER" />
                 <span>Show All</span>
               </Button>
-              <RelatedPapers shouldShowRelatedPapers={!paper.bestPdf || !paper.bestPdf.hasBest} />
             </>
           )}
+        </div>
       </div>
-    </div>
-  );
-}, (prev, next) => prev.paper.id === next.paper.id);
+    );
+  },
+  (prev, next) => prev.paper.id === next.paper.id
+);
 
 export default PDFViewer;
