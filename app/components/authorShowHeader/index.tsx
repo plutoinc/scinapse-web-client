@@ -69,24 +69,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
             </div>
             <div className={styles.rightContentWrapper}>
               <div className={styles.headerRightBox}>
-              <>
-                    <Button
-                      onClick={() => this.setState(prev => ({ ...prev, isOpenRequestProfileDialog: true }))}
-                      elementType="button"
-                      variant="outlined"
-                      color="gray"
-                      size="large"
-                    >
-                      <span>👋 This is me</span>
-                    </Button>
-                    <div
-                      onClick={() => this.setState(prev => ({ ...prev, isOpenProfileInformationDialog: true }))}
-                      className={styles.profileDescription}
-                    >
-                      What is this?
-                    </div>
-                  </>
-                {/* {true ? (
+                {true ? (
                   <Button
                     onClick={() => this.handleAuthorClaim(this.props.author.id)}
                     elementType="button"
@@ -114,7 +97,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
                       What is this?
                     </div>
                   </>
-                )} */}
+                )}
               </div>
             </div>
           </div>
