@@ -38,7 +38,7 @@ const ContentBlocker: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
   return (
     <div className={styles.contentBlockedContainer}>
       <div className={styles.contentBlockedContext}>
-        {`78% of Scinapse members use related papers.\nAfter signing in, all features are free.`}
+        {`78% of Scinapse members use related papers.\nAfter signing in, all features are FREE.`}
       </div>
       <Button
         elementType="button"

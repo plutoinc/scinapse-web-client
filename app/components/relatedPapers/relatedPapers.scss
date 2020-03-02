@@ -1,13 +1,11 @@
 .relatedPaperContainer {
-  width: 100%;
-  padding: 24px 0;
+  width: 792px;
+  padding: 48px 0;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   position: relative;
-  background-color: $gray50;
 }
 
 .relatedPaperWrapper {
@@ -21,7 +19,7 @@
     top: 0px;
     height: 100%;
     width: 100%;
-    background: linear-gradient(to bottom, rgba(250, 250, 251, 0), rgba(247, 247, 248, 0.49) 19%, $gray50);
+    background: linear-gradient(to bottom, rgba(250, 250, 251, 0), rgba(255, 255, 255, 0.4) 19%, $gray30);
   }
 }
 
@@ -34,15 +32,17 @@
 }
 
 .paperItemWrapper {
-  width: 588px;
+  width: 100%;
   background-color: white;
   margin-bottom: 8px;
 }
 
 .contentBlockedContainer {
+  position: absolute;
+  bottom: 16px;
   padding: 40px 0;
   margin-bottom: 10px;
-  width: 692px;
+  width: 792px;
   height: 188px;
   border-radius: 4px;
   box-shadow: 0 3px 11px 0 rgba(0, 0, 0, 0.1);
