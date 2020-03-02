@@ -169,10 +169,12 @@
 
 .rightContentWrapper {
   margin-top: 8px;
+  padding-left: 22px;
 }
 
 .profileDescription {
   color: $gray800;
+  text-align: center;
   margin-top: 8px;
   text-decoration: underline;
   cursor: pointer;
@@ -253,6 +255,7 @@
   }
 
   .rightContentWrapper {
+    padding: 0;
     margin: 12px 0;
 
     button {

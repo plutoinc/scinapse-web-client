@@ -85,9 +85,11 @@ const RequestForm: FC<RequestFormProps> = ({ initialValues, onSubmit, isLoading,
   return (
     <>
       <div className={s.description}>
-        Claiming the ownership does <b>NOT</b> mean that you can immediately manage this paper.<br />
-        Currently, we <b>ONLY</b> allow this feature with affiliations that have agreements with us.<br />
-        you request to us, we'll send you the status of agreements with your affiliation or the managing profile link.
+        Claiming the ownership does <b>NOT</b> mean that you can immediately manage this page.
+        <br />
+        Currently, we <b>ONLY</b> allow this feature with affiliations that have agreements with us.
+        <br />
+        You request to us, we'll send you the status of agreements with your affiliation or the managing profile link.
       </div>
       <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validateForm}>
         {({ errors, touched }) => {
@@ -136,14 +138,19 @@ const RequestForm: FC<RequestFormProps> = ({ initialValues, onSubmit, isLoading,
                 </div>
               </div>
               <div className={s.buttonWrapper}>
-                <Button elementType="button" variant="outlined" color="gray" onClick={onClose} isLoading={isLoading}>
+                <Button
+                  elementType="button"
+                  type="button"
+                  variant="outlined"
+                  color="gray"
+                  onClick={onClose}
+                  isLoading={isLoading}
+                >
                   <span>Cancel</span>
                 </Button>
                 <Button
                   type="submit"
                   elementType="button"
-                  variant="contained"
-                  color="blue"
                   isLoading={isLoading}
                   fullWidth={userDevice === UserDevice.MOBILE}
                 >
@@ -220,7 +227,7 @@ const RequestProfileFormDialog: FC<DialogProps & { authorId: string }> = ({ auth
   }
 
   return (
-    <Dialog {...dialogProps}>
+    <Dialog fullScreen={userDevice === UserDevice.MOBILE} {...dialogProps}>
       {title}
       <DialogContent>{contents}</DialogContent>
     </Dialog>
