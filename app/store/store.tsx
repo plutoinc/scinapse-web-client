@@ -1,5 +1,6 @@
 import { AxiosInstance } from 'axios';
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware, Middleware, AnyAction } from '@reduxjs/toolkit';
+import { ThunkMiddleware } from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import ReduxNotifier from '../middlewares/notifier';
 import setUserToTracker from '../middlewares/trackUser';
@@ -28,13 +29,14 @@ function initializeStore() {
   const preloadedState = getBrowserInitialState();
 
   const defaultMiddleware = getDefaultMiddleware<AppState, { thunk: { extraArgument: { axios: AxiosInstance } } }>({
-    thunk: {
-      extraArgument: {
-        axios: getAxiosInstance(),
-      },
-    },
+    thunk: { extraArgument: { axios: getAxiosInstance() } },
   });
-  const middleware = [ReduxNotifier, setUserToTracker, loggerMiddleware, ...defaultMiddleware] as const;
+  const middleware: Array<Middleware<{}, AppState> | ThunkMiddleware<AppState, AnyAction, { axios: AxiosInstance }>> = [
+    ...defaultMiddleware,
+    ReduxNotifier,
+    setUserToTracker,
+    loggerMiddleware,
+  ];
 
   return configureStore({
     reducer: rootReducer,
