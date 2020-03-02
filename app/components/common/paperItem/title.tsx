@@ -15,10 +15,11 @@ export interface TitleProps extends RouteComponentProps<any> {
   pageType: Scinapse.ActionTicket.PageType;
   actionArea?: Scinapse.ActionTicket.ActionArea;
   showNewLabel?: boolean;
+  isOpenBlank?: boolean;
 }
 
 const Title: React.FC<TitleProps> = props => {
-  const { paper, pageType, actionArea, showNewLabel } = props;
+  const { paper, pageType, actionArea, showNewLabel, isOpenBlank } = props;
   const dispatch = useDispatch();
 
   const handleClickTitle = (fromNewTab?: boolean) => {
@@ -66,6 +67,7 @@ const Title: React.FC<TitleProps> = props => {
         }}
         dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(trimmedTitle) }}
         className={styles.title}
+        target={!!isOpenBlank ? "_blank" : "_self"}
       />
       <a
         href={`/papers/${paper.id}`}

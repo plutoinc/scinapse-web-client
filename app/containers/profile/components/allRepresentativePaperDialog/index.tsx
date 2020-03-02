@@ -86,6 +86,7 @@ const AllRepresentativePaperDialog: FC<AllRepresentativePaperDialogProps> = ({
           isEditable={false}
           fetchProfileShowData={fetchProfileShowData}
           isRepresentative={true}
+          isOpenBlank={true}
         />
       ));
     }

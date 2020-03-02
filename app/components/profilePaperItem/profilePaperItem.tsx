@@ -24,6 +24,7 @@ interface BasePaperItemProps {
   ownProfileSlug?: string;
   isEditable?: boolean;
   isRepresentative?: boolean;
+  isOpenBlank?: boolean;
 }
 type PaperItemProps = BasePaperItemProps & { paperId: string };
 type ProfilePaperItemWithPaperProps = BasePaperItemProps & { paper: Paper };
@@ -38,6 +39,7 @@ export const ProfilePaperItemWithPaper: FC<ProfilePaperItemWithPaperProps> = mem
     isEditable,
     fetchProfileShowData,
     isRepresentative,
+    isOpenBlank,
   }) => {
     const dispatch = useDispatch();
     const userDevice = useSelector((state: AppState) => state.layout.userDevice);
@@ -76,13 +78,14 @@ export const ProfilePaperItemWithPaper: FC<ProfilePaperItemWithPaperProps> = mem
         />
       </div>
     );
+
     if (userDevice === UserDevice.MOBILE) {
       venueAuthors = <MobileVenueAuthors paper={paper} pageType="collectionShow" actionArea="paperList" />;
     }
 
     return (
       <div className={s.paperItemWrapper}>
-        <Title paper={paper} actionArea={actionArea} pageType={pageType} showNewLabel={true} />
+        <Title paper={paper} actionArea={actionArea} pageType={pageType} showNewLabel={true} isOpenBlank={isOpenBlank} />
         {venueAuthors}
         <Abstract
           paperId={paper.id}
