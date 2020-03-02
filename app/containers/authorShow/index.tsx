@@ -28,6 +28,7 @@ import ActionTicketManager from '../../helpers/actionTicketManager';
 import { UserDevice } from '../../components/layouts/reducer';
 import { fetchAuthorShowPageData } from './sideEffect';
 import restoreScroll from '../../helpers/scrollRestoration';
+import { CurrentUser } from '../../model/currentUser';
 const styles = require('./authorShow.scss');
 
 export interface AuthorShowMatchParams {
@@ -41,6 +42,7 @@ export interface AuthorShowProps extends RouteComponentProps<{ authorId: string 
   paperIds: string[];
   authorShow: AuthorShowGlobalState;
   configuration: Configuration;
+  currentUser: CurrentUser;
   dispatch: Dispatch<any>;
 }
 
@@ -86,7 +88,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps, AuthorShowLocalSta
     }
   }
   public render() {
-    const { author, authorShow, layout } = this.props;
+    const { author, authorShow, layout, currentUser } = this.props;
     const { currentQuery } = this.state;
 
     if (authorShow.pageErrorStatusCode) {
@@ -109,7 +111,12 @@ class AuthorShow extends React.PureComponent<AuthorShowProps, AuthorShowLocalSta
       <div className={styles.authorShowPageWrapper}>
         {this.getPageHelmet()}
         <div className={styles.rootWrapper}>
-          <AuthorShowHeader userDevice={layout.userDevice} author={author} navigationContent={null} />
+          <AuthorShowHeader
+            currentUser={currentUser}
+            userDevice={layout.userDevice}
+            author={author}
+            navigationContent={null}
+          />
           <div className={styles.contentBox}>
             <div className={styles.container}>
               <div className={styles.contentFlexWrapper}>
@@ -390,6 +397,7 @@ function mapStateToProps(state: AppState) {
     coAuthors: denormalize(state.authorShow.coAuthorIds, [authorSchema], state.entities),
     paperIds: state.authorShow.paperIds,
     configuration: state.configuration,
+    currentUser: state.currentUser,
   };
 }
 

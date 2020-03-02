@@ -179,6 +179,11 @@
   @extend %menuButton;
 }
 
+.profileInProgressButton {
+  @extend %menuButton;
+  cursor: not-allowed !important;
+}
+
 .collectionButton {
   @extend %menuButton;
 }

@@ -9,6 +9,7 @@ import { Button } from '@pluto_network/pluto-design-elements';
 import * as addDays from 'date-fns/add_days';
 import * as isAfter from 'date-fns/is_after';
 import { parse } from 'qs';
+import Store from 'store';
 import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
 import { getMemoizedLayout } from '../../selectors/getLayout';
 import TopToastBar from '../topToastBar';
@@ -34,6 +35,7 @@ import { UserDevice } from './reducer';
 import { fetchKeywordAlertList } from '../../containers/keywordSettings/actions';
 import { changeSearchQuery } from '../../reducers/searchQuery';
 import MobileSearchBox from '../common/mobileSearchBox';
+import { ProfileRequestKey } from '../../constants/profileRequest';
 
 const styles = require('./improvedHeader.scss');
 
@@ -342,7 +344,14 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
         <MenuItem classes={{ root: styles.userInfoMenuItem }} disabled disableGutters>
           <UserInformation user={currentUserState} />
         </MenuItem>
-        {currentUserState.profileSlug ? (
+        {Store.get(ProfileRequestKey) && !currentUserState.profileSlug && (
+          <MenuItem classes={{ root: styles.profileInProgressButton }}>
+            <a className={styles.linkOnButton} onClick={this.handleRequestCloseUserDropdown}>
+              Profile - In Progress -
+            </a>
+          </MenuItem>
+        )}
+        {currentUserState.profileSlug && (
           <MenuItem classes={{ root: styles.profileButton }}>
             <Link
               className={styles.linkOnButton}
@@ -352,7 +361,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
               Profile
             </Link>
           </MenuItem>
-        ) : null}
+        )}
         <MenuItem classes={{ root: styles.collectionButton }}>
           <Link
             className={styles.linkOnButton}

@@ -3,12 +3,15 @@ import * as classNames from 'classnames';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { Button } from '@pluto_network/pluto-design-elements';
+import Store from 'store';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { Author } from '../../model/author/author';
 import formatNumber from '../../helpers/formatNumber';
 import { UserDevice } from '../layouts/reducer';
 import RequestProfileFormDialog from '../requestProfileForm';
-import EnvChecker from '../../helpers/envChecker';
+import Icon from '../../icons';
+import { ProfileRequestKey } from '../../constants/profileRequest';
+import { CurrentUser } from '../../model/currentUser';
 
 const styles = require('./authorShowHeader.scss');
 
@@ -16,6 +19,7 @@ interface AuthorShowHeaderProps {
   author: Author;
   userDevice: UserDevice;
   navigationContent: React.ReactNode;
+  currentUser: CurrentUser;
 }
 
 interface AuthorShowHeaderState {
@@ -23,6 +27,8 @@ interface AuthorShowHeaderState {
   expanded: boolean;
   isOpenRequestProfileDialog: boolean;
   isOpenProfileInformationDialog: boolean;
+  hadRequestedBefore: boolean;
+  hideProfileRequestButton: boolean;
 }
 
 @withStyles<typeof AuthorShowHeader>(styles)
@@ -35,12 +41,40 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
       expanded: false,
       isOpenRequestProfileDialog: false,
       isOpenProfileInformationDialog: false,
+      hadRequestedBefore: false,
+      hideProfileRequestButton: false,
     };
+  }
+
+  public componentDidMount() {
+    const { author, currentUser } = this.props;
+    const hadRequestedBefore = Store.get(ProfileRequestKey) === author.id;
+    const hideProfileRequestButton = !!currentUser.profileSlug || (Store.get(ProfileRequestKey) && !hadRequestedBefore);
+    this.setState(prev => ({ ...prev, hadRequestedBefore, hideProfileRequestButton }));
+  }
+
+  public componentDidUpdate(prevProps: AuthorShowHeaderProps, prevState: AuthorShowHeaderState) {
+    if (
+      prevState.isOpenRequestProfileDialog !== this.state.isOpenRequestProfileDialog ||
+      prevProps.author.id !== this.props.author.id ||
+      prevProps.currentUser !== this.props.currentUser
+    ) {
+      const hadRequestedBefore = Store.get(ProfileRequestKey) === this.props.author.id;
+      const hideProfileRequestButton =
+        !!this.props.currentUser.profileSlug || (Store.get(ProfileRequestKey) && !hadRequestedBefore);
+      this.setState(prev => ({ ...prev, hadRequestedBefore, hideProfileRequestButton }));
+    }
   }
 
   public render() {
     const { author, navigationContent, userDevice } = this.props;
-    const { isOpenRequestProfileDialog, isOpenProfileInformationDialog } = this.state;
+    const {
+      isOpenRequestProfileDialog,
+      isOpenProfileInformationDialog,
+      hadRequestedBefore,
+      hideProfileRequestButton,
+    } = this.state;
+
     return (
       <div className={styles.headerBox}>
         <div className={styles.container}>
@@ -69,26 +103,15 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
             </div>
             <div className={styles.rightContentWrapper}>
               <div className={styles.headerRightBox}>
-                {true ? (
-                  <Button
-                    onClick={() => this.handleAuthorClaim(this.props.author.id)}
-                    elementType="button"
-                    variant="outlined"
-                    color="gray"
-                    size="large"
-                  >
-                    <span>SUGGEST CHANGES</span>
-                  </Button>
-                ) : (
+                {!hideProfileRequestButton && (
                   <>
                     <Button
                       onClick={() => this.setState(prev => ({ ...prev, isOpenRequestProfileDialog: true }))}
                       elementType="button"
-                      variant="outlined"
-                      color="gray"
                       size="large"
                     >
-                      <span>👋 This is me</span>
+                      {hadRequestedBefore ? <Icon icon="ELLIPSIS" /> : <Icon icon="ERROR" />}
+                      <span>{hadRequestedBefore ? 'In Progress' : 'This is me'}</span>
                     </Button>
                     <div
                       onClick={() => this.setState(prev => ({ ...prev, isOpenProfileInformationDialog: true }))}
@@ -165,18 +188,6 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
         )}
       </div>
     );
-  };
-
-  private handleAuthorClaim = (authorId: string) => {
-    const targetId = authorId;
-
-    if (!EnvChecker.isOnServer()) {
-      window.open(
-        // tslint:disable-next-line:max-line-length
-        `https://docs.google.com/forms/d/e/1FAIpQLSd6FqawNtamoqw6NE0Q7BYS1Pn4O0FIbK1VI_47zbRWxDzgXw/viewform?entry.1961255815=${targetId}`,
-        '_blank'
-      );
-    }
   };
 }
 
