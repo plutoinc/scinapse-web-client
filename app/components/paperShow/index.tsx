@@ -186,7 +186,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             </NoSsr>
           </div>
           <RelatedPapers />
-          <div className={styles.sectionDivider} />
           <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)} />
           <div className={styles.referenceWrapper}>
             <article className={styles.paperShow}>
@@ -201,7 +200,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               </div>
             </article>
           </div>
-          <div className={styles.sectionDivider} />
           <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)} />
           <div className={styles.citedWrapper}>
             <article className={styles.paperShow}>
