@@ -19,7 +19,6 @@ interface RelatedPapersProps {
   currentUser: CurrentUser;
   isLoadingPapers: boolean;
   relatedPapers: Paper[];
-  shouldShowRelatedPapers?: boolean;
 }
 
 async function openSignInDialog() {
@@ -39,7 +38,7 @@ const ContentBlocker: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
   return (
     <div className={styles.contentBlockedContainer}>
       <div className={styles.contentBlockedContext}>
-        {`78% of Scinapse members use related papers.\nAfter signing in, all features are free.`}
+        {`78% of Scinapse members use related papers.\nAfter signing in, all features are FREE.`}
       </div>
       <Button
         elementType="button"
@@ -66,9 +65,9 @@ const RelatedPaperItem: React.FunctionComponent<{ paper: Paper }> = ({ paper }) 
 };
 
 const RelatedPapersInPaperShow: React.FC<RelatedPapersProps> = React.memo(props => {
-  const { relatedPapers, currentUser, isLoadingPapers, shouldShowRelatedPapers } = props;
+  const { relatedPapers, currentUser, isLoadingPapers } = props;
 
-  if (relatedPapers.length === 0 || !shouldShowRelatedPapers) {
+  if (!relatedPapers || relatedPapers.length === 0) {
     return null;
   }
 

@@ -54,11 +54,11 @@ export type PaperShowProps = RouteComponentProps<PaperShowMatchParams> &
 
 interface PaperShowStates
   extends Readonly<{
-      isAboveRef: boolean;
-      isOnRef: boolean;
-      isOnCited: boolean;
-      isOnFullText: boolean;
-    }> {}
+    isAboveRef: boolean;
+    isOnRef: boolean;
+    isOnCited: boolean;
+    isOnFullText: boolean;
+  }> {}
 
 const Title: React.FC<{ title: string }> = React.memo(({ title }) => {
   return <h1 className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(title) }} />;
@@ -166,7 +166,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             </div>
           </article>
           <div>
-            <RelatedPapers shouldShowRelatedPapers={!PDFViewerState.isLoading && PDFViewerState.hasFailed} />
             <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
               <PaperShowRefCitedTab
                 paper={paper}
@@ -183,9 +182,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               />
             </div>
             <NoSsr>
-              <PDFViewer paper={paper} afterDownloadPDF={this.scrollToSection('fullText')} />
+              <PDFViewer paper={paper} />
             </NoSsr>
           </div>
+          <RelatedPapers />
           <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)} />
           <div className={styles.referenceWrapper}>
             <article className={styles.paperShow}>
@@ -200,7 +200,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               </div>
             </article>
           </div>
-          <div className={styles.sectionDivider} />
           <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)} />
           <div className={styles.citedWrapper}>
             <article className={styles.paperShow}>
