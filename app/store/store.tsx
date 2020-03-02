@@ -34,7 +34,7 @@ function initializeStore() {
       },
     },
   });
-  const middleware = [ReduxNotifier, setUserToTracker, loggerMiddleware, ...defaultMiddleware] as const;
+  const middleware = [ReduxNotifier, setUserToTracker, ...defaultMiddleware, loggerMiddleware] as const;
 
   return configureStore({
     reducer: rootReducer,
