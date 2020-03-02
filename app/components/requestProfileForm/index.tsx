@@ -6,6 +6,7 @@ import { Button } from '@pluto_network/pluto-design-elements';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import classNames from 'classnames';
+import Store from 'store';
 import ProfileAPI from '../../api/profile';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
@@ -14,6 +15,7 @@ import Icon from '../../icons';
 import { UserDevice } from '../layouts/reducer';
 import { AppState } from '../../reducers';
 import FormikInput from '../common/formikInput';
+import { ProfileRequestKey } from '../../constants/profileRequest';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./requestProfileForm.scss');
 
@@ -183,29 +185,28 @@ const RequestProfileFormDialog: FC<DialogProps & { authorId: string }> = ({ auth
     email: '',
   };
 
-  const handleSubmit = (values: FormValues) => {
+  const handleSubmit = async (values: FormValues) => {
     const { affiliation, email, firstName, lastName } = values;
     const aId = (affiliation as Affiliation).id || (affiliation as SuggestAffiliation).affiliationId;
     const aName = (affiliation as Affiliation).name || (affiliation as SuggestAffiliation).keyword;
 
     setIsLoading(true);
-    ProfileAPI.requestProfile({
-      affiliation_id: aId || null,
-      affiliation_name: aName || null,
-      author_id: authorId,
-      email,
-      first_name: firstName,
-      last_name: lastName,
-    })
-      .then(() => {
-        console.log('success');
-        setIsLoading(false);
-        setIsEmailSent(true);
-      })
-      .catch(err => {
-        console.error(err);
-        setIsLoading(false);
+    try {
+      await ProfileAPI.requestProfile({
+        affiliation_id: aId || null,
+        affiliation_name: aName || null,
+        author_id: authorId,
+        email,
+        first_name: firstName,
+        last_name: lastName,
       });
+      setIsLoading(false);
+      setIsEmailSent(true);
+      Store.set(ProfileRequestKey, authorId);
+    } catch (err) {
+      console.error(err);
+      setIsLoading(false);
+    }
   };
 
   let title = null;
