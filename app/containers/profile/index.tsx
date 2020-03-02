@@ -321,8 +321,8 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
           firstName: profile.firstName,
           lastName: profile.lastName,
           currentAffiliation: { id: profile.affiliationId, name: profile.affiliationName } || '',
-          bio: profile.bio || null,
-          website: profile.webPage || null,
+          bio: profile.bio || '',
+          website: profile.webPage || '',
           email: profile.email,
           hideEmail: !profile.isEmailPublic,
         }}
