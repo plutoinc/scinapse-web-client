@@ -1,0 +1,300 @@
+.authorShowPageWrapper {
+  margin-top: $navbar_height;
+}
+
+.leftContentWrapper {
+  display: inline-block;
+  vertical-align: top;
+  width: 691px;
+  padding-top: 40px;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: $container-width;
+  display: flex;
+  justify-content: center;
+}
+
+.rootWrapper {
+  min-height: calc(100vh - #{$navbar_height} - 60px);
+}
+
+.tabNavigationWrapper {
+  height: 48px;
+}
+
+.tabNavigationItem {
+  display: inline-block;
+  vertical-align: top;
+  width: 120px;
+  height: 48px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: $gray800;
+  padding: 14px 0;
+  margin-right: 16px;
+  cursor: pointer;
+}
+
+.currentTabNavigationItem {
+  @extend .tabNavigationItem;
+  box-shadow: inset 0 -3px 0 0 $main_blue0;
+  color: $main_blue1;
+}
+
+.sectionHeader {
+  position: relative;
+
+  .rightBox {
+    position: absolute;
+    bottom: 8px;
+    right: 0;
+  }
+}
+
+.sectionTitle {
+  display: inline-block;
+  vertical-align: top;
+  height: 24px;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.2;
+  color: $black0;
+  margin-right: 8px;
+}
+
+.countBadge {
+  display: inline-block;
+  vertical-align: top;
+  height: 26px;
+  border-radius: 13px;
+  background-color: #e5f9f2;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 26px;
+  padding: 0 12px;
+  color: $green0;
+}
+
+.divider {
+  font-size: 16px;
+  line-height: 1.33;
+  color: $gray800;
+  margin-top: 12px;
+  margin-bottom: 16px;
+  border-bottom: solid 1px $gray400;
+}
+
+.allPublicationHeader {
+  position: relative;
+  margin-top: 0;
+
+  .rightBox {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+.noPapers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 200px;
+
+  .noPaperContent {
+    color: $black0;
+    font-size: 18px;
+    margin-top: 16px;
+    margin-bottom: 32px;
+  }
+}
+
+.selectedPublicationSection + .allPublicationHeader {
+  margin-top: 100px;
+}
+
+.rightContentWrapper {
+  display: inline-block;
+  vertical-align: top;
+  max-width: 306px;
+  width: 100%;
+  padding: 40px 0 0 22px;
+}
+
+.coAuthorHeader {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.2;
+  color: $black0;
+  margin-bottom: 16px;
+}
+
+.fosListWrapper {
+  margin-top: 32px;
+}
+
+.searchSortWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 16px;
+
+  .searchContainer {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .rightBox {
+    width: 170px;
+    margin-top: 8px;
+    margin-left: 12px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
+}
+
+.toggleSelectPublicationListButton {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  border-radius: 5px;
+  border: solid 1px $gray400;
+  font-size: 14px;
+  color: $gray800;
+  padding: 0 8px 0 4px;
+  cursor: pointer;
+
+  .penIcon {
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-right: 4px;
+    color: $gray600;
+
+    svg {
+      display: inline-block;
+      vertical-align: top;
+      width: 13px;
+      height: 13px;
+    }
+  }
+}
+
+.noPaperWrapper {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .ufoIcon {
+    display: inline-block;
+    vertical-align: top;
+    width: 64px;
+    height: 59px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .noPaperDescription {
+    font-size: 18px;
+    color: $gray800;
+    margin-top: 24px;
+  }
+}
+
+.paperCountMetadata {
+  height: 20px;
+  font-size: 14px;
+  line-height: 1.43;
+  color: $gray800;
+  margin-top: 16px;
+}
+
+.findPaperBtnWrapper {
+  height: 20px;
+  font-size: 15px;
+  text-align: right;
+  color: $gray600;
+  margin-top: 8px;
+}
+
+.findPaperBtn {
+  display: inline-block;
+  vertical-align: top;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.noPaperFindPaperBtnWrapper {
+  display: none;
+}
+
+.selectedPaperWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.searchInputWrapper {
+  width: 100%;
+  max-width: 500px;
+  margin-right: 16px;
+}
+
+.simplePaperItem + .simplePaperItem {
+  margin-top: 12px;
+}
+
+.pendingLink {
+  color: $main_blue0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.showAllButtonWrapper {
+  margin-top: 24px;
+}
+
+@media (max-width: $tablet_width) {
+  .leftContentWrapper {
+    padding: 24px 12px;
+  }
+
+  .rightContentWrapper {
+    padding: 24px 12px;
+  }
+}
+
+// Mobile (0~768)
+@media (max-width: $mobile_width) {
+  .container {
+    display: block;
+    width: $mobile-container-width;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .leftContentWrapper {
+    width: $mobile-container-width;
+    padding: 24px 12px;
+  }
+
+  .rightBox,
+  .rightContentWrapper,
+  .findPaperBtnWrapper,
+  .searchSortWrapper,
+  .noPaperWrapper,
+  .selectedPaperWrapper {
+    display: none;
+  }
+}

@@ -27,7 +27,13 @@ import {
   TERMS_OF_SERVICE_PATH,
   PRIVACY_POLICY_PATH,
   USER_SETTINGS_PATH,
+  PROFILE_LANDING_PATH,
+  PROFILE_LANDING_ENQUIRY_PATH,
+  PROFILE_EMAIL_VERIFY_PATH,
+  PROFILE_REGISTER_PATH,
   KEYWORD_SETTINGS_PATH,
+  PROFILE_SHOW_PATH,
+  PROFILE_ONBOARDING_PATH,
 } from './constants/routes';
 import { AppState } from './reducers';
 import ArticleSpinner from './components/common/spinner/articleSpinner';
@@ -84,10 +90,9 @@ export const routesMap: ServerRoutesMap[] = [
       fallback: <LoadingSpinner />,
     }),
     loadData: async (params: LoadDataParams<PaperShowMatchParams>) => {
-      const {
-        fetchPaperShowData,
-        fetchRefCitedPaperDataAtServer: fetchRefCitedPaperData,
-      } = await import('./containers/paperShow/sideEffect');
+      const { fetchPaperShowData, fetchRefCitedPaperDataAtServer: fetchRefCitedPaperData } = await import(
+        './containers/paperShow/sideEffect'
+      );
 
       await Promise.all([fetchPaperShowData(params), fetchRefCitedPaperData(params)]);
     },
@@ -152,6 +157,50 @@ export const routesMap: ServerRoutesMap[] = [
     }),
   },
   {
+    path: PROFILE_LANDING_ENQUIRY_PATH,
+    component: loadable(() => import('./components/profileLanding/enquiry'), {
+      fallback: <div>loading...</div>,
+    }),
+    exact: true,
+  },
+  {
+    path: PROFILE_LANDING_PATH,
+    component: loadable(() => import('./components/profileLanding'), {
+      fallback: <div>loading...</div>,
+    }),
+    exact: true,
+  },
+  {
+    path: PROFILE_REGISTER_PATH,
+    component: loadable(() => import('./components/profileRegister'), {
+      fallback: <div>loading...</div>,
+    }),
+    exact: true,
+  },
+  {
+    path: PROFILE_EMAIL_VERIFY_PATH,
+    component: loadable(() => import('./components/profileVerifyEmail'), {
+      fallback: <div>loading...</div>,
+    }),
+    exact: true,
+  },
+  {
+    path: PROFILE_ONBOARDING_PATH,
+    component: loadable(() => import('./containers/profileOnboarding'), {
+      fallback: <LoadingSpinner />,
+    }),
+  },
+  {
+    path: PROFILE_SHOW_PATH,
+    component: loadable(() => import('./containers/profile'), {
+      fallback: <div>loading ...</div>,
+    }),
+    loadData: async (params: LoadDataParams<{ profileSlug: string }>) => {
+      const { fetchAuthorShowPageData } = await import('./containers/profile/sideEffects');
+      await Promise.all([fetchAuthorShowPageData(params)]);
+    },
+  },
+  {
     path: DESIGN_PATH,
     component: loadable(() => import('./containers/admin'), {
       fallback: <LoadingSpinner />,
@@ -174,13 +223,6 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: '/ui-demo',
     component: loadable(() => import('./components/uiDemo/uiDemo')),
-    exact: true,
-  },
-  {
-    path: '/paper-item-demo',
-    component: loadable(() => import('./components/common/paperItem/demo'), {
-      fallback: <LoadingSpinner />,
-    }),
     exact: true,
   },
   { component: ErrorPage },
@@ -284,7 +326,9 @@ const RootRoutes: React.FC<RootRoutesProps> = props => {
       <ImprovedHeader />
       <div className={classNames({ [styles.mainContentsAtOpenMobileSearchBox]: isOpenMobileSearchBox })}>
         <Switch location={location}>
-          {routesMap.map(route => <Route {...route} key={route.path || 'errorPage'} />)}
+          {routesMap.map(route => (
+            <Route {...route} key={route.path || 'errorPage'} />
+          ))}
         </Switch>
       </div>
       <DeviceDetector />

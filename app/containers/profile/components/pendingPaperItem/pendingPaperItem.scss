@@ -1,0 +1,41 @@
+.pendingPaperItemWrapper {
+  display: flex;
+  width: 100%;
+  padding: 16px 8px;
+  align-items: center;
+
+  & + & {
+    border-top: 1px solid $gray300;
+  }
+}
+
+.pendingPaperContentsWrapper {
+  display: inline-block;
+  width: 100%;
+  margin-right: 8px;
+
+  .pendingPaperItemTitle {
+    font-size: 16px;
+    line-height: 1.4;
+    color: $black_light_0;
+    font-weight: 500;
+  }
+
+  .pendingPaperItemVenueAndAuthor {
+    font-size: 13px;
+    line-height: 1.54;
+    color: $gray700;
+  }
+}
+
+.resolveBtnWrapper,
+.removeBtnWrapper {
+  margin-left: 8px;
+}
+
+@media (max-width: $mobile_width) {
+  .resolveBtnWrapper,
+  .removeBtnWrapper {
+    display: none;
+  }
+}

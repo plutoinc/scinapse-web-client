@@ -59,7 +59,7 @@ export interface AuthorSearchResult extends PaginationResponseV2<Author[]> {
 }
 
 class SearchAPI extends PlutoAxios {
-  public async search({ query, sort, filter, page = 0, cancelToken, detectYear, }: PaperSearchParams) {
+  public async search({ query, sort, filter, page = 0, cancelToken, detectYear }: PaperSearchParams) {
     const res = await this.get('/search', {
       params: {
         q: query,
@@ -70,30 +70,32 @@ class SearchAPI extends PlutoAxios {
       },
       cancelToken,
     });
-    
+
     const searchResult: SearchResult = res.data;
     const searchResultData = searchResult.data;
     const safeSearchResultData = {
-      ...searchResultData, 
+      ...searchResultData,
       content: searchResultData.content.map(getIdSafePaper),
       aggregation: {
         ...searchResultData.aggregation,
-        fosList: searchResultData.aggregation?.fosList.map(fos => ({ ...fos, id: String(fos.id)})) || [],
-        journals: searchResultData.aggregation?.journals.map(journal => ({...journal, id: String(journal.id)}))
+        fosList: searchResultData.aggregation?.fosList.map(fos => ({ ...fos, id: String(fos.id) })) || [],
+        journals: searchResultData.aggregation?.journals.map(journal => ({ ...journal, id: String(journal.id) })),
       },
       matchedAuthor: {
         ...searchResultData.matchedAuthor,
-        content: searchResultData.matchedAuthor ? searchResultData.matchedAuthor.content.map(author => ({
-          ...author,
-          id: String(author.id),
-          lastKnownAffiliation: {
-            ...author.lastKnownAffiliation,
-            id: String(author.lastKnownAffiliation?.id)
-          },
-          fosList: author.fosList.map(fos => ({ ...fos, id: String(fos.id)}))
-        })) : []
-      }
-    }
+        content: searchResultData.matchedAuthor
+          ? searchResultData.matchedAuthor.content.map(author => ({
+              ...author,
+              id: String(author.id),
+              lastKnownAffiliation: {
+                ...author.lastKnownAffiliation,
+                id: String(author.lastKnownAffiliation?.id),
+              },
+              fosList: author.fosList.map(fos => ({ ...fos, id: String(fos.id) })),
+            }))
+          : [],
+      },
+    };
 
     return {
       ...searchResult,
@@ -116,14 +118,13 @@ class SearchAPI extends PlutoAxios {
       },
       cancelToken,
     });
-    
+
     const searchResult: AuthorSearchResult = res.data;
     const searchResultData = res.data.data;
     const safeSearchResultData = {
       ...searchResultData,
-      content: searchResultData.content.map(getSafeAuthor)
-    }
-    
+      content: searchResultData.content.map(getSafeAuthor),
+    };
 
     return {
       ...searchResult,

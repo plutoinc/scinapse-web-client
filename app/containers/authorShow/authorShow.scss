@@ -1,0 +1,253 @@
+.authorShowPageWrapper {
+  margin-top: $navbar_height;
+}
+
+.loadingContainer {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  margin-top: -24px;
+}
+
+.loadingSpinner {
+  text-align: center;
+  display: flex;
+  align-items: center;
+
+  div {
+    background-color: $gray400 !important;
+  }
+}
+
+.container {
+  margin: 0 auto;
+  max-width: $small-container-width;
+}
+
+.rootWrapper {
+  min-height: calc(100vh - #{$navbar_height} - 60px);
+}
+
+.noPaperWrapper {
+  margin: 80px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .ufoIcon {
+    display: inline-block;
+    vertical-align: top;
+    width: 64px;
+    height: 59px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .noPaperDescription {
+    font-size: 18px;
+    color: $gray800;
+    margin-top: 24px;
+  }
+}
+
+.reloadIcon {
+  display: inline-flex;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.reloadBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+  height: 40px;
+  padding: 4px 16px 4px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.43;
+  background-color: $main_blue1;
+  cursor: pointer;
+  color: white;
+
+  &:hover {
+    background-color: $main_blue_light0;
+    transition: $button-hover-transition;
+  }
+}
+
+.contentLeftBox {
+  display: flex;
+  vertical-align: top;
+  flex-direction: row;
+  width: 100%;
+  max-width: 691px;
+  padding: 40px 0;
+}
+
+.paperListBox {
+  width: 100%;
+}
+
+.contentRightBox {
+  flex: 1;
+  display: inline-block;
+  vertical-align: top;
+  max-width: 306px;
+  width: 100%;
+  padding: 40px 0 0 22px;
+}
+
+.contentFlexWrapper {
+  display: flex;
+}
+
+.paperListHeader {
+  position: relative;
+  margin-bottom: 16px;
+  align-items: center;
+  display: flex;
+}
+
+.paperSearchContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.authorClaimButton {
+  display: block;
+  width: 184px;
+  height: 40px;
+  border-radius: 4px;
+  border: solid 1px $gray400;
+  color: $gray800;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 8px 16px;
+  position: relative;
+  text-align: center;
+  line-height: 22px;
+
+  &:hover {
+    cursor: pointer;
+    color: $black1;
+    transition: ease-in-out 0.2s;
+    border: solid 1px $gray500;
+  }
+}
+
+.paperListLeft {
+  display: flex;
+  align-items: flex-end;
+}
+
+.paperListTitle,
+.coAuthorListTitle {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.2;
+  color: $black0;
+  margin-right: 8px;
+}
+
+.paperListTitleNumber {
+  font-size: 20px;
+  font-weight: bold;
+  color: $gray600;
+}
+
+.coAuthorTitleBox {
+  margin-bottom: 16px;
+}
+
+.searchInputWrapper {
+  width: 100%;
+  max-width: 500px;
+  margin-right: 16px;
+}
+
+@media (max-width: $small-container-width) {
+  .contentLeftBox {
+    padding: 24px 12px;
+  }
+
+  .contentRightBox {
+    display: none;
+  }
+}
+
+@media (max-width: $small-container-left-container-width) {
+  .headerFlexWrapper {
+    padding: 32px 16px;
+    min-height: 200px;
+  }
+
+  .headerLeftBox {
+    flex-direction: column;
+  }
+
+  .metadataBox {
+    margin: 32px 0px;
+  }
+}
+
+.speechBubble {
+  margin-top: -70px;
+  margin-bottom: 16px;
+}
+
+.speechBubble > div {
+  width: 157px;
+  height: 50px;
+  text-align: center;
+  padding: 11px;
+  margin-left: 81%;
+  overflow: unset;
+  font-size: 12px;
+  line-height: 1.33;
+  text-align: center;
+  border-radius: 3px;
+  color: #ffffff;
+  background-color: rgba(30, 42, 53, 0.75);
+}
+
+.speechBubble:after {
+  content: '';
+  position: absolute;
+  left: 94%;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-bottom-color: rgba(30, 42, 53, 0.75);
+  border-top: 0;
+  margin-left: -13px;
+  margin-top: -60px;
+}
+
+// Mobile (0~768)
+@media (max-width: $mobile_width) {
+  .container {
+    display: block;
+    width: $mobile-container-width;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .contentLeftBox {
+    padding: 24px 12px;
+  }
+
+  .speechBubble {
+    display: none;
+  }
+}

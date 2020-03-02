@@ -1,7 +1,4 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
-import { denormalize } from 'normalizr';
-import { isEqual } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { REF_CITED_CONTAINER_TYPE } from '../constants';
 import ArticleSpinner from '../../common/spinner/articleSpinner';
@@ -10,8 +7,6 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import { PaperShowPageQueryParams } from '../../../containers/paperShow/types';
 import { getStringifiedUpdatedQueryParams } from './searchContainer';
 import FullPaperItem from '../../common/paperItem/fullPaperItem';
-import { AppState } from '../../../reducers';
-import { paperSchema, Paper } from '../../../model/paper';
 const styles = require('./referencePapers.scss');
 
 interface RefCitedPaperListProps {
@@ -51,9 +46,12 @@ const RefCitedPaperList: React.FC<RefCitedPaperListProps> = props => {
   const refQuery = queryParamsObject['ref-query'] || '';
   const citedQuery = queryParamsObject['cited-query'] || '';
 
-  React.useEffect(() => {
-    setSearchInput(type === 'reference' ? refQuery : citedQuery);
-  }, [refQuery, citedQuery, type]);
+  React.useEffect(
+    () => {
+      setSearchInput(type === 'reference' ? refQuery : citedQuery);
+    },
+    [refQuery, citedQuery, type]
+  );
 
   const handleResetQuery = () => {
     let pageQueryParams;
@@ -83,25 +81,16 @@ const RefCitedPaperList: React.FC<RefCitedPaperListProps> = props => {
 
   const referenceItems = paperIds.map(paperId => {
     return (
-      <RefCitedPaperItem key={paperId} paperId={paperId} actionArea={type === 'reference' ? 'refList' : 'citedList'} />
+      <FullPaperItem
+        key={paperId}
+        pageType="paperShow"
+        paperId={paperId}
+        actionArea={type === 'reference' ? 'refList' : 'citedList'}
+      />
     );
   });
 
   return <div className={styles.searchItems}>{referenceItems}</div>;
 };
-
-const RefCitedPaperItem: React.FC<{
-  paperId: string;
-  actionArea: Scinapse.ActionTicket.ActionArea;
-}> = React.memo(({ paperId, actionArea }) => {
-  const paper: Paper | null = useSelector(
-    (state: AppState) => denormalize(paperId, paperSchema, state.entities),
-    isEqual
-  );
-
-  if (!paper) return null;
-
-  return <FullPaperItem pageType="paperShow" actionArea={actionArea} paper={paper} />;
-});
 
 export default withStyles<typeof RefCitedPaperList>(styles)(RefCitedPaperList);

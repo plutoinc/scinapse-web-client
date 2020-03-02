@@ -1,0 +1,202 @@
+.abstract {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: $gray800;
+  word-break: break-word;
+  overflow-wrap: break-word;
+
+  .searchQuery {
+    font-weight: 900;
+    color: $black1;
+  }
+}
+
+.moreOrLess {
+  color: $navy0;
+  font-weight: 500;
+  margin-left: 4px;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  color: $gray700;
+}
+
+.journalIcon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  color: $gray600;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.publishedDate {
+  color: $gray800;
+  font-weight: 500;
+}
+
+.ifLabel {
+  .ifIconWrapper {
+    margin-right: 4px;
+    svg {
+      width: 14px;
+      height: 14px;
+      color: $main_blue0;
+      vertical-align: top;
+    }
+  }
+
+  .ifLabelContentWrapper {
+    vertical-align: top;
+  }
+}
+
+.journalContent {
+  max-width: 565px;
+  width: 100%;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.middleDot {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 4px;
+}
+
+.ifLabel {
+  display: inline-block;
+  vertical-align: bottom;
+  font-size: 13px;
+  text-align: center;
+  font-weight: 500;
+  color: $main_blue0;
+  padding-left: 8px;
+  padding-right: 4px;
+}
+
+.authorListWrapper {
+  position: relative;
+  margin-bottom: 12px;
+  display: flex;
+  color: $gray700;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 25px;
+    bottom: 2px;
+    border-left: 2px solid $gray200;
+  }
+}
+
+.authorIcon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  color: $gray600;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.listWrapper {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.marker {
+  display: inline-block;
+  width: 22px;
+  height: 16px;
+  font-size: 10px;
+  font-weight: 500;
+  font-style: italic;
+  margin-right: 4px;
+}
+
+.markerNum {
+  font-size: 13px;
+}
+
+.authorContentWrapper {
+  font-size: 13px;
+  line-height: 1.54;
+}
+
+.hIndex {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 500;
+  color: $gray800;
+  margin-left: 8px;
+}
+
+.title {
+  vertical-align: top;
+  font-size: 20px;
+  line-height: 1.4;
+  color: $black_light_0;
+  font-weight: 500;
+
+  b {
+    font-weight: 900;
+    vertical-align: top;
+  }
+}
+
+.paperItemWrapper {
+  border-radius: 4px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  border: solid 1px $gray200;
+  background-color: white;
+  padding: 16px;
+
+  & + & {
+    margin-top: 16px;
+  }
+}
+
+// Mobile
+@media (max-width: $mobile_width) {
+  .paperItemWrapper {
+    width: 100%;
+    border: solid 1px #eaedf4;
+
+    & + & {
+      margin-top: 12px;
+    }
+  }
+  .title {
+    font-size: 16px;
+    line-height: 1;
+    font-weight: 500;
+  }
+
+  .abstract {
+    margin-top: 12px;
+    font-size: 14px;
+    color: $black0;
+  }
+}

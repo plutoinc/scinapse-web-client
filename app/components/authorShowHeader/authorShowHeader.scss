@@ -1,13 +1,18 @@
 .container {
   margin: 0 auto;
   max-width: $small-container-width;
+  display: flex;
+  flex-direction: column;
 }
 
 .headerBox {
   background-color: $gray30;
-  padding-top: 38px;
+  padding-top: 32px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
-  margin-bottom: 40px;
+}
+
+.contentWrapper {
+  display: flex;
 }
 
 .leftContentWrapper {
@@ -21,17 +26,8 @@
 }
 
 .nameHeaderBox {
-  position: relative;
-  display: inline-block;
-  vertical-align: top;
   width: 100%;
   flex: 1;
-
-  .rightBox {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
 }
 
 .usernameWrapper {
@@ -56,7 +52,6 @@
   font-size: 16px;
   line-height: 1.5;
   color: $gray800;
-  margin-bottom: 12px;
 }
 
 .metricWrapper {
@@ -86,7 +81,8 @@
 }
 
 .metricInformation {
-  margin-bottom: 24px;
+  margin-top: 16px;
+  margin-bottom: 32px;
 }
 
 .bioSection {
@@ -152,20 +148,81 @@
   font-size: 12px;
 }
 
+.fosList {
+  line-height: 1.5;
+}
+
+.fosItem {
+  font-size: 13px;
+  color: $gray600;
+
+  &::before {
+    content: ' · ';
+  }
+
+  &:first-of-type {
+    &::before {
+      content: '';
+    }
+  }
+}
+
+.rightContentWrapper {
+  margin-top: 8px;
+  padding-left: 22px;
+}
+
+.profileDescription {
+  color: $gray800;
+  text-align: center;
+  margin-top: 8px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.profileInformationDialog {
+  padding: 0;
+}
+
+.profileInformationContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    max-width: 100%;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  .profileInformationTitle {
+    font-size: 24px;
+    font-weight: 700;
+    color: $black1;
+    letter-spacing: 1px;
+    line-height: 1.75;
+    padding: 16px 0;
+  }
+}
+
+.profileInformationContentText {
+  padding: 0 36px 24px 36px;
+}
+
 @media (max-width: $tablet_width) {
-  .headerBox {
-    padding-left: 12px;
+  .container {
+    padding: 0 12px;
   }
 
   .mobileMetricInformation {
-    display: inline-block;
+    display: inline-flex;
+    justify-content: space-between;
     margin-top: 24px;
     margin-bottom: 16px;
+    min-width: 296px;
 
     .metricWrapper {
-      width: 100px;
+      max-width: 100px;
       display: inline-grid;
-      margin-right: 12px;
     }
   }
 }
@@ -176,7 +233,6 @@
     width: $mobile-container-width;
     margin-left: 0;
     margin-right: 0;
-    padding: 0 10px;
   }
 
   .headerBox {
@@ -192,7 +248,7 @@
   }
 
   .profileInformationSection {
-    margin-bottom: 40px;
+    margin-bottom: 12px;
   }
 
   .bioSection {
@@ -208,7 +264,16 @@
     margin-left: 0 !important;
   }
 
-  .rightBox {
-    display: none;
+  .contentWrapper {
+    flex-direction: column;
+  }
+
+  .rightContentWrapper {
+    padding: 0;
+    margin: 12px 0;
+
+    button {
+      width: 100%;
+    }
   }
 }

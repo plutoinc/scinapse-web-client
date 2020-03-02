@@ -21,8 +21,10 @@ export function trackActionToClickAuthorEntity(authorId: string) {
   });
 }
 
-const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
+const AuthorSearchItem: React.FC<AuthorSearchItemProps> = props => {
   const author = props.authorEntity;
+  const profile = author.profile;
+  const href = profile ? `/profiles/${profile.slug}` : `/authors/${author.id}`;
 
   const profileImage = author.profileImageUrl ? (
     <span
@@ -40,28 +42,18 @@ const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
   });
 
   return (
-    <Link
-      onClick={async e => {
-        e.preventDefault();
-
-        trackActionToClickAuthorEntity(author.id);
-
-        props.history.push(`/authors/${author.id}`);
-      }}
-      to={`authors/${author.id}`}
-      className={styles.itemWrapper}
-    >
+    <Link onClick={() => trackActionToClickAuthorEntity(author.id)} to={href} className={styles.itemWrapper}>
       {profileImage}
       <span className={styles.nameAffiliationBox}>
         <div className={styles.name}>
           {author.name}{' '}
-          {author.isLayered ? (
-            <MuiTooltip classes={{ tooltip: styles.verificationTooltip }} title="Verification Author" placement="right">
+          {author.profile && (
+            <MuiTooltip classes={{ tooltip: styles.verificationTooltip }} title="Verified Author" placement="right">
               <div className={styles.contactIconWrapper}>
                 <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
               </div>
             </MuiTooltip>
-          ) : null}
+          )}
         </div>
         <div className={styles.affiliation}>{author.lastKnownAffiliation && author.lastKnownAffiliation.name}</div>
         <div className={styles.fosList}>{fosContent}</div>

@@ -1,0 +1,49 @@
+.onboardingFooterWrapper {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-top: 1px solid $gray400;
+}
+
+.countSection {
+  .totalCount {
+    font-size: 20px;
+    color: $black1;
+    font-weight: 500;
+    margin-bottom: 4px;
+
+    .highlightNumber {
+      margin-left: 8px;
+      color: $main_blue1;
+    }
+  }
+
+  .eachCount {
+    font-size: 14px;
+    color: $gray800;
+
+    .highlightNumber {
+      margin-left: 2px;
+      color: $main_blue0;
+    }
+  }
+}
+
+@media (max-width: $mobile_width) {
+  .onboardingFooterWrapper {
+    padding: 16px 4px;
+  }
+
+  .countSection {
+    .totalCount {
+      font-size: 16px;
+    }
+
+    .eachCount {
+      font-size: 13px;
+    }
+  }
+}

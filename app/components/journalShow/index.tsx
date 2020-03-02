@@ -14,7 +14,6 @@ import { withStyles } from '../../helpers/withStylesHelper';
 import { CurrentUser } from '../../model/currentUser';
 import { Configuration } from '../../reducers/configuration';
 import { fetchJournalShowPageData, JournalShowQueryParams } from './sideEffect';
-import { paperSchema, Paper } from '../../model/paper';
 import { journalSchema, Journal } from '../../model/journal';
 import { JournalShowState as JournalShowGlobalState } from './reducer';
 import Icon from '../../icons';
@@ -38,7 +37,7 @@ function mapStateToProps(state: AppState) {
     configuration: state.configuration,
     journalShow: state.journalShow,
     journal: denormalize(state.journalShow.journalId, journalSchema, state.entities),
-    papers: denormalize(state.journalShow.paperIds, [paperSchema], state.entities),
+    paperIds: state.journalShow.paperIds,
   };
 }
 
@@ -50,7 +49,7 @@ export interface JournalShowProps
       configuration: Configuration;
       journalShow: JournalShowGlobalState;
       journal: Journal | undefined;
-      papers: Paper[] | undefined;
+      paperIds: string[] | undefined;
       dispatch: Dispatch<any>;
     }> {}
 
@@ -365,7 +364,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps, Journal
   };
 
   private getPaperList = () => {
-    const { journalShow, papers } = this.props;
+    const { journalShow, paperIds } = this.props;
 
     if (journalShow.isLoadingPapers) {
       return (
@@ -375,9 +374,9 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps, Journal
       );
     }
 
-    if (papers && papers.length > 0) {
-      return papers.map(paper => {
-        return <FullPaperItem key={paper.id} paper={paper} pageType="journalShow" actionArea="paperList" />;
+    if (paperIds && paperIds.length > 0) {
+      return paperIds.map(id => {
+        return <FullPaperItem key={id} paperId={id} pageType="journalShow" actionArea="paperList" />;
       });
     }
 

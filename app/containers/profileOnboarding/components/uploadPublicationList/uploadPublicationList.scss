@@ -1,0 +1,75 @@
+.uploadPublicationListWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-align: center;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1.75;
+  color: $black0;
+  padding: 24px 0 48px 0;
+}
+
+.subContext {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: $black1;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.uploadButtonsGroup {
+  padding: 24px;
+  border: 1px solid $gray400;
+  border-radius: 4px;
+}
+
+.mainContainer {
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 48px 0;
+}
+
+.guideContext {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: $gray800;
+  margin-top: 8px;
+}
+
+.guideIcon {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  margin-right: 4px;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-width: $mobile_width) {
+  .title {
+    font-size: 24px;
+  }
+
+  .subContext {
+    font-size: 16px;
+  }
+
+  .mainContainer {
+    padding: 24px 24px 60px 24px;
+  }
+
+  .guideContext {
+    font-size: 13px;
+  }
+}

@@ -1,0 +1,23 @@
+.inputWrapper {
+  display: flex;
+}
+
+.removeUrlBtn {
+  margin-left: 8px;
+}
+
+.errorMessage {
+  font-size: 14px;
+  padding: 0 10px;
+  color: $red0;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.authorNameText {
+  font-size: 14px;
+  padding: 0 10px;
+  color: $gray600;
+  line-height: 1.5;
+  margin-top: 4px;
+}

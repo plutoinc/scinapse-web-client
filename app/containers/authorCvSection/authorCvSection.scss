@@ -2,6 +2,34 @@
   display: inline-block;
   vertical-align: top;
   width: 691px;
+  position: relative;
+  padding-top: 40px;
+}
+
+.loadingContainer {
+  position: absolute;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+
+  .loadingSpinner {
+    div {
+      background-color: $main_blue0;
+    }
+  }
+
+  .loadingContent {
+    margin-top: 27.5px;
+    font-size: 15px;
+    line-height: 2.4;
+    color: $black0;
+  }
+}
+
+.isLoadingPage {
+  opacity: 0.4;
 }
 
 .sectionHeader {
@@ -174,7 +202,7 @@
 
   .leftContentWrapper {
     width: $mobile-container-width;
-    padding: 10px;
+    padding: 24px 12px;
   }
 
   .rightContentWrapper,

@@ -61,7 +61,7 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
 
   const axios = getAxiosInstance({
     headers: {
-      cookie: headers.cookie,
+      cookie: headers.cookie || '',
       'user-agent': headers['user-agent'] || '',
       'x-forwarded-for': headers['x-forwarded-for'] || '',
       referer: headers.referer || '',

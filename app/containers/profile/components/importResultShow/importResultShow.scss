@@ -1,0 +1,62 @@
+.header {
+  font-weight: 500;
+  font-size: 18px;
+  text-align: center;
+  letter-spacing: 1px;
+  color: $black_light_0;
+}
+
+.successIcon {
+  display: flex;
+  width: 48px;
+  height: 48px;
+
+  svg {
+    color: $green0;
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.pendingIcon {
+  display: flex;
+  width: 48px;
+  height: 48px;
+
+  svg {
+    color: $red1;
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.resultTitle {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  color: $black_light_0;
+  margin: 8px 0;
+}
+
+.resultCount {
+  font-size: 28px;
+  color: $gray800;
+}
+
+.importResultSection {
+  display: flex;
+  flex: 1;
+  padding: 16px 0;
+
+  .successResultSection,
+  .pendingResultSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .successResultSection + .pendingResultSection {
+    border-left: 1px solid $gray400;
+  }
+}

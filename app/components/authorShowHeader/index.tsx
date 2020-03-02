@@ -1,28 +1,34 @@
 import * as React from 'react';
-import Truncate from 'react-truncate';
-import MuiTooltip from '@material-ui/core/Tooltip';
 import * as classNames from 'classnames';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import { Button } from '@pluto_network/pluto-design-elements';
+import Store from 'store';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { Author } from '../../model/author/author';
-import Icon from '../../icons';
 import formatNumber from '../../helpers/formatNumber';
-import UploadableProfileImage from './uploadableProfileImage';
-import { CurrentUser } from '../../model/currentUser';
 import { UserDevice } from '../layouts/reducer';
+import RequestProfileFormDialog from '../requestProfileForm';
+import Icon from '../../icons';
+import { ProfileRequestKey } from '../../constants/profileRequest';
+import { CurrentUser } from '../../model/currentUser';
+
 const styles = require('./authorShowHeader.scss');
 
 interface AuthorShowHeaderProps {
   author: Author;
-  currentUser: CurrentUser;
   userDevice: UserDevice;
-  rightBoxContent: React.ReactNode;
   navigationContent: React.ReactNode;
-  guideBubbleSpeech?: React.ReactNode;
+  currentUser: CurrentUser;
 }
 
 interface AuthorShowHeaderState {
   isTruncated: boolean;
   expanded: boolean;
+  isOpenRequestProfileDialog: boolean;
+  isOpenProfileInformationDialog: boolean;
+  hadRequestedBefore: boolean;
+  hideProfileRequestButton: boolean;
 }
 
 @withStyles<typeof AuthorShowHeader>(styles)
@@ -33,46 +39,119 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
     this.state = {
       isTruncated: false,
       expanded: false,
+      isOpenRequestProfileDialog: false,
+      isOpenProfileInformationDialog: false,
+      hadRequestedBefore: false,
+      hideProfileRequestButton: false,
     };
   }
 
+  public componentDidMount() {
+    const { author, currentUser } = this.props;
+    const hadRequestedBefore = Store.get(ProfileRequestKey) === author.id;
+    const hideProfileRequestButton = !!currentUser.profileSlug || (Store.get(ProfileRequestKey) && !hadRequestedBefore);
+    this.setState(prev => ({ ...prev, hadRequestedBefore, hideProfileRequestButton }));
+  }
+
+  public componentDidUpdate(prevProps: AuthorShowHeaderProps, prevState: AuthorShowHeaderState) {
+    if (
+      prevState.isOpenRequestProfileDialog !== this.state.isOpenRequestProfileDialog ||
+      prevProps.author.id !== this.props.author.id ||
+      prevProps.currentUser !== this.props.currentUser
+    ) {
+      const hadRequestedBefore = Store.get(ProfileRequestKey) === this.props.author.id;
+      const hideProfileRequestButton =
+        !!this.props.currentUser.profileSlug || (Store.get(ProfileRequestKey) && !hadRequestedBefore);
+      this.setState(prev => ({ ...prev, hadRequestedBefore, hideProfileRequestButton }));
+    }
+  }
+
   public render() {
-    const { author, rightBoxContent, navigationContent, guideBubbleSpeech, userDevice } = this.props;
+    const { author, navigationContent, userDevice } = this.props;
+    const {
+      isOpenRequestProfileDialog,
+      isOpenProfileInformationDialog,
+      hadRequestedBefore,
+      hideProfileRequestButton,
+    } = this.state;
 
     return (
       <div className={styles.headerBox}>
         <div className={styles.container}>
-          <div className={styles.leftContentWrapper}>
-            <div className={styles.nameBox}>
-              {author.isLayered && <UploadableProfileImage />}
-              <span className={styles.nameHeaderBox}>
-                <div className={styles.usernameWrapper}>
-                  <span className={styles.username}>{author.name}</span>{' '}
-                  {author.isLayered ? (
-                    <MuiTooltip
-                      classes={{ tooltip: styles.verificationTooltip }}
-                      title="Verification Author"
-                      placement="right"
-                    >
-                      <div className={styles.contactIconWrapper}>
-                        <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
-                      </div>
-                    </MuiTooltip>
-                  ) : null}
-                </div>
-                <div className={styles.affiliation}>
-                  {author.lastKnownAffiliation ? author.lastKnownAffiliation.name || '' : ''}
-                </div>
-                {userDevice === UserDevice.DESKTOP && this.getMetricInformation()}
-                <div className={styles.rightBox}>{rightBoxContent}</div>
-                {guideBubbleSpeech}
-              </span>
+          <div className={styles.contentWrapper}>
+            <div className={styles.leftContentWrapper}>
+              <div className={styles.nameBox}>
+                <span className={styles.nameHeaderBox}>
+                  <div className={styles.usernameWrapper}>
+                    <span className={styles.username}>{author.name}</span>{' '}
+                  </div>
+                  <div className={styles.affiliation}>
+                    {author.lastKnownAffiliation ? author.lastKnownAffiliation.name || '' : ''}
+                  </div>
+                  <div className={styles.fosList}>
+                    {author.fosList &&
+                      author.fosList.map(fos => (
+                        <span className={styles.fosItem} key={fos.id}>
+                          {fos.name}
+                        </span>
+                      ))}
+                  </div>
+                  {userDevice === UserDevice.DESKTOP && this.getMetricInformation()}
+                </span>
+              </div>
+              {userDevice !== UserDevice.DESKTOP && this.getMetricInformation()}
             </div>
-            {userDevice !== UserDevice.DESKTOP && this.getMetricInformation()}
-            {this.getProfileInformation()}
-            {navigationContent}
+            <div className={styles.rightContentWrapper}>
+              <div className={styles.headerRightBox}>
+                {!hideProfileRequestButton && (
+                  <>
+                    <Button
+                      onClick={() => this.setState(prev => ({ ...prev, isOpenRequestProfileDialog: true }))}
+                      elementType="button"
+                      size="large"
+                    >
+                      {hadRequestedBefore ? <Icon icon="ELLIPSIS" /> : <Icon icon="ERROR" />}
+                      <span>{hadRequestedBefore ? 'In Progress' : 'This is me'}</span>
+                    </Button>
+                    <div
+                      onClick={() => this.setState(prev => ({ ...prev, isOpenProfileInformationDialog: true }))}
+                      className={styles.profileDescription}
+                    >
+                      What is this?
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
+          {navigationContent}
         </div>
+        <RequestProfileFormDialog
+          onClose={() => this.setState(prev => ({ ...prev, isOpenRequestProfileDialog: false }))}
+          open={isOpenRequestProfileDialog}
+          authorId={author.id}
+        />
+        <Dialog
+          onClose={() => this.setState(prev => ({ ...prev, isOpenProfileInformationDialog: false }))}
+          open={isOpenProfileInformationDialog}
+          classes={{ paper: styles.profileInformationDialog }}
+        >
+          <div className={styles.profileInformationContent}>
+            <img
+              src="//assets.scinapse.io/images/profile_hawking_screenshot.png"
+              alt="profile show page example image"
+            />
+            <div className={styles.profileInformationTitle}>What is the profile?</div>
+            <DialogContentText classes={{ root: styles.profileInformationContentText }}>
+              This allows authors to claim their author profile pages and make changes. <br />
+              In order to edit your information, we will need to verify using your email affiliated with your school or
+              organization. <br />
+              Once you are verified, you can edit your list of your publications, past & current affiliations, awards,
+              experience, education, and more. <br />
+              More features will be added to enhance your research experience and career.
+            </DialogContentText>
+          </div>
+        </Dialog>
       </div>
     );
   }
@@ -101,7 +180,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
           </div>
         )}
 
-        {(author.citationCount || author.hindex === 0) && (
+        {(author.citationCount || author.citationCount === 0) && (
           <div className={styles.metricWrapper}>
             <span className={styles.metricValue}>{formatNumber(author.citationCount)}</span>
             <span className={styles.metricLabel}>Citations</span>
@@ -109,85 +188,6 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
         )}
       </div>
     );
-  };
-
-  private getProfileInformation = () => {
-    const { author } = this.props;
-    const { isTruncated, expanded } = this.state;
-
-    if (!author.isLayered) {
-      return null;
-    }
-
-    return (
-      <div className={styles.profileInformationSection}>
-        <div className={styles.bioSection}>
-          <Truncate
-            lines={!expanded && 3}
-            ellipsis={
-              <a onClick={this.toggleLines} className={styles.moreOrLess}>
-                {`  ... More`}
-              </a>
-            }
-            onTruncate={this.handleTruncate}
-          >
-            {author.bio || ''}
-          </Truncate>
-          {!isTruncated &&
-            expanded && (
-              <a className={styles.moreOrLess} onClick={this.toggleLines}>
-                {`  Less`}
-              </a>
-            )}
-        </div>
-        {!author.isEmailHidden &&
-          author.email && (
-            <span className={styles.contactSection}>
-              <a
-                href={`mailto:${author.email}`}
-                target="_blank"
-                rel="noopener nofollow noreferrer"
-                className={styles.contactIconWrapper}
-              >
-                <Icon icon="EMAIL" className={styles.emailIcon} />
-              </a>
-              <a href={`mailto:${author.email}`} target="_blank" rel="noopener nofollow noreferrer">
-                {author.email}
-              </a>
-            </span>
-          )}
-
-        {author.webPage && (
-          <span className={styles.contactSection}>
-            <a
-              href={author.webPage || '#'}
-              target="_blank"
-              rel="noopener nofollow noreferrer"
-              className={styles.contactIconWrapper}
-            >
-              <Icon icon="EXTERNAL_SOURCE" className={styles.externalSource} />
-            </a>
-            <a href={author.webPage || '#'} target="_blank" rel="noopener nofollow noreferrer">
-              {author.webPage || ''}
-            </a>
-          </span>
-        )}
-      </div>
-    );
-  };
-
-  private handleTruncate = (truncated: boolean) => {
-    if (this.state.isTruncated !== truncated) {
-      this.setState({
-        isTruncated: truncated,
-      });
-    }
-  };
-
-  private toggleLines = () => {
-    this.setState({
-      expanded: !this.state.expanded,
-    });
   };
 }
 

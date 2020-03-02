@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Formik, Form, Field, FormikErrors, ErrorMessage } from 'formik';
 import * as classNames from 'classnames';
 import { Button } from '@pluto_network/pluto-design-elements';
-import { CvBaseInfo } from '../../api/profile';
+import { CvBaseInfo } from '../../api/profileInfo';
 import { withStyles } from '../../helpers/withStylesHelper';
 import ScinapseFormikInput from '../common/scinapseInput/scinapseFormikInput';
 import scinapseFormikCheckbox from '../common/scinapseInput/scinapseFormikCheckbox';
@@ -13,7 +13,7 @@ export interface EducationFormState extends CvBaseInfo {
   degree: string;
   department: string;
   startDate: string;
-  endDate: string;
+  endDate: string | null;
 }
 
 interface EducationFormProps {

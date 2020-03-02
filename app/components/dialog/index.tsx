@@ -13,7 +13,6 @@ import VerificationNeeded from '../auth/verificationNeeded';
 import CollectionDialog from './components/collection';
 import NewCollectionDialog from './components/newCollection';
 import EditCollectionDialog from './components/editCollection';
-import AllPublicationsDialog from './components/allPublications';
 import { resendVerificationEmail } from '../auth/emailVerification/actions';
 import { DialogContainerProps } from './types';
 import { withStyles } from '../../helpers/withStylesHelper';
@@ -33,6 +32,7 @@ import FinalSignUpContent from '../auth/signUp/components/finalSignUpContent';
 import EnvChecker from '../../helpers/envChecker';
 import PaperFigureDetail from '../common/paperFigureDetail/paperFigureDetail';
 import { UserDevice } from '../layouts/reducer';
+import ResolvedPendingPaperDialog from '../../containers/profile/components/resolvedPendingPaperDialog';
 const styles = require('./dialog.scss');
 
 function mapStateToProps(state: AppState) {
@@ -284,10 +284,6 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       case GLOBAL_DIALOG_TYPE.SIGN_UP:
         return <SignUp handleChangeDialogType={this.changeDialogType} userActionType={dialogState.userActionType} />;
 
-      case GLOBAL_DIALOG_TYPE.ADD_PUBLICATIONS_TO_AUTHOR_DIALOG: {
-        return <AllPublicationsDialog />;
-      }
-
       case GLOBAL_DIALOG_TYPE.FINAL_SIGN_UP_WITH_EMAIL: {
         return <FinalSignUpContent onSubmit={this.closeDialog} contentType="email" email={currentUser.email} />;
       }
@@ -341,7 +337,19 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       case GLOBAL_DIALOG_TYPE.AUTHOR_LIST_DIALOG:
         if (dialogState.authorListTargetPaper) {
           return (
-            <AuthorListDialog paper={dialogState.authorListTargetPaper} handleCloseDialogRequest={this.closeDialog} />
+            <AuthorListDialog
+              paper={dialogState.authorListTargetPaper}
+              profile={dialogState.profile}
+              handleCloseDialogRequest={this.closeDialog}
+            />
+          );
+        }
+        return null;
+
+      case GLOBAL_DIALOG_TYPE.RESOLVED_PENDING_PAPER:
+        if (dialogState.targetPendingPaper) {
+          return (
+            <ResolvedPendingPaperDialog paper={dialogState.targetPendingPaper} handleCloseDialog={this.closeDialog} />
           );
         }
         return null;

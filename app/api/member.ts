@@ -6,11 +6,21 @@ import { Collection, collectionSchema } from '../model/collection';
 import { memberSchema, Member } from '../model/member';
 import { KeywordSettingsResponse } from './types/member';
 import { getSafeMember, getSafeCollection } from '../helpers/getIdSafeData';
+import { ProfileParams } from './profile';
+import { Profile } from '../model/profile';
 
 export interface GetCollectionsResponse extends CommonPaginationResponsePart {
   content: Collection[];
   entities: { collections: { [collectionId: number]: Collection } };
   result: number[];
+}
+
+export type CreateMemberProfileResponse = {
+  profile: Profile;
+}
+
+export type MemberProfileParam = ProfileParams & {
+  password: string;
 }
 
 class MemberAPI extends PlutoAxios {
@@ -63,6 +73,11 @@ class MemberAPI extends PlutoAxios {
   public async deleteKeywordSettings(keywordId: string): Promise<KeywordSettingsResponse> {
     const res = await this.delete(`/members/me/alerts/keywords/${keywordId}`);
     return res.data;
+  }
+
+  public async createMemberWithProfile(token: string, params: MemberProfileParam) {
+    const res = await this.post(`/members/profile?token=${token}`, params);
+    return (res.data.data.content as CreateMemberProfileResponse);
   }
 }
 

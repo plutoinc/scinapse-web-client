@@ -1,4 +1,4 @@
-import * as Redux from 'redux';
+import { combineReducers } from '@reduxjs/toolkit';
 import * as ConfigurationReducer from './configuration';
 import * as currentUserReducer from './currentUser';
 import { CURRENT_USER_INITIAL_STATE } from '../model/currentUser';
@@ -11,7 +11,7 @@ import { ARTICLE_SEARCH_INITIAL_STATE } from '../components/articleSearch/record
 import * as emailVerificationReducer from '../components/auth/emailVerification/reducer';
 import { PAPER_SHOW_INITIAL_STATE } from '../containers/paperShow/records';
 import { reducer as paperShowReducer } from '../containers/paperShow/reducer';
-import { reducer as AuthorShowReducer, AUTHOR_SHOW_INITIAL_STATE } from '../containers/unconnectedAuthorShow/reducer';
+import { reducer as AuthorShowReducer, AUTHOR_SHOW_INITIAL_STATE } from '../containers/authorShow/reducer';
 import { reducer as EntityReducer, INITIAL_ENTITY_STATE } from './entity';
 import {
   reducer as MyCollectionsReducer,
@@ -20,10 +20,6 @@ import {
 import { reducer as CollectionShowReducer, INITIAL_COLLECTION_SHOW_STATE } from '../containers/collectionShow/reducer';
 import { reducer as UserCollectionsReducer, USER_COLLECTIONS_INITIAL_STATE } from '../components/collections/reducer';
 import { reducer as JournalShowReducer, JOURNAL_SHOW_INITIAL_STATE } from '../components/journalShow/reducer';
-import {
-  reducer as ConnectedAuthorShowReducer,
-  CONNECTED_AUTHOR_SHOW_INITIAL_STATE,
-} from '../containers/connectedAuthorShow/reducer';
 import { AUTHOR_SEARCH_INITIAL_STATE } from '../containers/authorSearch/records';
 import { RELATED_PAPERS_INITIAL_STATE, reducer as RelatedPapersReducer } from './realtedPapers';
 import { reducer as PDFViewerReducer, PDF_VIEWER_INITIAL_STATE } from './pdfViewer';
@@ -33,8 +29,14 @@ import FindInLibraryDialogReducer, { FIND_IN_LIBRARY_DIALOG_INITIAL_STATE } from
 import KeywordSettingsReducer, { KEYWORD_SETTINGS_INITIAL_STATE } from './keywordSettings';
 import CreateKeywordAlertDialogReducer, { CREATE_KEYWORD_ALERT_DIALOG_INITIAL_STATE } from './createKeywordAlertDialog';
 import ScinapseSnackbarReducer, { SCINAPSE_SNACK_BAR_INITIAL_STATE } from './scinapseSnackbar';
-
-export type AppState = typeof initialState;
+import ProfilePaperListReducer, { PROFILE_PAPER_LIST_INITIAL_STATE } from './profilePaperList';
+import ProfileRepresentativePaperListReducer, {
+  PROFILE_REPRESENTATIVE_PAPER_LIST_INITIAL_STATE,
+} from './profileRepresentativePaperList';
+import ProfilePendingPaperListReducer, { PROFILE_PENDING_PAPER_LIST_INITIAL_STATE } from './profilePendingPaperList';
+import ProfileEntitiesReducer, { PROFILE_ENTITIES_INITIAL_STATE } from './profileEntity';
+import ImportPaperDialogReducer, { IMPORT_PAPER_DIALOG_INITIAL_STATE } from './importPaperDialog';
+import ProfileOnboardingReducer, { PROFILE_ONBOARDING_INITIAL_STATE } from './profileOnboarding';
 
 export const initialState = {
   configuration: ConfigurationReducer.CONFIGURATION_INITIAL_STATE,
@@ -46,7 +48,6 @@ export const initialState = {
   authorSearch: AUTHOR_SEARCH_INITIAL_STATE,
   paperShow: PAPER_SHOW_INITIAL_STATE,
   authorShow: AUTHOR_SHOW_INITIAL_STATE,
-  connectedAuthorShow: CONNECTED_AUTHOR_SHOW_INITIAL_STATE,
   journalShow: JOURNAL_SHOW_INITIAL_STATE,
   collectionShow: INITIAL_COLLECTION_SHOW_STATE,
   myCollections: MY_COLLECTIONS_INITIAL_STATE,
@@ -60,10 +61,16 @@ export const initialState = {
   keywordSettingsState: KEYWORD_SETTINGS_INITIAL_STATE,
   createKeywordAlertDialogState: CREATE_KEYWORD_ALERT_DIALOG_INITIAL_STATE,
   scinapseSnackbarState: SCINAPSE_SNACK_BAR_INITIAL_STATE,
+  profilePaperListState: PROFILE_PAPER_LIST_INITIAL_STATE,
+  profileRepresentativePaperListState: PROFILE_REPRESENTATIVE_PAPER_LIST_INITIAL_STATE,
+  profilePendingPaperListState: PROFILE_PENDING_PAPER_LIST_INITIAL_STATE,
+  importPaperDialogState: IMPORT_PAPER_DIALOG_INITIAL_STATE,
+  profileOnboardingState: PROFILE_ONBOARDING_INITIAL_STATE,
+  profileEntities: PROFILE_ENTITIES_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
 
-export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
+export const rootReducer = combineReducers({
   configuration: ConfigurationReducer.reducer,
   dialog: dialogReducer.reducer,
   layout: LayoutReducer,
@@ -72,7 +79,6 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   emailVerification: emailVerificationReducer.reducer,
   paperShow: paperShowReducer,
   authorShow: AuthorShowReducer,
-  connectedAuthorShow: ConnectedAuthorShowReducer,
   journalShow: JournalShowReducer,
   currentUser: currentUserReducer.reducer,
   collectionShow: CollectionShowReducer,
@@ -87,5 +93,13 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   keywordSettingsState: KeywordSettingsReducer,
   createKeywordAlertDialogState: CreateKeywordAlertDialogReducer,
   scinapseSnackbarState: ScinapseSnackbarReducer,
+  profileRepresentativePaperListState: ProfileRepresentativePaperListReducer,
+  profilePaperListState: ProfilePaperListReducer,
+  profilePendingPaperListState: ProfilePendingPaperListReducer,
+  importPaperDialogState: ImportPaperDialogReducer,
+  profileOnboardingState: ProfileOnboardingReducer,
+  profileEntities: ProfileEntitiesReducer,
   entities: EntityReducer,
 });
+
+export type AppState = typeof initialState;

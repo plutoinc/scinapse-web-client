@@ -35,17 +35,16 @@ export function useFetchRefCitedPapers({ type, paperId, page = '1', query, sort 
     if (preventFetch.current) {
       preventFetch.current = false;
       return;
-    };
+    }
 
-    dispatch(fetchFunc(paperId, parseInt(page), query, sort))
-      .catch(err => {
-        if (!Axios.isCancel(err)) {
-          alertToast({
-            type: 'error',
-            message: `Failed to get papers. ${err}`,
-          });
-          dispatch(failedActionCreator());
-        }
-      });
+    dispatch(fetchFunc(paperId, parseInt(page), query, sort)).catch(err => {
+      if (!Axios.isCancel(err)) {
+        alertToast({
+          type: 'error',
+          message: `Failed to get papers. ${err}`,
+        });
+        dispatch(failedActionCreator());
+      }
+    });
   }, [type, dispatch, paperId, page, query, sort, fetchFunc, failedActionCreator, currentUser.isLoggedIn]);
 }

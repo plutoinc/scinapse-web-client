@@ -1,0 +1,46 @@
+.description {
+  font-size: 16px;
+  color: $gray800;
+  text-align: center;
+  padding: 16px 0;
+  margin-bottom: 32px;
+  line-height: 1.5;
+
+  .highlightKeyword {
+    color: $main_blue0;
+    font-weight: 500;
+
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+}
+
+.contentBox {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.paperLoadIcon {
+  width: 20px;
+  height: 20px;
+  margin-left: 4px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.paperLoadButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $main_blue1;
+  letter-spacing: 1px;
+  line-height: 1.5;
+  text-align: center;
+  margin: 16px 0;
+  cursor: pointer;
+}

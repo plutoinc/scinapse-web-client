@@ -1,0 +1,101 @@
+@import '../../containers/userSettings/userSettings';
+
+.formRow {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  margin: 0 0 24px 0;
+
+  & + & {
+    margin-top: 24px;
+  }
+
+  &.dynamicFormRow {
+    opacity: 1;
+    will-change: opacity;
+    transition: opacity 160ms ease;
+
+    &.hide {
+      opacity: 0.3;
+      will-change: opacity;
+      transition: opacity 160ms ease;
+    }
+  }
+}
+
+.formWrapper {
+  width: 100%;
+  flex-flow: column nowrap;
+}
+
+.formWrapper + .formWrapper {
+  margin-left: 24px;
+}
+
+.formContainer {
+  max-width: 768px;
+  padding: 24px 32px;
+}
+
+.inputForm {
+  @extend %base-input-style;
+  cursor: auto;
+}
+
+.inputForm,
+input {
+  &.hasError {
+    border-color: $red0;
+  }
+
+  &::placeholder {
+    color: $gray500;
+  }
+
+  &:disabled {
+    border-color: $gray400;
+    color: $gray500;
+    cursor: not-allowed;
+  }
+}
+
+.formTitle {
+  color: $black0;
+  font-size: 40px;
+  margin-top: 0;
+  margin-bottom: 32px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.description {
+  color: $black1;
+  line-height: 1.5;
+  font-size: 18px;
+  margin-bottom: 32px;
+}
+
+.formLabel {
+  @extend %base-label;
+}
+
+.errorMsg {
+  font-family: $fallback;
+  font-size: 13px;
+  color: $red0;
+  margin: 8px 0 0 8px;
+}
+
+.affiliationErrorMsg {
+  font-family: $fallback;
+  font-size: 13px;
+  color: $red0;
+  margin-top: 8px;
+}
+
+.emailDomainPostfixLabel {
+  font-family: $fallback;
+  font-size: 16px;
+  letter-spacing: 1px;
+  margin-top: 24px;
+}

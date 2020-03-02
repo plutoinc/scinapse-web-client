@@ -6,6 +6,8 @@ import { GetAuthorPapersParams, AuthorPapersResponse, GetAuthorPaperResult } fro
 import { paperSchema, Paper } from '../../model/paper';
 import { PaginationResponseV2 } from '../types/common';
 import { getSafeAuthor, getIdSafePaper } from '../../helpers/getIdSafeData';
+import { profileEntitySchema } from '../../model/profile';
+import { PaperAuthor } from '../../model/author';
 
 export const DEFAULT_AUTHOR_PAPERS_SIZE = 10;
 
@@ -20,8 +22,8 @@ export interface UpdateRepresentativePapersParams {
   paperIds: string[];
 }
 
-export interface ConnectAuthorParams {
-  authorId: string;
+export interface ProfileParams {
+  profileSlug: string;
   bio: string | null;
   email: string;
   name: string;
@@ -40,12 +42,12 @@ interface QueryAuthorPapersParams {
 
 class AuthorAPI extends PlutoAxios {
   public connectAuthor = async (
-    params: ConnectAuthorParams
+    params: ProfileParams
   ): Promise<{
     entities: { authors: { [authorId: string]: Author } };
     result: string;
   }> => {
-    const res = await this.post(`/authors/${params.authorId}/connect`, {
+    const res = await this.post(`/authors/${params.profileSlug}/connect`, {
       affiliation_id: String(params.affiliationId),
       affiliation_name: params.affiliationName,
       bio: params.bio,
@@ -159,39 +161,19 @@ class AuthorAPI extends PlutoAxios {
     result: string;
   }> {
     const res = await this.get(`/authors/${authorId}`, { cancelToken });
-    const author: Author = getSafeAuthor(res.data.data);
-    const normalizedData = normalize(author, authorSchema);
+    const normalizedData = normalize(res.data.data, authorSchema);
     return normalizedData;
   }
 
-  public async updateAuthor(
-    params: ConnectAuthorParams
-  ): Promise<{
-    entities: { authors: { [authorId: string]: Author } };
-    result: string;
-  }> {
-    const res = await this.put(`/authors/${params.authorId}`, {
-      affiliation_id: String(params.affiliationId),
-      affiliation_name: params.affiliationName,
-      bio: params.bio,
-      email: params.email,
-      name: params.name,
-      web_page: params.webPage,
-      is_email_hidden: params.isEmailHidden,
-    });
-    const author: Author = getSafeAuthor(res.data.data.content);
-    const normalizedData = normalize(author, authorSchema);
-    return normalizedData;
-  }
-
-  public async updateAuthorProfileImage(authorId: string, profileImageData: FormData) {
-    const res = await this.put(`/authors/${authorId}/profile-image`, profileImageData, {
+  public async updateAuthorProfileImage(profileSlug: string, profileImageData: FormData) {
+    const res = await this.put(`/profiles/${profileSlug}/profile-image`, profileImageData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
+    const normalizedData = normalize(res.data.data.content, profileEntitySchema);
 
-    return res.data;
+    return normalizedData;
   }
 
   public async getCoAuthors(
@@ -217,6 +199,13 @@ class AuthorAPI extends PlutoAxios {
     const papers = paperResponse.data.content.map(getIdSafePaper);
 
     return papers;
+  }
+
+  public async getAllAuthors(paperId: string): Promise<PaperAuthor[]> {
+    const res = await this.get(`/papers/${paperId}/authors/all`);
+    const authorsInfo: PaperAuthor[] = res.data.data.content;
+
+    return authorsInfo;
   }
 }
 

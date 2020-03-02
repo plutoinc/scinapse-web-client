@@ -1,4 +1,5 @@
 import * as ReactGA from 'react-ga';
+import { Middleware } from '@reduxjs/toolkit';
 import * as store from 'store';
 import { ACTION_TYPES } from '../actions/actionTypes';
 import { CurrentUser } from '../model/currentUser';
@@ -34,7 +35,7 @@ function removeUserFromTrackers() {
   ReactGA.set({ userId: null });
 }
 
-const setUserToTracker = () => (next: any) => (action: any) => {
+const setUserToTracker: Middleware = () => (next: any) => (action: any) => {
   try {
     switch (action.type) {
       case ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN:

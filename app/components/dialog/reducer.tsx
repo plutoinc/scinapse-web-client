@@ -5,6 +5,8 @@ import { Paper, PaperFigure } from '../../model/paper';
 import { SIGN_UP_STEP } from '../auth/signUp/types';
 import { OAuthCheckParams } from '../../api/types/auth';
 import { SignUpConversionExpTicketContext } from '../../constants/abTest';
+import { PaperProfile } from '../../model/profile';
+import { PendingPaper } from '../../reducers/profilePendingPaperList';
 
 export enum GLOBAL_DIALOG_TYPE {
   SIGN_IN,
@@ -19,44 +21,47 @@ export enum GLOBAL_DIALOG_TYPE {
   EDIT_COLLECTION,
   CITATION,
   AUTHOR_LIST_DIALOG,
-  ADD_PUBLICATIONS_TO_AUTHOR_DIALOG,
   PAPER_FIGURE_DETAIL,
+  RESOLVED_PENDING_PAPER,
 }
 
 export interface DialogState
   extends Readonly<{
-      isLoading: boolean;
-      hasError: boolean;
-      isOpen: boolean;
-      type: GLOBAL_DIALOG_TYPE | null;
+    isLoading: boolean;
+    hasError: boolean;
+    isOpen: boolean;
+    type: GLOBAL_DIALOG_TYPE | null;
 
-      signUpStep: SIGN_UP_STEP | null;
-      oauthResult: OAuthCheckParams | null;
-      userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
-      authContext: SignUpConversionExpTicketContext | undefined;
+    signUpStep: SIGN_UP_STEP | null;
+    oauthResult: OAuthCheckParams | null;
+    userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
+    authContext: SignUpConversionExpTicketContext | undefined;
 
-      citationPaperId: string | undefined;
-      citationText: string;
-      isLoadingCitationText: boolean;
-      activeCitationTab: AvailableCitationType;
+    citationPaperId: string | undefined;
+    citationText: string;
+    isLoadingCitationText: boolean;
+    activeCitationTab: AvailableCitationType;
 
-      isLoadingMyCollections: boolean;
-      hasErrorToCollectionDialog: boolean;
-      myCollectionIds: number[];
-      collectionDialogTargetPaperId: string | undefined;
+    isLoadingMyCollections: boolean;
+    hasErrorToCollectionDialog: boolean;
+    myCollectionIds: number[];
+    collectionDialogTargetPaperId: string | undefined;
 
-      collection: Collection | undefined;
+    collection: Collection | undefined;
 
-      authorListTargetPaper: Paper | undefined;
+    authorListTargetPaper: Paper | undefined;
+    profile: PaperProfile | undefined;
 
-      isBlocked: boolean | undefined;
+    isBlocked: boolean | undefined;
 
-      nextSignUpStep: string | undefined;
+    nextSignUpStep: string | undefined;
 
-      paperFigures: PaperFigure[] | undefined;
-      currentPaperFigureIndex: number | undefined;
-      viewDetailFigureTargetPaperId: string | undefined;
-    }> {} // TODO: remove below attribute after finishing the experiment
+    paperFigures: PaperFigure[] | undefined;
+    currentPaperFigureIndex: number | undefined;
+    viewDetailFigureTargetPaperId: string | undefined;
+
+    targetPendingPaper: PendingPaper | undefined;
+  }> { } // TODO: remove below attribute after finishing the experiment
 
 export const DIALOG_INITIAL_STATE: DialogState = {
   isLoading: false,
@@ -82,6 +87,10 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   collection: undefined,
   // author list dialog
   authorListTargetPaper: undefined,
+  profile: undefined,
+  // resolve pending paper dialog
+  targetPendingPaper: undefined,
+  // etc
   isBlocked: undefined,
   nextSignUpStep: undefined,
   paperFigures: undefined,
@@ -107,6 +116,8 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
         paperFigures: action.payload.paperFigures,
         currentPaperFigureIndex: action.payload.currentPaperFigureIndex,
         viewDetailFigureTargetPaperId: action.payload.viewDetailFigureTargetPaperId,
+        profile: action.payload.profile,
+        targetPendingPaper: action.payload.targetPendingPaper,
       };
     }
 

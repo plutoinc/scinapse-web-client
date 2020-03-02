@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Formik, Form, Field, FormikErrors, ErrorMessage } from 'formik';
 import * as classNames from 'classnames';
 import { Button } from '@pluto_network/pluto-design-elements';
-import { CvBaseInfo } from '../../api/profile';
+import { CvBaseInfo } from '../../api/profileInfo';
 import ScinapseFormikInput from '../common/scinapseInput/scinapseFormikInput';
 import ReduxAutoSizeTextarea from '../common/autoSizeTextarea/reduxAutoSizeTextarea';
 import scinapseFormikCheckbox from '../common/scinapseInput/scinapseFormikCheckbox';
@@ -15,7 +15,7 @@ export interface ExperienceFormState extends CvBaseInfo {
   description: string | null;
   position: string;
   startDate: string;
-  endDate: string;
+  endDate: string | null;
 }
 
 interface ExperienceFormProps {

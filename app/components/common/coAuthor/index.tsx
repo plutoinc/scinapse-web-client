@@ -1,24 +1,29 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import MuiTooltip from '@material-ui/core/Tooltip';
-import { Author } from '../../../model/author/author';
+import { isEqual } from 'lodash';
+import { denormalize } from 'normalizr';
+import { useSelector } from 'react-redux';
+import { Author, authorSchema } from '../../../model/author/author';
 import { trackEvent } from '../../../helpers/handleGA';
 import HIndexBox from '../hIndexBox';
-import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
+import { AppState } from '../../../reducers';
+const useStyles = require('isomorphic-style-loader/useStyles');
 const styles = require('./coAuthor.scss');
 
 interface CoAuthorProps {
-  author: Author;
+  authorId: string;
 }
 
-const CoAuthor = (props: CoAuthorProps) => {
-  const author = props.author;
+export const CoAuthor: React.FC<{ author: Author }> = ({ author }) => {
+  useStyles(styles);
+
   return (
     <Link
       className={styles.authorItem}
-      to={`/authors/${author.id}`}
+      to={author.profile ? `/profiles/${author.profile.slug}` : `/authors/${author.id}`}
       onClick={() => {
         trackEvent({
           category: 'Flow to Author Show',
@@ -37,13 +42,13 @@ const CoAuthor = (props: CoAuthorProps) => {
       <div className={styles.coAuthorItemHeader}>
         <div className={styles.coAuthorName}>
           {author.name}{' '}
-          {author.isLayered ? (
-            <MuiTooltip classes={{ tooltip: styles.verificationTooltip }} title="Verification Author" placement="right">
+          {author.profile && (
+            <MuiTooltip classes={{ tooltip: styles.verificationTooltip }} title="Verified Author" placement="right">
               <div className={styles.contactIconWrapper}>
                 <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
               </div>
             </MuiTooltip>
-          ) : null}
+          )}
         </div>
         <div className={styles.hIndexWrapper}>
           <HIndexBox hIndex={author.hindex} />
@@ -56,4 +61,15 @@ const CoAuthor = (props: CoAuthorProps) => {
   );
 };
 
-export default withStyles<typeof CoAuthor>(styles)(CoAuthor);
+const CoAuthorContainer = React.memo(({ authorId }: CoAuthorProps) => {
+  const author = useSelector<AppState, Author | undefined>(
+    state => denormalize(authorId, authorSchema, state.entities),
+    isEqual
+  );
+
+  if (!author) return null;
+
+  return <CoAuthor author={author} />;
+});
+
+export default CoAuthorContainer;

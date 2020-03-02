@@ -1,0 +1,66 @@
+.formWrapper {
+  padding: 16px 0;
+}
+
+.submitBtn {
+  text-align: right;
+  margin-top: 16px;
+}
+
+.addUrlBtn {
+  text-align: center;
+  margin-top: 8px;
+}
+
+.formTitle {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  line-height: 1.5;
+  color: $gray700;
+  padding-left: 10px;
+  padding-bottom: 4px;
+  width: 100%;
+}
+
+.formDescription {
+  line-height: 1.5;
+  color: $gray700;
+  font-size: 14px;
+  padding-left: 10px;
+  padding-bottom: 8px;
+}
+
+.errorMessage {
+  font-size: 14px;
+  padding: 0 10px;
+  color: $red0;
+  line-height: 1.5;
+}
+
+.orSeparatorBox {
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+
+  .dashedSeparator {
+    width: 100%;
+    border-top: dashed 1px $gray400;
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+
+  .orContent {
+    font-size: 14px;
+    text-align: center;
+    color: $gray400;
+  }
+}
+
+.urlInputContainer {
+  padding-bottom: 8px;
+
+  & + & {
+    padding-top: 8px;
+  }
+}

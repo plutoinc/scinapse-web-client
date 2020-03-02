@@ -16,7 +16,7 @@ import ReduxAutoSizeTextarea from '../../../common/autoSizeTextarea/reduxAutoSiz
 import { ACTION_TYPES } from '../../../../actions/actionTypes';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import Icon from '../../../../icons';
-import { LAST_SUCCEEDED_EMAIL_KEY } from '../../../../constants/requestDialogConstant';
+import { LAST_SUCCEEDED_EMAIL_KEY } from '../../../../constants/paperRequestDialog';
 import { FEEDBACK_SOURCE, FEEDBACK_PRIORITY, FEEDBACK_STATUS } from '../../../../constants/feedback';
 
 const styles = require('./requestPaperDialog.scss');
@@ -87,16 +87,13 @@ const RequestPaperDialog: React.FunctionComponent<RequestPaperDialogProps> = pro
     setIsLoading(false);
   }
 
-  React.useEffect(
-    () => {
-      if (currentUser.isLoggedIn) {
-        setEmail(currentUser.email);
-      } else {
-        setEmail(Cookies.get(LAST_SUCCEEDED_EMAIL_KEY) || '');
-      }
-    },
-    [currentUser.isLoggedIn]
-  );
+  React.useEffect(() => {
+    if (currentUser.isLoggedIn) {
+      setEmail(currentUser.email);
+    } else {
+      setEmail(Cookies.get(LAST_SUCCEEDED_EMAIL_KEY) || '');
+    }
+  }, [currentUser.isLoggedIn]);
 
   return (
     <Dialog open={isOpen} onClose={onClose} classes={{ paper: styles.dialogPaper }}>

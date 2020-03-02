@@ -167,6 +167,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                   elementType="button"
                   aria-label="Scinapse sign up button"
                   isLoading={isLoading}
+                  disabled={isLoading}
                   fullWidth
                   size="large"
                   onClick={props.onClickNext}

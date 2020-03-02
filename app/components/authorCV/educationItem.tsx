@@ -3,22 +3,23 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '../../helpers/withStylesHelper';
 import Icon from '../../icons';
-import { Education } from '../../model/profile';
+import { Education } from '../../model/profileInfo';
 import EducationForm, { EducationFormState } from './educationForm';
 import PlutoAxios from '../../api/pluto';
 import alertToast from '../../helpers/makePlutoToastAction';
-import { updateAuthorCvInfo } from '../../actions/author';
 const styles = require('./authorCVItem.scss');
 
 interface EducationItemState {
   isEditMode: boolean;
+  isLoading: boolean;
 }
 
 interface EducationItemProps {
   validConnection: boolean;
-  authorId: string;
+  profileSlug: string;
   education: Education;
   handleRemoveItem: (cvInfoId: string) => void;
+  onUpdate: (cvInfo: EducationFormState) => Promise<void>;
   dispatch: Dispatch<any>;
 }
 
@@ -29,12 +30,13 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
 
     this.state = {
       isEditMode: false,
+      isLoading: false,
     };
   }
 
   public render() {
     const { education } = this.props;
-    const { isEditMode } = this.state;
+    const { isEditMode, isLoading } = this.state;
     const { id, degree, department, startDate, endDate, isCurrent, institutionName, institutionId } = education;
     return isEditMode ? (
       <EducationForm
@@ -47,19 +49,10 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
           padding: '8px',
         }}
         handleClose={this.handelToggleEducationEditForm}
-        isOpen={true}
-        isLoading={false}
+        isLoading={isLoading}
         handleSubmitForm={this.handelUpdateEducation}
-        initialValues={{
-          id,
-          degree,
-          department,
-          isCurrent,
-          institutionId,
-          institutionName,
-          startDate,
-          endDate,
-        }}
+        initialValues={{ id, degree, department, isCurrent, institutionId, institutionName, startDate, endDate }}
+        isOpen
       />
     ) : (
       <div className={styles.itemWrapper}>
@@ -109,17 +102,14 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
   };
 
   private handelUpdateEducation = async (params: EducationFormState) => {
-    const { dispatch, authorId } = this.props;
-
+    const { onUpdate } = this.props;
     try {
-      await dispatch(
-        updateAuthorCvInfo('educations', authorId, {
-          ...params,
-          endDate: params.isCurrent ? null : params.endDate,
-        })
-      );
+      this.setState(state => ({ ...state, isLoading: true }));
+      await onUpdate({ ...params, endDate: params.isCurrent ? null : params.endDate });
+      this.setState(state => ({ ...state, isLoading: false }));
       this.handelToggleEducationEditForm();
     } catch (err) {
+      this.setState(state => ({ ...state, isLoading: false }));
       const error = PlutoAxios.getGlobalError(err);
       console.error(error);
       alertToast({

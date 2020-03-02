@@ -125,11 +125,18 @@ declare namespace Scinapse {
       | 'clickSeeAllBtn'
       | 'viewCreateKeywordSnackbar'
       | 'clickCreateAlertBtn'
+      | 'clickSubmitGSBtn'
+      | 'clickSubmitBibtexBtn'
+      | 'clickSubmitCitationStringBtn'
+      | 'clickSubmitAuthorUrlsBtn'
+      | 'declinedPaper'
+      | 'confirmedPaper'
       | '';
 
     type ActionArea = string;
 
     type PageType =
+      | 'profileShow'
       | 'paperShow'
       | 'authorShow'
       | 'home'

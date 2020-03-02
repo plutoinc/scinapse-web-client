@@ -1,0 +1,32 @@
+$card-container-max-width: 768px;
+
+.container {
+  background-color: $gray30;
+  min-height: calc(100vh - #{$navbar_height});
+  padding-top: $navbar_height;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 578px;
+  min-height: calc(100vh - #{$navbar_height});
+  margin: 0 auto;
+}
+
+.cardContainer {
+  max-width: $card-container-max-width;
+  padding: 24px 32px;
+}
+
+.title {
+  color: $black0;
+  font-size: 40px;
+  margin-top: 0;
+  margin-bottom: 32px;
+  line-height: 1.5;
+  text-align: center;
+}
