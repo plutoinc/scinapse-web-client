@@ -137,18 +137,62 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
           classes={{ paper: styles.profileInformationDialog }}
         >
           <div className={styles.profileInformationContent}>
-            <img
-              src="//assets.scinapse.io/images/profile_hawking_screenshot.png"
-              alt="profile show page example image"
-            />
-            <div className={styles.profileInformationTitle}>What is the profile?</div>
+            <div className={styles.profileInformationTitle}>
+              <span className={styles.profileInformationHighlightTitle}>WELCOME TO</span>
+              <br />
+              Your professional academic homepage
+            </div>
             <DialogContentText classes={{ root: styles.profileInformationContentText }}>
-              This allows authors to claim their author profile pages and make changes. <br />
-              In order to edit your information, we will need to verify using your email affiliated with your school or
-              organization. <br />
-              Once you are verified, you can edit your list of your publications, past & current affiliations, awards,
-              experience, education, and more. <br />
-              More features will be added to enhance your research experience and career.
+              <div className={styles.profileInformationContextHeader}>
+                If this author page is yours,
+                <br />
+                claim this page to unlock the following features:
+              </div>
+              <div className={styles.profileInformationFeatureItemWrapper}>
+                <div className={styles.profileInformationFeatureItem}>
+                  <div className={styles.profileInformationFeatureIconWrapper}>
+                    <Icon icon="ADD_NOTE" className={styles.profileInformationFeatureIcon} />
+                  </div>
+                  <div className={styles.profileInformationFeatureGuide}>
+                    Update and share
+                    <br />
+                    your own publication list
+                  </div>
+                </div>
+                <div className={styles.profileInformationFeatureItem}>
+                  <div className={styles.profileInformationFeatureIconWrapper}>
+                    <Icon icon="COLLECITON_LIST" className={styles.profileInformationFeatureIcon} />
+                  </div>
+                  <div className={styles.profileInformationFeatureGuide}>
+                    Add past & current
+                    <br />
+                    affiliations, awards, experience,
+                    <br />
+                    education, and more
+                  </div>
+                </div>
+                <div className={styles.profileInformationFeatureItem}>
+                  <div className={styles.profileInformationFeatureIconWrapper}>
+                    <Icon icon="CLOUD_UPLOAD" className={styles.profileInformationFeatureIcon} />
+                  </div>
+                  <div className={styles.profileInformationFeatureGuide}>
+                    Share
+                    <br />
+                    your featured publications
+                  </div>
+                </div>
+              </div>
+              <div className={styles.profileInformationContextHeader}>
+                You can always use this as your personal academic homepage
+                <br />
+                for your school, lab, or personal use!
+              </div>
+              <div className={styles.profileInformationGuideContext}>
+                * We will first need{' '}
+                <span className={styles.profileInformationGuideHighlightContext}>to verify using your email</span>{' '}
+                <br />
+                affiliated with your school or organization.
+              </div>
             </DialogContentText>
           </div>
         </Dialog>
