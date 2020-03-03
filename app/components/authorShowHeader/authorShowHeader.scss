@@ -188,6 +188,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+
+  .profileInformationHeaderCloseButton {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+  }
 
   .profileInformationHighlightTitle {
     font-size: 28px;
@@ -266,6 +273,10 @@
       color: $main_blue0;
       text-decoration: underline;
     }
+  }
+
+  .profileInformationDialogCloseButtonWrapper {
+    margin-top: 16px;
   }
 }
 

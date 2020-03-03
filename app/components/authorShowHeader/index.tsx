@@ -132,11 +132,23 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
           authorId={author.id}
         />
         <Dialog
+          fullScreen={userDevice === UserDevice.MOBILE}
           onClose={() => this.setState(prev => ({ ...prev, isOpenProfileInformationDialog: false }))}
           open={isOpenProfileInformationDialog}
           classes={{ paper: styles.profileInformationDialog }}
         >
           <div className={styles.profileInformationContent}>
+            <div className={styles.profileInformationHeaderCloseButton}>
+              <Button
+                elementType="button"
+                variant="text"
+                color="gray"
+                fullWidth
+                onClick={() => this.setState(prev => ({ ...prev, isOpenProfileInformationDialog: false }))}
+              >
+                <Icon icon="X_BUTTON" />
+              </Button>
+            </div>
             <div className={styles.profileInformationTitle}>
               <span className={styles.profileInformationHighlightTitle}>WELCOME TO</span>
               <br />
@@ -192,6 +204,18 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
                 <span className={styles.profileInformationGuideHighlightContext}>to verify using your email</span>{' '}
                 <br />
                 affiliated with your school or organization.
+              </div>
+              <div className={styles.profileInformationDialogCloseButtonWrapper}>
+                <Button
+                  elementType="button"
+                  variant="contained"
+                  color="gray"
+                  size="large"
+                  fullWidth
+                  onClick={() => this.setState(prev => ({ ...prev, isOpenProfileInformationDialog: false }))}
+                >
+                  <span>CLOSE</span>
+                </Button>
               </div>
             </DialogContentText>
           </div>
