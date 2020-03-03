@@ -125,7 +125,7 @@ const RequestForm: FC<RequestFormProps> = ({ initialValues, onSubmit, isLoading,
                   />
                 </div>
                 <div className={s.affiliationFormWrapper}>
-                  <label className={s.formLabel}>AFFILIATION</label>
+                  <label className={s.formLabel}>CURRENT AFFILIATION</label>
                   <Field
                     name="affiliation"
                     component={AffiliationSelectBox}
