@@ -117,9 +117,10 @@ const RequestForm: FC<RequestFormProps> = ({ initialValues, onSubmit, isLoading,
                 </div>
                 <div className={s.formWrapper}>
                   <Field
-                    labelText="Email"
+                    labelText="Affiliation Email"
+                    helperText="Please use your current affiliation email. It'll help us expedite your claim."
                     name="email"
-                    placeholder="Email"
+                    placeholder="Affiliation Email"
                     component={FormikInput}
                     disabled={isLoading}
                   />
