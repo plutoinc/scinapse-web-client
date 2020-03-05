@@ -3,7 +3,7 @@ import EnvChecker from '../helpers/envChecker';
 import getAPIHost from './getHost';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
 // API Gateway timeout is 30000
-export const TIMEOUT_FOR_SAFE_RENDERING = 29000;
+export const TIMEOUT_FOR_SAFE_RENDERING = 10000;
 
 let axiosIns: AxiosInstance | null = null;
 
