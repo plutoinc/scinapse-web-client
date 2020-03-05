@@ -33,6 +33,9 @@ import ProfilePaperListReducer, { PROFILE_PAPER_LIST_INITIAL_STATE } from './pro
 import ProfileRepresentativePaperListReducer, {
   PROFILE_REPRESENTATIVE_PAPER_LIST_INITIAL_STATE,
 } from './profileRepresentativePaperList';
+import ProfileSearchPublicationsDialogReducer, {
+  PROFILE_SEARCH_PUBLICATIONS_DIALOG_INITIAL_STATE,
+} from './profileSearchPublicationsDialog';
 import ProfilePendingPaperListReducer, { PROFILE_PENDING_PAPER_LIST_INITIAL_STATE } from './profilePendingPaperList';
 import ProfileEntitiesReducer, { PROFILE_ENTITIES_INITIAL_STATE } from './profileEntity';
 import ImportPaperDialogReducer, { IMPORT_PAPER_DIALOG_INITIAL_STATE } from './importPaperDialog';
@@ -63,6 +66,7 @@ export const initialState = {
   scinapseSnackbarState: SCINAPSE_SNACK_BAR_INITIAL_STATE,
   profilePaperListState: PROFILE_PAPER_LIST_INITIAL_STATE,
   profileRepresentativePaperListState: PROFILE_REPRESENTATIVE_PAPER_LIST_INITIAL_STATE,
+  profileSearchPublicationsDialogState: PROFILE_SEARCH_PUBLICATIONS_DIALOG_INITIAL_STATE,
   profilePendingPaperListState: PROFILE_PENDING_PAPER_LIST_INITIAL_STATE,
   importPaperDialogState: IMPORT_PAPER_DIALOG_INITIAL_STATE,
   profileOnboardingState: PROFILE_ONBOARDING_INITIAL_STATE,
@@ -94,6 +98,7 @@ export const rootReducer = combineReducers({
   createKeywordAlertDialogState: CreateKeywordAlertDialogReducer,
   scinapseSnackbarState: ScinapseSnackbarReducer,
   profileRepresentativePaperListState: ProfileRepresentativePaperListReducer,
+  profileSearchPublicationsDialogState: ProfileSearchPublicationsDialogReducer,
   profilePaperListState: ProfilePaperListReducer,
   profilePendingPaperListState: ProfilePendingPaperListReducer,
   importPaperDialogState: ImportPaperDialogReducer,

@@ -1,0 +1,81 @@
+.dialogPaper {
+  position: relative;
+  margin: 8px;
+}
+
+.boxContainer {
+  font-family: $fallback !important;
+  width: 666px;
+}
+
+.boxWrapper {
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: $black_light_0;
+}
+
+.iconWrapper {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    color: $gray500;
+  }
+}
+
+.dialogBody {
+  overflow-y: auto;
+  max-height: 500px;
+  height: 100%;
+}
+
+.noPaperContent {
+  text-align: center;
+  margin-top: 16px;
+  padding-top: 36px;
+  color: $gray600;
+}
+
+.paperListWrapper {
+  margin-top: 24px;
+}
+
+.inputFieldWrapper {
+  margin-top: 16px;
+}
+
+.innerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  border-radius: 2px;
+  background-color: white;
+  margin-bottom: 40px;
+  color: $gray400;
+  height: 400px;
+}
+
+@media (max-width: $tablet_width) {
+  .boxContainer {
+    width: 100%;
+  }
+}
