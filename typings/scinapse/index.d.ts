@@ -131,6 +131,8 @@ declare namespace Scinapse {
       | 'clickSubmitAuthorUrlsBtn'
       | 'declinedPaper'
       | 'confirmedPaper'
+      | 'addPaperToProfile'
+      | 'removePaperToProfile'
       | '';
 
     type ActionArea = string;

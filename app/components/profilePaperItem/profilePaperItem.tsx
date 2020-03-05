@@ -85,7 +85,13 @@ export const ProfilePaperItemWithPaper: FC<ProfilePaperItemWithPaperProps> = mem
 
     return (
       <div className={s.paperItemWrapper}>
-        <Title paper={paper} actionArea={actionArea} pageType={pageType} showNewLabel={true} isOpenBlank={isOpenBlank} />
+        <Title
+          paper={paper}
+          actionArea={actionArea}
+          pageType={pageType}
+          showNewLabel={true}
+          isOpenBlank={isOpenBlank}
+        />
         {venueAuthors}
         <Abstract
           paperId={paper.id}
