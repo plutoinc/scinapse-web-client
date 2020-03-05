@@ -12,7 +12,7 @@ import BlockVenueAuthor from '../common/paperItem/blockVenueAuthor';
 import UnconfirmedPaperItemButtonGroup from '../common/paperItem/unconfirmedPaperItemButtonGroup';
 import MobileVenueAuthors from '../common/paperItem/mobileVenueAuthors';
 import PaperItemMoreDropdownItem from '../common/paperItem/moreDropdownItem';
-import { markRepresentativePaper, unMarkRepresentativePaper } from '../../actions/profile';
+import { markRepresentativePaper, unMarkRepresentativePaper, removeAuthorPublication } from '../../actions/profile';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./profilePaperItem.scss');
 
@@ -68,6 +68,18 @@ export const ProfilePaperItemWithPaper: FC<ProfilePaperItemWithPaperProps> = mem
       );
     }
 
+    const removePaperButton = !isRepresentative && (
+      <PaperItemMoreDropdownItem
+        key={0}
+        content="Remove Publication"
+        onClick={() => {
+          if (confirm('Are you SURE to remove this publication?')) {
+            dispatch(removeAuthorPublication({ profileSlug: ownProfileSlug!, paperId: paper.id }));
+          }
+        }}
+      />
+    );
+
     let venueAuthors = (
       <div style={{ marginTop: '12px' }}>
         <BlockVenueAuthor
@@ -108,7 +120,7 @@ export const ProfilePaperItemWithPaper: FC<ProfilePaperItemWithPaperProps> = mem
           ownProfileSlug={ownProfileSlug}
           isEditable={isEditable}
           fetchProfileShowData={fetchProfileShowData}
-          dropdownContents={isEditable ? [controlPaperButton] : []}
+          dropdownContents={isEditable ? [controlPaperButton, removePaperButton] : []}
         />
       </div>
     );

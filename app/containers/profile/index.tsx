@@ -263,7 +263,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                         pageType="profileShow"
                         actionArea="paperList"
                         ownProfileSlug={profile.slug}
-                        isEditable={false}
+                        isEditable={profile.isEditable}
                         fetchProfileShowData={() =>
                           fetchAuthorShowPageData({ dispatch, match, pathname: location.pathname })
                         }
