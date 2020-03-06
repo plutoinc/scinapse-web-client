@@ -55,7 +55,7 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
 
   public render() {
     const { handleCloseDialogRequest, paper } = this.props;
-    const { totalElements, isEnd, currentPage, isLoading } = this.state;
+    const { totalElements, isEnd, isLoading } = this.state;
 
     return (
       <div className={styles.dialogWrapper}>
@@ -71,9 +71,7 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
         </div>
         <div className={styles.contentBox}>
           <InfiniteScroll
-            loadMoreFunc={() => {
-              this.fetchAuthorList(currentPage + 1);
-            }}
+            loadMoreFunc={this.fetchAuthorList}
             isLoading={isLoading}
             hasMore={!isEnd}
             loaderComponent={<div className="loader">{this.renderLoadingSpinner()}</div>}
@@ -86,13 +84,7 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
   }
 
   private renderLoadingSpinner = () => {
-    return (
-      <ArticleSpinner
-        style={{
-          margin: '20px',
-        }}
-      />
-    );
+    return <ArticleSpinner style={{ margin: '20px' }} />;
   };
 
   private getJournalText = () => {
@@ -142,35 +134,36 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
     return <div />;
   };
 
-  private fetchAuthorList = async (page = 1) => {
+  private fetchAuthorList = async () => {
     const { paper } = this.props;
-    const { isLoading } = this.state;
+    const { isLoading, currentPage } = this.state;
 
-    if (!isLoading) {
-      try {
-        this.setState(prevState => ({ ...prevState, isLoading: true }));
+    if (isLoading) return;
 
-        const res = await PaperAPI.getAuthorsOfPaper({ paperId: paper.id, page, cancelToken: this.cancelToken.token });
+    try {
+      this.setState(prevState => ({ ...prevState, isLoading: true }));
 
-        this.setState(prevState => ({
-          ...prevState,
-          authors: [...prevState.authors, ...res.data.content],
-          isLoading: false,
-          currentPage: page,
-          totalPage: res.data.page ? res.data.page.totalPages : 1,
-          totalElements: res.data.page ? res.data.page.totalElements : 0,
-          isEnd: res.data.page ? res.data.page.last : true,
-        }));
-      } catch (err) {
-        if (!axios.isCancel(err)) {
-          const error = PlutoAxios.getGlobalError(err);
-          this.setState(prevState => ({ ...prevState, isLoading: false }));
-          if (error) {
-            alertToast({
-              type: 'error',
-              message: error.message,
-            });
-          }
+      const res = await PaperAPI.getAuthorsOfPaper({
+        paperId: paper.id,
+        page: currentPage + 1,
+        cancelToken: this.cancelToken.token,
+      });
+
+      this.setState(prevState => ({
+        ...prevState,
+        authors: [...prevState.authors, ...res.data.content],
+        isLoading: false,
+        currentPage: currentPage + 1,
+        totalPage: res.data.page ? res.data.page.totalPages : 1,
+        totalElements: res.data.page ? res.data.page.totalElements : 0,
+        isEnd: res.data.page ? res.data.page.last : true,
+      }));
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        const error = PlutoAxios.getGlobalError(err);
+        this.setState(prevState => ({ ...prevState, isLoading: false }));
+        if (error) {
+          alertToast({ type: 'error', message: error.message });
         }
       }
     }
