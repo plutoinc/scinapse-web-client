@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import CountUp from 'react-countup';
 import { AppState } from '../../reducers';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
