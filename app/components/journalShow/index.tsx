@@ -85,15 +85,15 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps, Journal
     }
   }
 
-  public async componentWillReceiveProps(nextProps: JournalShowProps) {
-    const { dispatch, match, location, currentUser } = nextProps;
-    const currentJournalId = this.props.match.params.journalId;
+  public async componentDidUpdate(prevProps: JournalShowProps) {
+    const { dispatch, match, location, currentUser } = this.props;
+    const currentJournalId = match.params.journalId;
     const nextJournalId = match.params.journalId;
 
     if (
       currentJournalId !== nextJournalId ||
-      this.props.location.search !== location.search ||
-      currentUser.isLoggedIn !== this.props.currentUser.isLoggedIn
+      prevProps.location.search !== this.props.location.search ||
+      prevProps.currentUser.isLoggedIn !== currentUser.isLoggedIn
     ) {
       await fetchJournalShowPageData({
         dispatch,
