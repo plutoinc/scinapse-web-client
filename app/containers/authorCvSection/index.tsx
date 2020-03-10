@@ -58,9 +58,9 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
     this.fetchProfileInfo(this.props.profile.slug);
   }
 
-  public componentWillReceiveProps(nextProps: ProfileCvSectionProps & Props) {
-    if (this.props.profile.slug !== nextProps.profile.slug) {
-      this.fetchProfileInfo(nextProps.profile.slug);
+  public componentDidUpdate(prevProps: ProfileCvSectionProps & Props) {
+    if (this.props.profile.slug !== prevProps.profile.slug) {
+      this.fetchProfileInfo(this.props.profile.slug);
     }
   }
 
