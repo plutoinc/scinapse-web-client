@@ -1,11 +1,9 @@
 import React from 'react';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import CountUp from 'react-countup';
 import { AppState } from '../../reducers';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
-import TrendingPaper from './components/trendingPaper';
 import Icon from '../../icons';
 import JournalsInfo from './components/journalsInfo';
 import AffiliationsInfo from './components/affiliationsInfo';
@@ -57,10 +55,6 @@ const ScinapseInformation: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
     <div>
       <JournalsInfo isMobile={isMobile} />
       <AffiliationsInfo />
-      <div className={styles.contentBlockDivider} />
-      <div className={styles.trendingPaperWrapper}>
-        <TrendingPaper />
-      </div>
     </div>
   );
 };
@@ -70,7 +64,7 @@ const ScinapseFigureContent: React.FC<{ papersFoundCount: number }> = ({ papersF
     <>
       <div className={styles.cumulativeCountContainer}>
         <span>
-          <b>50,000+</b> registered researchers have found
+          <b>110,000+</b> registered researchers have found
         </span>
         <br />
         <span>
@@ -96,16 +90,17 @@ const ImprovedHome: React.FC = () => {
   const isMobile = useSelector<AppState, boolean>((state: AppState) => state.layout.userDevice === UserDevice.MOBILE);
   const instituteInfo = useSelector<AppState, Institute | null>((state: AppState) => state.currentUser.ipInstitute);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
-  const cancelToken = React.useRef(axios.CancelToken.source());
 
   React.useEffect(() => {
+    let shouldUpdate = true;
     HomeAPI.getPapersFoundCount().then(res => {
-      setPapersFoundCount(res.data.content);
+      if (shouldUpdate) {
+        setPapersFoundCount(res.data.content);
+      }
     });
 
     return () => {
-      cancelToken.current.cancel();
-      cancelToken.current = axios.CancelToken.source();
+      shouldUpdate = false;
     };
   }, []);
 
