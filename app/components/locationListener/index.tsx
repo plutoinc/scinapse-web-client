@@ -161,7 +161,7 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
       const nextQS = getQueryParamsObject(this.props.location.search);
       if (qs['branch'] && !nextQS['branch']) {
         const nextQPString = stringify({ ...nextQS, branch: qs['branch'] }, { addQueryPrefix: true });
-        this.props.history.replace(prevProps.location.pathname + nextQPString);
+        this.props.history.replace(this.props.location.pathname + nextQPString);
       }
     }
   }
