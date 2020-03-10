@@ -69,7 +69,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
   private formikNode: Formik<EducationFormState> | null;
 
   public componentDidUpdate(prevProps: EducationFormProps) {
-    if (!prevProps.isOpen && this.props.isOpen && this.formikNode) {
+    if (prevProps.isOpen && !this.props.isOpen && this.formikNode) {
       this.formikNode.resetForm();
     }
   }
