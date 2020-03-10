@@ -14,7 +14,6 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../reducers';
 import { UserDevice } from '../../layouts/reducer';
 import MobileVenueAuthors from './mobileVenueAuthors';
-import { useObserver } from '../../../hooks/useIntersectionHook';
 const styles = require('./searchPaperItem.scss');
 
 export interface PaperItemProps {
@@ -50,13 +49,6 @@ const NotIncludedWords: React.FC<{ missingKeywords: string[] }> = React.memo(pro
 const SearchPaperItem: React.FC<PaperItemProps> = React.memo(props => {
   const { paper, pageType, actionArea, savedAt, sourceDomain } = props;
   const { relation } = paper;
-  const { elRef } = useObserver(0.8, {
-    pageType,
-    actionArea,
-    actionType: 'view',
-    actionTag: 'paperShow',
-    actionLabel: String(paper.id),
-  });
 
   const userDevice = useSelector((state: AppState) => state.layout.userDevice);
   let venueAuthors = (
@@ -78,9 +70,10 @@ const SearchPaperItem: React.FC<PaperItemProps> = React.memo(props => {
   }
 
   return (
-    <div ref={elRef} className={styles.paperItemWrapper}>
-      {!!relation &&
-        relation.savedInCollections.length >= 1 && <SavedCollections collections={relation.savedInCollections} />}
+    <div className={styles.paperItemWrapper}>
+      {!!relation && relation.savedInCollections.length >= 1 && (
+        <SavedCollections collections={relation.savedInCollections} />
+      )}
       {historyContent}
       <Title paper={paper} actionArea={actionArea} pageType={pageType} />
       {venueAuthors}

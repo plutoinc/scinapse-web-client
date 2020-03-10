@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useObserver } from '../../hooks/useIntersectionHook';
 import Icon from '../../icons';
 import Title from '../common/paperItem/title';
 import BlockVenueAuthor from '../common/paperItem/blockVenueAuthor';
@@ -30,14 +29,6 @@ const CollectionPaperItem: FC<Props> = ({
 }) => {
   useStyles(styles);
 
-  const { elRef } = useObserver(0.8, {
-    pageType: 'collectionShow',
-    actionArea: 'paperList',
-    actionType: 'view',
-    actionTag: 'paperShow',
-    actionLabel: String(paper.paperId),
-  });
-
   let venueAuthors = (
     <div style={{ marginTop: '12px' }}>
       <BlockVenueAuthor paper={paper.paper} pageType="collectionShow" actionArea="paperList" />
@@ -48,17 +39,16 @@ const CollectionPaperItem: FC<Props> = ({
   }
 
   return (
-    <div ref={elRef} className={styles.paperItemWrapper}>
-      {inOwnCollection &&
-        !isMobile && (
-          <input
-            type="checkbox"
-            className={styles.paperCheckBox}
-            checked={isChecked}
-            onClick={() => onClickCheckBox(paper.paperId)}
-            readOnly
-          />
-        )}
+    <div className={styles.paperItemWrapper}>
+      {inOwnCollection && !isMobile && (
+        <input
+          type="checkbox"
+          className={styles.paperCheckBox}
+          checked={isChecked}
+          onClick={() => onClickCheckBox(paper.paperId)}
+          readOnly
+        />
+      )}
       <div className={styles.itemWrapper}>
         {inOwnCollection && (
           <Icon onClick={() => onClickXButton(paper.paperId)} icon="X_BUTTON" className={styles.removeIcon} />
