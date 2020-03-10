@@ -54,11 +54,11 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
     restoreScroll(location.key);
   }
 
-  public async componentWillReceiveProps(nextProps: UserCollectionsProps) {
-    if (this.props.match.params.userId !== nextProps.match.params.userId) {
-      const userId = nextProps.match.params.userId;
+  public async componentDidUpdate(prevProps: UserCollectionsProps) {
+    if (this.props.match.params.userId !== prevProps.match.params.userId) {
+      const userId = this.props.match.params.userId;
       await this.fetchCollections(userId);
-      restoreScroll(nextProps.location.key);
+      restoreScroll(this.props.location.key);
     }
   }
 
