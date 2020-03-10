@@ -65,20 +65,20 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
     restoreScroll(location.key);
   }
 
-  public async componentWillReceiveProps(nextProps: AuthorSearchProps) {
+  public async componentDidUpdate(prevProps: AuthorSearchProps) {
     const { dispatch, match, location } = this.props;
-    const beforeSearch = location.search;
-    const afterSearch = nextProps.location.search;
+    const beforeSearch = prevProps.location.search;
+    const afterSearch = location.search;
 
     if (!!afterSearch && beforeSearch !== afterSearch) {
       const authors = await getAuthorSearchData({
         dispatch,
         match,
-        pathname: nextProps.location.pathname,
+        pathname: this.props.location.pathname,
         queryParams: getQueryParamsObject(afterSearch),
       });
       this.logSearchResult(authors);
-      restoreScroll(nextProps.location.key);
+      restoreScroll(this.props.location.key);
     }
   }
 
