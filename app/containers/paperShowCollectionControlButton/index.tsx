@@ -147,13 +147,12 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     }
   }
 
-  public componentWillReceiveProps(nextProps: PaperShowCollectionControlButtonProps) {
-    const { myCollections } = nextProps;
+  public componentDidUpdate(prevProps: PaperShowCollectionControlButtonProps) {
+    const { myCollections } = this.props;
 
     if (
-      (!this.props.myCollections || this.props.myCollections.length === 0) &&
-      myCollections &&
-      myCollections.length > 0
+      (!prevProps.myCollections || prevProps.myCollections.length === 0) &&
+      myCollections && myCollections.length > 0
     ) {
       this.selectDefaultCollection(myCollections);
     }
@@ -164,7 +163,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     const isLoadingCollection = currentUser.isLoggingIn || myCollectionsState.isLoadingCollections;
     const isSelected = selectedCollection && selectedCollection.containsSelected;
     let saveButtonBorderRadius: string;
-    if (currentUser.isLoggedIn && (myCollections && myCollections.length > 0)) {
+    if (currentUser.isLoggedIn && myCollections && myCollections.length > 0) {
       saveButtonBorderRadius = isSelected ? '0' : '0 4px 4px 0';
     } else {
       saveButtonBorderRadius = '4px';
@@ -330,18 +329,18 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         {selectedCollection && selectedCollection.note ? (
           <Icon className={styles.addNoteIcon} icon="NOTED" />
         ) : (
-            <Tooltip
-              disableFocusListener={true}
-              disableTouchListener={true}
-              title="Add Memo"
-              placement="top"
-              classes={{ tooltip: styles.arrowBottomTooltip }}
-            >
-              <div>
-                <Icon className={styles.addNoteIcon} icon="ADD_NOTE" />
-              </div>
-            </Tooltip>
-          )}
+          <Tooltip
+            disableFocusListener={true}
+            disableTouchListener={true}
+            title="Add Memo"
+            placement="top"
+            classes={{ tooltip: styles.arrowBottomTooltip }}
+          >
+            <div>
+              <Icon className={styles.addNoteIcon} icon="ADD_NOTE" />
+            </div>
+          </Tooltip>
+        )}
       </div>
     );
   };
