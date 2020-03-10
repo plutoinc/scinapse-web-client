@@ -134,39 +134,34 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
   }
 
   public componentDidUpdate(prevProps: LocationListenerProps) {
-    if (!EnvChecker.isOnServer() && this.props.location !== prevProps.location && EnvChecker.isProdBrowser()) {
-      this.trackPageView();
-      ReactGA.pageview(window.location.pathname + window.location.search);
-    }
-  }
+    if (this.props.location !== prevProps.location) {
+      // track page view at production mode
+      if (EnvChecker.isProdBrowser()) {
+        this.trackPageView();
+        ReactGA.pageview(window.location.pathname + window.location.search);
+      }
 
-  public componentWillReceiveProps(nextProps: LocationListenerProps) {
-    const { location } = this.props;
-
-    if (!EnvChecker.isOnServer() && location !== nextProps.location) {
+      // save scroll position
       let historyStack: HistoryInformation[] = JSON.parse(window.sessionStorage.getItem(HISTORY_SESSION_KEY) || '[]');
       const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-      const historyInformation = { key: location.key || 'initial', scrollPosition: scrollTop };
-
-      const index = historyStack.findIndex(history => history.key === location.key);
+      const historyInformation = { key: prevProps.location.key || 'initial', scrollPosition: scrollTop };
+      const index = historyStack.findIndex(history => history.key === prevProps.location.key);
       if (index === -1) {
         historyStack = [historyInformation, ...historyStack];
       } else {
         historyStack = [...historyStack.slice(0, index), historyInformation, ...historyStack.slice(index + 1)];
       }
-
       if (historyStack.length > MAXIMUM_COUNT_TO_SAVE_HISTORY) {
         historyStack = historyStack.slice(0, MAXIMUM_COUNT_TO_SAVE_HISTORY);
       }
-
       window.sessionStorage.setItem(HISTORY_SESSION_KEY, JSON.stringify(historyStack));
 
-      const qs = getQueryParamsObject(location.search);
-      const nextQS = getQueryParamsObject(nextProps.location.search);
-
+      // handle dev branch demo
+      const qs = getQueryParamsObject(prevProps.location.search);
+      const nextQS = getQueryParamsObject(this.props.location.search);
       if (qs['branch'] && !nextQS['branch']) {
         const nextQPString = stringify({ ...nextQS, branch: qs['branch'] }, { addQueryPrefix: true });
-        nextProps.history.replace(nextProps.location.pathname + nextQPString);
+        this.props.history.replace(prevProps.location.pathname + nextQPString);
       }
     }
   }

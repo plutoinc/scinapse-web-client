@@ -75,10 +75,10 @@ class AuthorShow extends React.PureComponent<AuthorShowProps, AuthorShowLocalSta
     };
   }
 
-  public async componentWillReceiveProps(nextProps: AuthorShowProps) {
-    const { match, dispatch, location } = nextProps;
+  public async componentDidUpdate(prevProps: AuthorShowProps) {
+    const { match, dispatch, location } = this.props;
 
-    if (this.props.match.params.authorId !== nextProps.match.params.authorId) {
+    if (this.props.match.params.authorId !== prevProps.match.params.authorId) {
       await fetchAuthorShowPageData({
         dispatch,
         match,
