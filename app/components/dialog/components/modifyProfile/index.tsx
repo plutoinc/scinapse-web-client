@@ -69,8 +69,8 @@ const validateForm = (values: ModifyProfileFormState) => {
 class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
   private formikNode: Formik<ModifyProfileFormState> | null;
 
-  public componentWillReceiveProps(nextProps: ModifyProfileProps) {
-    if (this.props.isOpen && !nextProps.isOpen && this.formikNode) {
+  public componentDidUpdate(prevProps: ModifyProfileProps) {
+    if (prevProps.isOpen && !this.props.isOpen && this.formikNode) {
       this.formikNode.resetForm();
     }
   }
