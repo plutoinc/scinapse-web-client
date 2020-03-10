@@ -18,6 +18,12 @@ interface BlockVenueProps {
   actionArea?: Scinapse.ActionTicket.ActionArea;
 }
 
+const TooltipBody = React.forwardRef<HTMLSpanElement>((_props, ref) => (
+  <span className={styles.ifIconWrapper} ref={ref}>
+    <Icon className={styles.ifIcon} icon="IMPACT_FACTOR" />
+  </span>
+));
+
 const BlockVenue: React.FC<BlockVenueProps> = ({
   journal,
   conferenceInstance,
@@ -47,9 +53,7 @@ const BlockVenue: React.FC<BlockVenueProps> = ({
           disableFocusListener
           disableTouchListener
         >
-          <span className={styles.ifIconWrapper}>
-            <Icon className={styles.ifIcon} icon="IMPACT_FACTOR" />
-          </span>
+          <TooltipBody />
         </Tooltip>
         <span className={styles.ifLabelContentWrapper}>{journal.impactFactor.toFixed(2)}</span>
       </span>

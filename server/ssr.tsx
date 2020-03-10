@@ -137,22 +137,16 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
   const routeContext: { statusCode?: number } = {};
   const insertCss = (...styles: any[]) => styles.forEach(style => css.add(style._getCss()));
 
-  // Create Material-UI theme and sheet
   const sheetsRegistry = new SheetsRegistry();
-  const sheetsManager = new Map();
   const generateClassName = createGenerateClassName();
-  const theme = createMuiTheme({
-    typography: {
-      useNextVariants: true,
-    },
-  });
+  const theme = createMuiTheme();
 
   const jsx = extractor.collectChunks(
     <StyleContext.Provider value={{ insertCss }}>
       <Provider store={store}>
         <StaticRouter location={fullURL} context={routeContext}>
           <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-            <MuiThemeProvider theme={theme} sheetsManager={sheetsManager}>
+            <MuiThemeProvider theme={theme}>
               <RootRoutes />
             </MuiThemeProvider>
           </JssProvider>

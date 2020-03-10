@@ -13,7 +13,11 @@ const PendingDescriptionDialog: FC<DialogProps> = props => {
 
   return (
     <Dialog {...props}>
-      <Icon icon="X_BUTTON" className={s.iconWrapper} onClick={props.onClose} />
+      <Icon
+        icon="X_BUTTON"
+        className={s.iconWrapper}
+        onClick={e => props.onClose && props.onClose(e, 'backdropClick')}
+      />
       <DialogTitle>What are pending publications?</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -32,7 +36,12 @@ const PendingDescriptionDialog: FC<DialogProps> = props => {
           <p>We will notify you in case we locate a publication that you may have published.</p>
         </DialogContentText>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button size="large" elementType="button" aria-label="Okay button" onClick={props.onClose}>
+          <Button
+            size="large"
+            elementType="button"
+            aria-label="Okay button"
+            onClick={e => props.onClose && props.onClose(e, 'backdropClick')}
+          >
             <span>Okay</span>
           </Button>
         </div>
