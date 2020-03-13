@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Formik, Form, Field, FormikErrors } from 'formik';
 import { useSelector } from 'react-redux';
+import { ModalProps } from '@material-ui/core/Modal';
 import Dialog, { DialogProps } from '@material-ui/core/Dialog';
 import { Button } from '@pluto_network/pluto-design-elements';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -59,7 +60,7 @@ const validateForm = (values: FormValues) => {
   return errors;
 };
 
-const ResultContents: FC<{ onClose?: React.ReactEventHandler<{}> }> = ({ onClose }) => {
+const ResultContents: FC<{ onClose?: ModalProps['onClose'] }> = ({ onClose }) => {
   return (
     <>
       <div className={s.description}>
@@ -68,7 +69,12 @@ const ResultContents: FC<{ onClose?: React.ReactEventHandler<{}> }> = ({ onClose
         Once again, thank you for your request and it'll make better academic data.
       </div>
       <div className={s.buttonWrapper}>
-        <Button elementType="button" variant="contained" color="blue" onClick={onClose}>
+        <Button
+          elementType="button"
+          variant="contained"
+          color="blue"
+          onClick={e => onClose && onClose(e, 'backdropClick')}
+        >
           <span>Okay</span>
         </Button>
       </div>
@@ -81,7 +87,7 @@ interface RequestFormProps {
   onSubmit: (values: FormValues) => void;
   isLoading: boolean;
   userDevice: UserDevice;
-  onClose?: React.ReactEventHandler<{}>;
+  onClose?: ModalProps['onClose'];
 }
 const RequestForm: FC<RequestFormProps> = ({ initialValues, onSubmit, isLoading, onClose, userDevice }) => {
   return (
@@ -146,7 +152,7 @@ const RequestForm: FC<RequestFormProps> = ({ initialValues, onSubmit, isLoading,
                   type="button"
                   variant="outlined"
                   color="gray"
-                  onClick={onClose}
+                  onClick={e => onClose && onClose(e, 'backdropClick')}
                   isLoading={isLoading}
                 >
                   <span>Cancel</span>

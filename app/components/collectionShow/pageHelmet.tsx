@@ -1,5 +1,5 @@
 import React from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { Collection } from '../../model/collection';
 
 const PageHelmet: React.FC<{ userCollection?: Collection }> = ({ userCollection }) => {

@@ -4,8 +4,6 @@ import { PaperSource } from '../../../api/paper';
 import Title from './title';
 import BlockVenueAuthor from './blockVenueAuthor';
 import PaperItemButtonGroup from './paperItemButtonGroup';
-import { useObserver } from '../../../hooks/useIntersectionHook';
-
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperItem.scss');
 
@@ -18,16 +16,9 @@ interface Props {
 
 const MediumPaperItem: FC<Props> = React.memo(({ paper, pageType, actionArea, sourceDomain }) => {
   useStyles(s);
-  const { elRef } = useObserver(0.8, {
-    pageType,
-    actionArea,
-    actionType: 'view',
-    actionTag: 'paperShow',
-    actionLabel: String(paper.id),
-  });
 
   return (
-    <div ref={elRef} className={s.paperItemWrapper}>
+    <div className={s.paperItemWrapper}>
       <Title paper={paper} actionArea={actionArea} pageType={pageType} />
       <div style={{ marginTop: '12px' }}>
         <BlockVenueAuthor paper={paper} pageType={pageType} actionArea={actionArea} />

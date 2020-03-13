@@ -53,9 +53,9 @@ class InputWithSuggestionList extends React.PureComponent<
     };
   }
 
-  public componentWillReceiveProps(nextProps: Readonly<InputWithSuggestionListProps>) {
-    if (this.props.defaultValue !== nextProps.defaultValue) {
-      this.setState(prevState => ({ ...prevState, inputValue: nextProps.defaultValue || '' }));
+  public componentDidUpdate(prevProps: Readonly<InputWithSuggestionListProps>) {
+    if (this.props.defaultValue !== prevProps.defaultValue) {
+      this.setState(prevState => ({ ...prevState, inputValue: this.props.defaultValue || '' }));
     }
   }
 

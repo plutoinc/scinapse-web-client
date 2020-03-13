@@ -37,6 +37,13 @@ const ConferenceTitle: React.FC<{
   return <span className={styles.venueNameReadonly}> in {conferenceInstance.conferenceSeries.name}</span>;
 };
 
+const TooltipBody = React.forwardRef<HTMLSpanElement, { journal: Journal }>(({ journal }, ref) => (
+  <span ref={ref} className={styles.ifLabel}>
+    <Icon className={styles.ifIconWrapper} icon="IMPACT_FACTOR" />
+    <span>{journal.impactFactor!}</span>
+  </span>
+));
+
 const JournalTitle: React.FC<{
   journal: Journal;
   readOnly?: boolean;
@@ -75,10 +82,7 @@ const JournalTitle: React.FC<{
           disableFocusListener
           disableTouchListener
         >
-          <span className={styles.ifLabel}>
-            <Icon className={styles.ifIconWrapper} icon="IMPACT_FACTOR" />
-            <span>{journal.impactFactor.toFixed(2)}</span>
-          </span>
+          <TooltipBody journal={journal} />
         </Tooltip>
       )}
     </>

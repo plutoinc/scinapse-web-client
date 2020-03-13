@@ -67,9 +67,9 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     };
   }
 
-  public componentWillReceiveProps(nextProps: FeedbackButtonProps) {
-    if (this.props.currentUser.isLoggedIn !== nextProps.currentUser.isLoggedIn) {
-      this.setState(prevState => ({ ...prevState, emailInput: nextProps.currentUser.email || '' }));
+  public componentDidUpdate(prevProps: FeedbackButtonProps) {
+    if (this.props.currentUser.isLoggedIn !== prevProps.currentUser.isLoggedIn) {
+      this.setState(prevState => ({ ...prevState, emailInput: this.props.currentUser.email || '' }));
     }
   }
 

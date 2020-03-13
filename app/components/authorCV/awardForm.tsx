@@ -48,8 +48,8 @@ const validateForm = (values: AwardFormState) => {
 class AwardForm extends React.PureComponent<AwardFormProps> {
   private formikNode: Formik<AwardFormState> | null;
 
-  public componentWillReceiveProps(nextProps: AwardFormProps) {
-    if (!this.props.isOpen && nextProps.isOpen && this.formikNode) {
+  public componentDidUpdate(prevProps: AwardFormProps) {
+    if (prevProps.isOpen && !this.props.isOpen && this.formikNode) {
       this.formikNode.resetForm();
     }
   }

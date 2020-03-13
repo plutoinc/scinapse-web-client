@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { Paper } from '../../../model/paper';
 import { PaperAuthor } from '../../../model/author';
 import { Journal } from '../../../model/journal';
@@ -92,7 +92,9 @@ const PaperShowHelmet: React.FC<{ paper: Paper }> = React.memo(({ paper }) => {
       <meta property="og:description" content={buildPageDescription(paper)} />
       {paper.journal && <meta name="citation_journal_title" content={paper.journal.title} />}
       {paper.journal && paper.journal.issn && <meta name="citation_issn" content={paper.journal.issn} />}
-      {paper.authors.map(author => <meta name="citation_author" content={author.name} key={author.name} />)}
+      {paper.authors.map(author => (
+        <meta name="citation_author" content={author.name} key={author.name} />
+      ))}
       <meta name="citation_title" content={paper.title} />
       <meta name="citation_doi" content={paper.doi} />
       <meta name="citation_abstract_html_url" content={`https://scinapse.io/papers/${paper.id}`} />

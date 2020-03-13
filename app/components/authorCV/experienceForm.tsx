@@ -66,8 +66,8 @@ const validateForm = (values: ExperienceFormState) => {
 class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
   private formikNode: Formik<ExperienceFormState> | null;
 
-  public componentWillReceiveProps(nextProps: ExperienceFormProps) {
-    if (!this.props.isOpen && nextProps.isOpen && this.formikNode) {
+  public componentDidUpdate(prevProps: ExperienceFormProps) {
+    if (prevProps.isOpen && !this.props.isOpen && this.formikNode) {
       this.formikNode.resetForm();
     }
   }

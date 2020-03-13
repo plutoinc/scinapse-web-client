@@ -15,14 +15,12 @@ const s = require('./uiDemo.scss');
 
 type AvailableIconPosition = 'left' | 'right' | 'only' | 'no';
 
-const PositionHandledButton: React.FC<
-  {
-    iconPosition: AvailableIconPosition;
-    content: string;
-    iconName?: string;
-    combinedButtonIcon?: string;
-  } & GeneralButtonProps
-> = ({ iconPosition, iconName, content, combinedButtonIcon, ...props }) => {
+const PositionHandledButton: React.FC<{
+  iconPosition: AvailableIconPosition;
+  content: string;
+  iconName?: string;
+  combinedButtonIcon?: string;
+} & GeneralButtonProps> = ({ iconPosition, iconName, content, combinedButtonIcon, ...props }) => {
   const icon = iconName ? iconName : 'BOOKMARK';
 
   let button = null;
@@ -140,9 +138,7 @@ const PositionHandledButtonString = ({
 </Button>`;
 
   return `
-<GroupButton variant='${props.variant}' color='${props.color}' disabled={${
-    props.disabled
-  }}>${buttonString}${combinedButtonString}
+<GroupButton variant='${props.variant}' color='${props.color}' disabled={${props.disabled}}>${buttonString}${combinedButtonString}
 </GroupButton>
   `;
 };
@@ -257,7 +253,7 @@ const UiDemo: React.FunctionComponent = () => {
           <InputLabel htmlFor="icon-helper">Icon</InputLabel>
           <Select
             value={icon}
-            onChange={e => setIcon(e.target.value)}
+            onChange={e => setIcon(e.target.value as string)}
             inputProps={{
               name: 'icon',
               id: 'icon-helper',
@@ -287,7 +283,7 @@ const UiDemo: React.FunctionComponent = () => {
           <InputLabel htmlFor="icon-helper">COMBINED BUTTON</InputLabel>
           <Select
             value={combinedButtonIcon}
-            onChange={e => setCombinedButtonIcon(e.target.value)}
+            onChange={e => setCombinedButtonIcon(e.target.value as string)}
             inputProps={{
               name: 'icon',
               id: 'icon-helper',

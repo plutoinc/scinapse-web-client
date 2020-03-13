@@ -68,8 +68,8 @@ const validateForm = (values: EducationFormState) => {
 class EducationForm extends React.PureComponent<EducationFormProps> {
   private formikNode: Formik<EducationFormState> | null;
 
-  public componentWillReceiveProps(nextProps: EducationFormProps) {
-    if (!this.props.isOpen && nextProps.isOpen && this.formikNode) {
+  public componentDidUpdate(prevProps: EducationFormProps) {
+    if (prevProps.isOpen && !this.props.isOpen && this.formikNode) {
       this.formikNode.resetForm();
     }
   }
