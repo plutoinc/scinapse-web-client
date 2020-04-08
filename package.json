@@ -15,7 +15,7 @@
     "build:prod": "npm run clean && npm run build-sls && NODE_ENV=production node --max_old_space_size=4096 dist-sls/build/prod && cp scripts/package.json dist/package.json && cd dist && npm i && cd ..",
     "deploy:dev": "npm run build:dev && npm run pack && serverless deploy -s dev",
     "deploy:stage": "npm run build:prod && npm run pack && serverless deploy -s stage",
-    "deploy:prod": "serverless deploy -s production",
+    "deploy:prod": "npm run deploy:stage && serverless deploy -s production",
     "dev": "webpack-dev-server",
     "test": "jest --coverage",
     "test:ci": "jest --coverage --maxWorkers=2",
