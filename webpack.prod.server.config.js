@@ -92,7 +92,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.TARGET': JSON.stringify('server'),
+      'process.env.NODE_ENV': JSON.stringify('production'),
     }),
-    new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('production') }),
   ],
 };
