@@ -173,7 +173,7 @@
     "identity-obj-proxy": "3.0.0",
     "intersection-observer": "0.5.1",
     "js-cookie": "2.2.0",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "morgan": "1.9.1",
     "normalize.css": "7.0.0",
     "normalizr": "3.2.4",
