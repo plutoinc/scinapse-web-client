@@ -141,7 +141,7 @@ class PrivacyPolicy extends React.Component {
             to the Services is publicly available, regardless of that information being personal or not, and we may use
             your public contributions, either aggregated with those by others or individually, to operate and improve
             the Services. If you believe you have included personal information within your contributions and it should
-            be deleted, please contact team@pluto.network immediately.
+            be deleted, please contact team@pluto.im immediately.
           </p>
           <p className={styles.contents}>
             <b>Registration and Verification</b>
@@ -187,7 +187,7 @@ class PrivacyPolicy extends React.Component {
               interests, and photo;
             </li>
             <li>
-              Information that you communicate to us, such as questions or information you send to team@pluto.network;
+              Information that you communicate to us, such as questions or information you send to team@pluto.im;
             </li>
             <li>
               Data that you provide to us as part of interacting with the Service, such as your saved papers, email
@@ -364,7 +364,7 @@ class PrivacyPolicy extends React.Component {
           </p>
           <p className={styles.contents}>
             If you are asked your password or you find any sign of your personal information being misused due to
-            security breach, please let us know by sending us email at team@pluto.network, so we can fight against
+            security breach, please let us know by sending us email at team@pluto.im, so we can fight against
             malicious attempts and better protect users and ourselves.
           </p>
           <p className={styles.subtitle}>RETENTION PERIOD</p>
@@ -372,7 +372,7 @@ class PrivacyPolicy extends React.Component {
             We keep your information for as long as necessary to provide the Services and as consistent with the
             purposes and uses outlined in this Privacy Policy. Non-personal information and public contributions may be
             retained indefinitely. If you have any concern with information on the Services, please contact
-            team@pluto.network.
+            team@pluto.im.
           </p>
           <p className={styles.subtitle}>RETENTION PERIOD</p>
           <p className={styles.contents}>
@@ -429,7 +429,7 @@ class PrivacyPolicy extends React.Component {
           <p className={styles.subtitle}>Contact</p>
           <p className={styles.contents}>
             For questions, concerns, suggestions, or any inquiries relating to this Privacy Policy or to any information
-            under this Privacy Policy, please email us at team@pluto.network.
+            under this Privacy Policy, please email us at team@pluto.im.
           </p>
           <p className={styles.contents}>
             Our (snail) mailing address is{' '}

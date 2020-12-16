@@ -29,7 +29,7 @@ const ImprovedFooter: React.FC<FooterProps> = props => {
             <div className={styles.menu}>
               <div className={styles.menuTitle}>About</div>
               <a
-                href="https://pluto.network"
+                href="https://pluto.im"
                 target="_blank"
                 rel="noopener nofollow noreferrer"
                 onClick={() => {

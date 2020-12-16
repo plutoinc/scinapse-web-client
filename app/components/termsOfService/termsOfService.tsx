@@ -34,7 +34,7 @@ class TermsOfService extends React.Component {
           <p className={styles.contents}>
             Pluto Inc. strives to deliver its mission to the academic community by providing services to assist
             researchers in searching, creating, modifying, and sharing scientific research outputs (the "Services"). The
-            Terms apply when you view or use any or all of them through our websites located at https://pluto.network/
+            Terms apply when you view or use any or all of them through our websites located at https://pluto.im/
             or https://scinapse.io/ (our "Websites") or through any means. By accessing or using the Services and/or our
             Websites, you agree to comply with the Terms. If you do not agree to the Terms, you may not access or use
             the Services and/or our Websites.
@@ -55,7 +55,7 @@ class TermsOfService extends React.Component {
             scientific and research related services do, the Services also depend on content that we collect from
             external sources. The content on the Services (the "Content") may be subject to certain licenses under which
             it is shared from the original sources. To learn more about licenses for particular contents, please
-            contact [team@pluto.network] for assistance. Opinions, statements, claims, or other information included in
+            contact [team@pluto.im] for assistance. Opinions, statements, claims, or other information included in
             the Content and the Services are those of their resepective authors, and should not necessarily be relied
             upon. We do not guarantee the accuracy, completeness, truthfulness, usefulness, or reliability of any
             information on the Services. We also do not endorse nor are responsible for the accuracy or reliability of
@@ -72,7 +72,7 @@ class TermsOfService extends React.Component {
             or is alleged to violate, applicable law or the Terms, or which might be offensive, or that might violate
             the rights, harm, or threaten the safety of users or others. Unauthorized use of the Services may result in
             criminal and/or civil prosecution under certain jurisdiction, including where you live. If you become aware
-            of misuse of the Services, please contact [team@pluto.network].
+            of misuse of the Services, please contact [team@pluto.im].
           </p>
 
           <p className={styles.subtitle}>USER OBLIGATIONS</p>

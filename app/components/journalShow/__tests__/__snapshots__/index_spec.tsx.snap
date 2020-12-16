@@ -438,7 +438,7 @@ exports[`JournalShow Container Component when journal data exist should render c
       </a>
       <a
         className="link"
-        href="https://pluto.network"
+        href="https://pluto.im"
         onClick={[Function]}
         rel="noopener"
         target="_blank"
@@ -447,7 +447,7 @@ exports[`JournalShow Container Component when journal data exist should render c
       </a>
       <a
         className="link"
-        href="mailto:team@pluto.network"
+        href="mailto:team@pluto.im"
         onClick={[Function]}
         rel="noopener"
         target="_blank"

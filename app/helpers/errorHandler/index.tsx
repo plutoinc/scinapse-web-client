@@ -89,7 +89,7 @@ export default class ErrorTracker extends React.PureComponent<{}, ErrorTrackerSt
                   {` is the team working on Scinapse.\nWe have mission to break the barrier of scholarly communication.\n\nGive your attention and please follow us.`}
                 </div>
 
-                <LinkButton style={{ width: '100%', marginBottom: '16px' }} href="https://pluto.network">
+                <LinkButton style={{ width: '100%', marginBottom: '16px' }} href="https://pluto.im">
                   <img
                     style={{ width: '70px', height: '29px' }}
                     src="https://assets.pluto.network/scinapse/error_page/pluto-logo.png"

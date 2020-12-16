@@ -25,8 +25,8 @@ function getHelmetNode() {
     contactPoint: [
       {
         '@type': 'ContactPoint',
-        email: 'team@pluto.network',
-        url: 'https://pluto.network',
+        email: 'team@pluto.im',
+        url: 'https://pluto.im',
         contactType: 'customer service',
       },
     ],
@@ -39,7 +39,7 @@ function getHelmetNode() {
       'https://www.facebook.com/PlutoNetwork',
       'https://twitter.com/pluto_network',
       'https://medium.com/pluto-network',
-      'https://pluto.network',
+      'https://pluto.im',
     ],
   };
 

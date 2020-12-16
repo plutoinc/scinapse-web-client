@@ -20,7 +20,7 @@ const ProfileLandingEnquiry: FC = () => {
             </div>
             <div className={s.subInformation}>
               For any other inquiries, send us an{' '}
-              <a href="mailto:team@pluto.network">
+              <a href="mailto:team@pluto.im">
                 <i>email</i>
               </a>
               .
