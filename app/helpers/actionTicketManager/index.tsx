@@ -7,6 +7,7 @@ import ActionTicket, { ActionTicketParams, FinalActionTicket } from './actionTic
 import {
   DEAD_LETTER_QUEUE_KEY,
   DESTINATION_URL,
+  AWS_DESTINATION_URL,
   DEVICE_ID_INITIALIZED_KEY,
   DEVICE_ID_KEY,
   LIVE_SESSION_LENGTH,
@@ -130,6 +131,17 @@ class ActionTicketManager {
         },
       }
     );
+
+    // TODO: remove this after aws logger removed
+    await axios.post(
+      AWS_DESTINATION_URL,
+      encodeURIComponent(JSON.stringify(tickets.map(ticket => ticket.getTicketWithoutMeta()))),
+      {
+        headers: {
+          'Content-Type': 'text/plain;charset=UTF-8',
+        },
+      }
+    );
   }
 
   private async tryToSendDeadTickets() {
@@ -156,6 +168,9 @@ class ActionTicketManager {
     if (typeof navigator !== undefined && navigator.sendBeacon) {
       const success = navigator.sendBeacon(DESTINATION_URL, encodedTickets);
       this.sentLastTickets = success;
+
+      // TODO: remove this line after aws logger removed
+      navigator.sendBeacon(AWS_DESTINATION_URL, encodedTickets);
     } else {
       // This is needed for IE
       const xhr = new XMLHttpRequest();
@@ -165,6 +180,12 @@ class ActionTicketManager {
       if (xhr.status === 200) {
         this.sentLastTickets = true;
       }
+
+      // TODO: remove this after aws logger removed
+      const awsXhr = new XMLHttpRequest();
+      awsXhr.open('POST', AWS_DESTINATION_URL, false);
+      awsXhr.setRequestHeader('Content-Type', 'text/plain;charset=UTF-8');
+      awsXhr.send(encodedTickets);
     }
   }
 }
