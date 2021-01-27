@@ -106,8 +106,8 @@
   min-height: 200px;
 
   .noPaperContent {
-    color: $black0;
     font-size: 18px;
+    color: $gray600;
     margin-top: 16px;
     margin-bottom: 32px;
   }
@@ -208,7 +208,7 @@
 
   .noPaperDescription {
     font-size: 18px;
-    color: $gray800;
+    color: $gray600;
     margin-top: 24px;
   }
 }

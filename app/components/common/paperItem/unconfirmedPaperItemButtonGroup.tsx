@@ -45,6 +45,7 @@ const UnconfirmedPaperItemButtonGroup: React.FC<UnconfirmedPaperItemButtonGroupP
         paperSource={paperSource}
         saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
         dropdownContents={dropdownContents}
+        ownProfileSlug={ownProfileSlug}
       />
     );
   }

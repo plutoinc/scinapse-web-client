@@ -7,7 +7,7 @@ import alertToast from '../helpers/makePlutoToastAction';
 import { PaginationResponseV2 } from '../api/types/common';
 import { Paper, paperSchema } from '../model/paper';
 import { ActionCreators } from './actionTypes';
-import { getAllPapers, addPaper } from '../reducers/profilePaperList';
+import { getAllPapers, addPaper, removePaper } from '../reducers/profilePaperList';
 import {
   getPendingPapers,
   PendingPaper,
@@ -25,11 +25,65 @@ import {
   addRepresentativePaper,
 } from '../reducers/profileRepresentativePaperList';
 import { CURRENT_ONBOARDING_PROGRESS_STEP } from '../containers/profileOnboarding/types';
+import { getSearchPublications } from '../reducers/profileSearchPublicationsDialog';
 
 interface FetchProfilePaperListParams {
   profileSlug: string;
   size?: number;
   page?: number;
+}
+
+export function addAuthorPublication(params: { profileSlug: string; paperId: string }): AppThunkAction {
+  return async (dispatch, _getState, { axios }) => {
+    const { profileSlug, paperId } = params;
+
+    const res = await axios.post(`/profiles/${profileSlug}/papers/add`, {
+      paper_id: paperId,
+    });
+
+    const { data } = res.data as PaginationResponseV2<Paper>;
+    const paper = data.content;
+    const entity = normalize(paper, paperSchema);
+
+    dispatch(ActionCreators.addEntity(entity));
+    dispatch(addPaper({ paperId: paper.id }));
+  };
+}
+
+export function removeAuthorPublication(params: { profileSlug: string; paperId: string }): AppThunkAction {
+  return async (dispatch, _getState, { axios }) => {
+    const { profileSlug, paperId } = params;
+
+    await axios.post(`/profiles/${profileSlug}/papers/remove`, {
+      paper_id: paperId,
+    });
+
+    dispatch(removePaper({ paperId }));
+  };
+}
+
+export function searchAuthorPublications(params: FetchProfilePaperListParams & { query: string }): AppThunkAction {
+  return async (dispatch, _getState, { axios }) => {
+    const { query, profileSlug, page, size = 10 } = params;
+
+    const res = await axios.get(`/search/missing-papers`, {
+      params: { q: query, check_profile_included: profileSlug, page: page, size: size },
+    });
+
+    const result: PaginationResponseV2<Paper[]> = res.data;
+
+    const normalizedPapers = normalize(result.data.content, [paperSchema]);
+    dispatch(ActionCreators.addEntity(normalizedPapers));
+
+    dispatch(
+      getSearchPublications({
+        paperIds: normalizedPapers.result,
+        totalPages: result.data.page!.totalPages,
+        page: result.data.page!.page,
+        totalElements: result.data.page!.totalElements,
+      })
+    );
+  };
 }
 
 export function fetchRepresentativePapers(params: FetchProfilePaperListParams): AppThunkAction {

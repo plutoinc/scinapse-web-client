@@ -10,6 +10,7 @@ import { PaperSource } from '../../../api/paper';
 import MoreDropdownButton from './moreDropdownButton';
 import { AppState } from '../../../reducers';
 import { UserDevice } from '../../layouts/reducer';
+import ResolveNotIncludedButton from './resolveNotIncludedButton';
 const s = require('./paperItemButtonGroup.scss');
 
 interface PaperItemButtonGroupProps {
@@ -19,6 +20,7 @@ interface PaperItemButtonGroupProps {
   paperSource?: PaperSource;
   saved?: boolean;
   dropdownContents?: React.ReactElement[];
+  ownProfileSlug?: string;
 }
 
 const PaperItemButtonGroup: React.FC<PaperItemButtonGroupProps> = ({
@@ -28,8 +30,22 @@ const PaperItemButtonGroup: React.FC<PaperItemButtonGroupProps> = ({
   paperSource,
   saved,
   dropdownContents,
+  ownProfileSlug,
 }) => {
   const userDevice = useSelector<AppState, UserDevice>(state => state.layout.userDevice);
+
+  const paperControlButton =
+    pageType === 'profileShow' && actionArea === 'searchPaperList' && !!ownProfileSlug ? (
+      <ResolveNotIncludedButton
+        paper={paper}
+        pageType={pageType}
+        actionArea={actionArea}
+        ownProfileSlug={ownProfileSlug}
+      />
+    ) : (
+      <CollectionButton paper={paper} saved={!!saved} pageType={pageType} actionArea={actionArea} />
+    );
+
   if (userDevice === UserDevice.MOBILE) {
     return (
       <div className={s.mobileWrapper}>
@@ -45,9 +61,7 @@ const PaperItemButtonGroup: React.FC<PaperItemButtonGroupProps> = ({
             isMobile={userDevice === UserDevice.MOBILE}
           />
         </div>
-        <div className={s.buttonWrapper}>
-          <CollectionButton paper={paper} saved={!!saved} pageType={pageType} actionArea={actionArea} />
-        </div>
+        <div className={s.buttonWrapper}>{paperControlButton}</div>
       </div>
     );
   }
@@ -63,9 +77,7 @@ const PaperItemButtonGroup: React.FC<PaperItemButtonGroupProps> = ({
         <div className={s.buttonWrapper}>
           <CiteButton paper={paper} pageType={pageType} actionArea={actionArea} />
         </div>
-        <div className={s.buttonWrapper}>
-          <CollectionButton paper={paper} saved={!!saved} pageType={pageType} actionArea={actionArea} />
-        </div>
+        <div className={s.buttonWrapper}>{paperControlButton}</div>
       </div>
     </div>
   );

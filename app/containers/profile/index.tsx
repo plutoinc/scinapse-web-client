@@ -3,7 +3,7 @@ import { useParams, useLocation, RouteComponentProps } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
-import { Button } from '@pluto_network/pluto-design-elements';
+import { Button, GroupButton } from '@pluto_network/pluto-design-elements';
 import { AppState } from '../../reducers';
 import DesktopPagination from '../../components/common/desktopPagination';
 import { useThunkDispatch } from '../../hooks/useThunkDispatch';
@@ -35,6 +35,8 @@ import PendingDescriptionDialog from './components/pendingDescriptionDialog';
 import { openImportPaperDialog } from '../../reducers/importPaperDialog';
 import { IMPORT_SOURCE_TAB } from './types';
 import AllRepresentativePaperDialog from './components/allRepresentativePaperDialog';
+import SearchPublicationDialog from './components/searchPublicationDialog';
+import { openSearchPublicationsDialog } from '../../reducers/profileSearchPublicationsDialog';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./connectedAuthor.scss');
@@ -73,6 +75,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
   const [isOpenModifyProfileDialog, setIsOpenModifyProfileDialog] = useState(false);
   const [isOpenPendingDescriptionDialog, setIsOpenPendingDescriptionDialog] = useState(false);
   const [isOpenRepresentativePapersDialog, setIsOpenRepresentativePapersDialog] = useState(false);
+
   const [activeTab, setActiveTab] = useState(AvailableTab.PUBLICATIONS);
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
   const shouldFetch = useSelector(
@@ -187,24 +190,36 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                       <span className={s.sectionTitle}>Publications</span>
                       <span className={s.countBadge}>{formatNumber(totalPaperCount)}</span>
                       <div className={s.rightBox}>
-                        {profile.isEditable && false && (
-                          <Button
-                            elementType="button"
-                            color="gray"
-                            variant="outlined"
-                            title="Update or add publication information here by using Google Scholar Profile page, BibTex, or citation string. This is not for uploading the publication itself."
-                            onClick={() =>
-                              dispatch(
-                                openImportPaperDialog({
-                                  activeImportSourceTab: IMPORT_SOURCE_TAB.BIBTEX,
-                                  profileSlug,
-                                })
-                              )
-                            }
-                          >
-                            <Icon icon="ADD_NOTE" />
-                            <span>Import Publications</span>
-                          </Button>
+                        {profile.isEditable && (
+                          <GroupButton color="gray">
+                            <Button
+                              elementType="button"
+                              color="gray"
+                              variant="outlined"
+                              title="Update or add publication information here by using Google Scholar Profile page, BibTex, or citation string. This is not for uploading the publication itself."
+                              onClick={() =>
+                                dispatch(
+                                  openImportPaperDialog({
+                                    activeImportSourceTab: IMPORT_SOURCE_TAB.BIBTEX,
+                                    profileSlug,
+                                  })
+                                )
+                              }
+                            >
+                              <Icon icon="ADD_NOTE" />
+                              <span>Import</span>
+                            </Button>
+                            <Button
+                              elementType="button"
+                              color="gray"
+                              variant="outlined"
+                              title="Update or add publication information here by using search Scinapse database."
+                              onClick={() => dispatch(openSearchPublicationsDialog())}
+                            >
+                              <Icon icon="SEARCH" />
+                              <span>Search</span>
+                            </Button>
+                          </GroupButton>
                         )}
                       </div>
                     </div>
@@ -212,22 +227,33 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                       {currentPage + 1} page of {formatNumber(maxPage)} pages ({formatNumber(totalPaperCount)} results)
                     </div>
                     <div className={s.divider} />
-                    {paperIds.length === 0 && profile.isEditable && false && (
+                    {paperIds.length === 0 && profile.isEditable && (
                       <div className={s.noPapers}>
                         <span className={s.noPaperContent}>You have not yet imported your paper list.</span>
-                        <Button
-                          elementType="button"
-                          variant="outlined"
-                          title="Update or add publication information here by using Google Scholar Profile page, BibTex, or citation string. This is not for uploading the publication itself."
-                          onClick={() =>
-                            dispatch(
-                              openImportPaperDialog({ activeImportSourceTab: IMPORT_SOURCE_TAB.BIBTEX, profileSlug })
-                            )
-                          }
-                        >
-                          <Icon icon="ADD_NOTE" />
-                          <span>Import Publications</span>
-                        </Button>
+                        <GroupButton color="gray">
+                          <Button
+                            elementType="button"
+                            variant="outlined"
+                            title="Update or add publication information here by using Google Scholar Profile page, BibTex, or citation string. This is not for uploading the publication itself."
+                            onClick={() =>
+                              dispatch(
+                                openImportPaperDialog({ activeImportSourceTab: IMPORT_SOURCE_TAB.BIBTEX, profileSlug })
+                              )
+                            }
+                          >
+                            <Icon icon="ADD_NOTE" />
+                            <span>Import</span>
+                          </Button>
+                          <Button
+                            elementType="button"
+                            variant="outlined"
+                            title="Update or add publication information here by using Google Scholar Profile page, BibTex, or citation string. This is not for uploading the publication itself."
+                            onClick={() => dispatch(openSearchPublicationsDialog())}
+                          >
+                            <Icon icon="SEARCH" />
+                            <span>Search</span>
+                          </Button>
+                        </GroupButton>
                       </div>
                     )}
                     {paperIds.map(id => (
@@ -237,7 +263,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                         pageType="profileShow"
                         actionArea="paperList"
                         ownProfileSlug={profile.slug}
-                        isEditable={false}
+                        isEditable={profile.isEditable}
                         fetchProfileShowData={() =>
                           fetchAuthorShowPageData({ dispatch, match, pathname: location.pathname })
                         }
@@ -338,6 +364,11 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
         isEditable={false}
         fetchProfileShowData={() => fetchAuthorShowPageData({ dispatch, match, pathname: location.pathname })}
         onCloseDialog={() => setIsOpenRepresentativePapersDialog(false)}
+      />
+      <SearchPublicationDialog
+        profileSlug={profileSlug}
+        isEditable={false}
+        fetchProfileShowData={() => fetchAuthorShowPageData({ dispatch, match, pathname: location.pathname })}
       />
     </div>
   );

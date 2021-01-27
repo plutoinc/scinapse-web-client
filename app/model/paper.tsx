@@ -57,6 +57,7 @@ export interface Paper {
   bestPdf?: PaperPdf;
   isConfirmed?: boolean;
   isRepresentative?: boolean;
+  isProfileIncluded?: boolean;
 }
 
 export const paperSchema = new schema.Entity('papers');
