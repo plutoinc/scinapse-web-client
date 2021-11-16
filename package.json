@@ -91,7 +91,7 @@
     "@typescript-eslint/parser": "2.11.0",
     "acorn": "6.1.1",
     "autoprefixer": "8.3.0",
-    "aws-sdk": "2.403.0",
+    "aws-sdk": "2.814.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-loader": "8.0.5",
     "babel-plugin-lodash": "3.3.4",
