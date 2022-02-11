@@ -161,7 +161,7 @@
     "@reduxjs/toolkit": "1.2.5",
     "@types/react-truncate": "2.3.3",
     "acorn-dynamic-import": "4.0.0",
-    "ajv": "6.5.4",
+    "ajv": "6.12.3",
     "autosize": "4.0.0",
     "axios": "0.19.0",
     "classnames": "2.2.5",
